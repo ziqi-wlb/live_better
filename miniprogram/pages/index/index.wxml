@@ -21,6 +21,7 @@
       scroll-y
       type="list"
       scroll-into-view="{{scrollInto}}"
+      scroll-with-animation
       bindscrolltolower="onLoadMore"
       lower-threshold="200"
     >
@@ -38,8 +39,9 @@
             <text class="quote-title">不用全做。挑走一两条，就算数。</text>
             <text class="quote-text">从自己的生活开始，不必和别人比赛。</text>
           </view>
-          <view class="scroll-hint">
-            <text>↓ 下滑，开始探索指南</text>
+          <view class="scroll-hint" bindtap="onExplore">
+            <text class="scroll-hint-arrow">↓</text>
+            <text>开始探索指南</text>
           </view>
         </view>
 

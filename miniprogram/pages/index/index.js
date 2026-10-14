@@ -228,6 +228,14 @@ Page({
     });
   },
 
+  // 落地页「开始探索」：平滑滚动到指南库
+  onExplore() {
+    this.setData({ scrollInto: '' });
+    setTimeout(() => {
+      this.setData({ scrollInto: 'lib-top' });
+    }, 60);
+  },
+
   // 从列表深处一键回到顶部筛选区
   onBackToFilter() {
     this.setData({ scrollInto: '' });
