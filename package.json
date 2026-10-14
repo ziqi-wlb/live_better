@@ -1,0 +1,26 @@
+{
+  "name": "life-winner", "private": true, "type": "module",
+  "scripts": {
+    "import": "node --experimental-strip-types scripts/import-content.ts",
+    "dev": "npm run import && concurrently -k \"npm run dev:api\" \"npm run dev:h5\"",
+    "dev:api": "node --experimental-strip-types --env-file-if-exists=.env apps/api/server.ts",
+    "dev:h5": "uni -p h5 --host 127.0.0.1",
+    "build": "uni build -p h5",
+    "build:mp": "uni build -p mp-weixin",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "typecheck": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-components": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-h5": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-mp-weixin": "3.0.0-alpha-5030120260930001",
+    "@fastify/cookie": "^11.0.2", "@fastify/rate-limit": "^10.3.0",
+    "fastify": "^5.6.1", "vue": "3.4.21"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "3.4.31", "@dcloudio/vite-plugin-uni": "3.0.0-alpha-5030120260930001",
+    "@types/node": "^24.0.0", "concurrently": "^9.2.1", "typescript": "^5.9.3",
+    "vite": "5.2.8", "vue-tsc": "^2.2.12", "@playwright/test": "^1.56.0"
+  }
+}
