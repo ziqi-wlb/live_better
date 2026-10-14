@@ -48,6 +48,10 @@ uni-app 版依赖后端 API（未部署时列表为空并提示「请配置 HTTP
 - 结果数移至指南库标题行，排序说明文案保留在筛选区底部
 - 「开始探索指南」提示改为药丸按钮（箭头浮动动画引导点击），点击后经 `scroll-into-view` + `scroll-with-animation` 平滑滚动到指南库，无需手动慢划
 
+### 真机编译修复：wxss 中文类名选择器
+
+真机调试上传时报 `unexpected` wxss 编译错误：清单状态标签用了中文类名选择器（`.st-准备做` 等），工具端能编译但真机上传的 wxss 编译器不支持类名中的多字节字符。改为 ASCII 类名 `st-ready / st-doing / st-done / st-na`，由 `index.js` 的 `STATUS_CLASS` 映射，`item.stClass` 传给 wxml。已扫描确认全部 wxss 选择器无非 ASCII 字符；约定：wxss 类名一律 ASCII，中文文案放在 JS 数据或 wxml 文本里。
+
 ## 维护约定
 
 1. 每个核心改动单独 `git add` + 提交（conventional commits，与既有历史风格一致）。
