@@ -1,0 +1,100 @@
+.card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(20, 30, 60, 0.05);
+}
+
+.card-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: #eef3e8;
+  color: #477347;
+  border-radius: 8rpx;
+  font-size: 21rpx;
+  padding: 4rpx 14rpx;
+  margin-right: 10rpx;
+  margin-bottom: 6rpx;
+}
+
+.tag-roi {
+  background: #e6f7ef;
+  color: #0d8a4d;
+  font-weight: 600;
+}
+
+.tag-cv {
+  background: #fdeaea;
+  color: #d43a3f;
+}
+
+.tag-nv {
+  background: #fdf1dd;
+  color: #b06e00;
+}
+
+.star {
+  padding: 4rpx 12rpx;
+  font-size: 24rpx;
+  color: #b8bfcc;
+}
+
+.star-on {
+  color: #f5a623;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1c2430;
+  line-height: 1.4;
+  margin-bottom: 12rpx;
+}
+
+.card-summary {
+  font-size: 26rpx;
+  color: #5a6472;
+  line-height: 1.6;
+  margin-bottom: 20rpx;
+}
+
+.cost {
+  border-top: 1rpx solid #f0f2f5;
+  padding-top: 18rpx;
+  font-size: 24rpx;
+  color: #7a8494;
+}
+
+.card-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16rpx;
+}
+
+.muted {
+  font-size: 22rpx;
+  color: #a4acb8;
+}
+
+.add-btn {
+  font-size: 24rpx;
+  color: #2f6bff;
+  background: #eef3ff;
+  border-radius: 999rpx;
+  padding: 8rpx 22rpx;
+}

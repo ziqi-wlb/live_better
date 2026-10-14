@@ -1,0 +1,54 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.status-bar {
+  width: 100%;
+}
+
+.nav-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.nav-title {
+  position: absolute;
+  left: 100rpx;
+  right: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.nav-title-text {
+  font-size: 32rpx;
+  font-weight: 500;
+}
+
+.nav-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 12rpx;
+}
+
+.nav-back {
+  padding: 6rpx 22rpx;
+}
+
+.nav-back text {
+  font-size: 46rpx;
+  line-height: 46rpx;
+  color: #1c2430;
+  font-weight: 600;
+}
+
+.nav-right {
+  flex: 1;
+}

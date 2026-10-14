@@ -1,0 +1,14 @@
+<view class="navbar" style="{{displayStyle}};background: {{background}};">
+  <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+  <view class="nav-content" style="height: {{navHeight}}px;">
+    <view class="nav-title">
+      <text class="nav-title-text" style="color: {{color}}">{{loading ? '加载中' : title}}</text>
+    </view>
+    <view class="nav-left" style="{{leftWidth}}">
+      <view wx:if="{{back}}" class="nav-back" bind:tap="back">
+        <text>‹</text>
+      </view>
+    </view>
+    <view class="nav-right" style="{{innerPaddingRight}}"></view>
+  </view>
+</view>

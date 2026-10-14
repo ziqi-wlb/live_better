@@ -1,0 +1,102 @@
+<navigation-bar title="{{navTitle}}" back="{{true}}" color="black" background="#F6F7F9"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="detail" wx:if="{{item}}">
+    <view class="d-meta">
+      <text class="muted">第 {{item.ch}} 节 · 第 {{item.no}} 条</text>
+    </view>
+    <view class="d-title"><text>{{item.title}}</text></view>
+
+    <view class="tags">
+      <text class="tag tag-roi">{{item.roi}} 性价比</text>
+      <text class="tag">证据 {{item.ev}}</text>
+      <text wx:if="{{item.cv}}" class="tag tag-cv">有争议</text>
+      <text wx:if="{{item.nv}}" class="tag tag-nv">待核实</text>
+    </view>
+
+    <view class="badges">
+      <view class="badge-box">
+        <text class="badge-label">收益</text>
+        <text class="badge-value">{{item.band}}</text>
+      </view>
+      <view class="badge-box">
+        <text class="badge-label">证据等级</text>
+        <text class="badge-value">{{item.ev}}</text>
+      </view>
+      <view class="badge-box">
+        <text class="badge-label">性价比</text>
+        <text class="badge-value">{{item.roi}}</text>
+      </view>
+    </view>
+
+    <view class="section" wx:if="{{item.text}}">
+      <view class="sec-title"><text>说人话</text></view>
+      <view class="sec-body"><text>{{item.text}}</text></view>
+    </view>
+
+    <view class="section" wx:if="{{item.costText}}">
+      <view class="sec-title"><text>成本</text></view>
+      <view class="sec-body"><text>{{item.costText}}</text></view>
+    </view>
+
+    <view class="section" wx:if="{{item.benefitText}}">
+      <view class="sec-title"><text>完整收益与研究条件</text></view>
+      <view class="sec-body"><text>{{item.benefitText}}</text></view>
+    </view>
+
+    <view class="section" wx:if="{{hasNotes}}">
+      <view class="sec-title"><text>适用与限制 / 备注</text></view>
+      <view class="sec-body"><text>{{item.notes}}</text></view>
+    </view>
+
+    <view class="section">
+      <view class="sec-title"><text>人群条件</text></view>
+      <view class="sec-body sec-muted"><text>{{audienceText}}</text></view>
+    </view>
+
+    <view class="section" wx:if="{{item.source}}">
+      <view class="sec-title"><text>原始来源</text></view>
+      <view class="sec-body sec-source"><text>{{item.source}}</text></view>
+      <view class="sec-note"><text>证据等级 {{item.ev}}：{{evidenceDescText}}。等级与性价比相互独立。</text></view>
+      <view wx:if="{{fixedSourceUrl}}" class="copy-btn" bindtap="onCopyFixedSource">
+        <text>复制固定版本原文链接</text>
+      </view>
+      <view
+        wx:for="{{item.links}}"
+        wx:key="*this"
+        class="source-link"
+        data-link="{{item}}"
+        bindtap="onCopyLink"
+      >
+        <text>{{item}} · 复制</text>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="sec-title"><text>我的行动</text></view>
+      <view class="actions">
+        <view class="act {{fav ? 'act-on' : ''}}" bindtap="onToggleFav">
+          <text>{{fav ? '★ 已收藏' : '☆ 收藏'}}</text>
+        </view>
+        <picker class="act-picker" range="{{actionOptions}}" bindchange="onPickAction">
+          <view class="act act-primary">
+            <text>{{actionLabel}} ▾</text>
+          </view>
+        </picker>
+      </view>
+      <textarea
+        class="note-input"
+        value="{{note}}"
+        maxlength="2000"
+        placeholder="我的备注（可选，最多 2000 字）"
+        bindinput="onNoteInput"
+      />
+      <view class="save-btn" bindtap="onSaveNote">
+        <text>保存备注</text>
+      </view>
+    </view>
+
+    <view class="footnote">
+      <text>内容来自《高性价比人生指南》(HowToLiveBetter)，作者 eternity4719，CC BY 4.0。原文内容保留，政策和研究可能更新，请结合当地实际与专业建议。仅供参考，不构成医疗或投资建议。</text>
+    </view>
+  </view>
+</scroll-view>

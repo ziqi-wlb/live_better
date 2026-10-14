@@ -1,0 +1,324 @@
+page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f6f7f9;
+}
+
+.page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.scrollarea {
+  flex: 1;
+  overflow-y: hidden;
+}
+
+.list {
+  padding: 24rpx 28rpx 60rpx;
+}
+
+/* 顶部标签 */
+.tabs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #ffffff;
+  padding: 0 24rpx;
+  border-bottom: 1rpx solid #eceef2;
+}
+
+.tab {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 22rpx 30rpx;
+  font-size: 30rpx;
+  color: #7a8494;
+  border-bottom: 6rpx solid transparent;
+}
+
+.tab-active {
+  color: #1c2430;
+  font-weight: 600;
+  border-bottom-color: #2f6bff;
+}
+
+.badge {
+  margin-left: 10rpx;
+  min-width: 34rpx;
+  height: 34rpx;
+  border-radius: 999rpx;
+  background: #2f6bff;
+  color: #ffffff;
+  font-size: 20rpx;
+  padding: 0 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 筛选区 */
+.filterbar {
+  background: #ffffff;
+  padding: 20rpx 28rpx 20rpx;
+  border-bottom: 1rpx solid #eceef2;
+}
+
+.search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #f2f4f7;
+  border-radius: 14rpx;
+  padding: 0 20rpx;
+  margin-bottom: 18rpx;
+}
+
+.search-icon {
+  font-size: 24rpx;
+  color: #9aa3b0;
+  margin-right: 14rpx;
+}
+
+.search-input {
+  flex: 1;
+  height: 72rpx;
+  font-size: 27rpx;
+  color: #1c2430;
+}
+
+.search-ph {
+  color: #9aa3b0;
+}
+
+/* 收益口径 */
+.outcome-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 16rpx;
+}
+
+.outcome {
+  flex: 1;
+  min-width: 160rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2f4f7;
+  color: #3c4552;
+  border-radius: 14rpx;
+  font-size: 25rpx;
+  padding: 14rpx 10rpx;
+  margin-right: 12rpx;
+  margin-bottom: 10rpx;
+}
+
+.outcome-active {
+  background: #1f4d3d;
+  color: #ffffff;
+}
+
+/* picker 筛选 */
+.filters {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.filter {
+  margin-right: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.filter-pill {
+  background: #e8eeff;
+  color: #3563e9;
+  border-radius: 10rpx;
+  font-size: 23rpx;
+  padding: 12rpx 18rpx;
+  max-width: 320rpx;
+  overflow: hidden;
+}
+
+/* 开关 */
+.toggle {
+  background: #f2f4f7;
+  color: #5a6472;
+  border-radius: 999rpx;
+  font-size: 23rpx;
+  padding: 10rpx 24rpx;
+  margin-right: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.toggle-active {
+  background: #1f4d3d;
+  color: #ffffff;
+}
+
+.toggle-reset {
+  background: #ffffff;
+  color: #7a8494;
+  border: 1rpx solid #dfe4d7;
+}
+
+.explanation {
+  font-size: 22rpx;
+  color: #9aa3b0;
+  line-height: 1.6;
+  margin-top: 4rpx;
+}
+
+/* 空态与脚注 */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 140rpx 40rpx;
+}
+
+.empty-title {
+  font-size: 30rpx;
+  color: #7a8494;
+  margin-bottom: 16rpx;
+}
+
+.empty-sub {
+  font-size: 25rpx;
+  color: #a4acb8;
+}
+
+.empty-btn {
+  margin-top: 28rpx;
+  padding: 14rpx 44rpx;
+  border-radius: 999rpx;
+  background: #2f6bff;
+  color: #ffffff;
+  font-size: 26rpx;
+}
+
+.footnote {
+  text-align: center;
+  font-size: 22rpx;
+  color: #a4acb8;
+  padding: 20rpx 0;
+}
+
+.source-note {
+  line-height: 1.6;
+}
+
+/* 行动清单 */
+.todo {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(20, 30, 60, 0.05);
+}
+
+.todo-check {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 12rpx;
+  border: 3rpx solid #c6ccd6;
+  margin-right: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 28rpx;
+  flex-shrink: 0;
+}
+
+.todo-check-on {
+  background: #2f6bff;
+  border-color: #2f6bff;
+}
+
+.todo-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.todo-title {
+  font-size: 29rpx;
+  color: #1c2430;
+  line-height: 1.4;
+}
+
+.todo-tags {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10rpx;
+}
+
+.status {
+  font-size: 20rpx;
+  border-radius: 6rpx;
+  padding: 4rpx 12rpx;
+  margin-right: 14rpx;
+}
+
+.st-准备做 {
+  background: #f2f4f7;
+  color: #6b7480;
+}
+
+.st-进行中 {
+  background: #e8eeff;
+  color: #3563e9;
+}
+
+.st-已完成 {
+  background: #e6f7ef;
+  color: #0d8a4d;
+}
+
+.st-暂不适用 {
+  background: #fdf1dd;
+  color: #b06e00;
+}
+
+.todo-date {
+  font-size: 22rpx;
+  color: #a4acb8;
+}
+
+.todo-note {
+  font-size: 24rpx;
+  color: #7a8494;
+  line-height: 1.6;
+  margin-top: 10rpx;
+}
+
+.todo-done .todo-title {
+  color: #a4acb8;
+  text-decoration: line-through;
+}
+
+.todo-del {
+  margin-left: 20rpx;
+  font-size: 23rpx;
+  color: #b8bfcc;
+  padding: 10rpx 14rpx;
+  flex-shrink: 0;
+}
