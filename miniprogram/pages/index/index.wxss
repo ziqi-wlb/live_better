@@ -198,7 +198,15 @@ page {
 }
 
 /* 筛选控件 */
+.search-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 18rpx;
+}
+
 .search {
+  flex: 1;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -206,7 +214,30 @@ page {
   border: 1rpx solid #e3e6db;
   border-radius: 16rpx;
   padding: 0 20rpx;
-  margin-bottom: 18rpx;
+}
+
+.filter-toggle {
+  flex-shrink: 0;
+  margin-left: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 76rpx;
+  padding: 0 26rpx;
+  background: #e7eddf;
+  color: #214d3f;
+  border-radius: 16rpx;
+  font-size: 24rpx;
+}
+
+.filter-toggle-on {
+  background: #214d3f;
+  color: #ffffff;
+}
+
+/* 高级筛选面板（默认折叠） */
+.filter-panel {
+  padding-top: 6rpx;
 }
 
 .search-icon {

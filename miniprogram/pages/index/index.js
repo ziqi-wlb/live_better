@@ -120,6 +120,9 @@ Page({
     // 布局辅助
     scrollInto: '',
     hasActiveFilters: false,
+    // 高级筛选面板（默认折叠，指南库只留搜索框）
+    filterPanelOpen: false,
+    activeFilterCount: 0,
     // 收藏与清单
     favList: [],
     todoList: [],
@@ -230,11 +233,17 @@ Page({
       q.needsVerification ||
       q.sort !== 'chapter'
     );
+    const activeFilterCount =
+      (kw ? 1 : 0) +
+      [q.outcome, q.chapter, q.ev, q.roi, q.money, q.time, q.effort, q.audience, q.controversy, q.needsVerification].filter(
+        Boolean
+      ).length;
     this.setData({
       filtered: shown,
       totalCount: list.length,
       hasMore: list.length > shown.length,
-      hasActiveFilters
+      hasActiveFilters,
+      activeFilterCount
     });
   },
 
@@ -246,9 +255,9 @@ Page({
     }, 60);
   },
 
-  // 从列表深处一键回到顶部筛选区
+  // 从列表深处一键回到顶部筛选区（并展开面板）
   onBackToFilter() {
-    this.setData({ scrollInto: '' });
+    this.setData({ filterPanelOpen: true, scrollInto: '' });
     setTimeout(() => {
       this.setData({ scrollInto: 'lib-top' });
     }, 60);
@@ -276,7 +285,19 @@ Page({
 
   onKeyword(e) {
     this.setData({ keyword: e.detail.value });
-    this.applyFilters();
+    // 输入即时筛选（bindinput 自动触发），加 300ms 防抖避免逐键重算列表
+    if (this._kwTimer) {
+      clearTimeout(this._kwTimer);
+    }
+    this._kwTimer = setTimeout(() => {
+      this._kwTimer = null;
+      this.applyFilters();
+    }, 300);
+  },
+
+  // 展开/收起高级筛选面板
+  onFilterPanel() {
+    this.setData({ filterPanelOpen: !this.data.filterPanelOpen });
   },
 
   // 收益口径：选口径后默认性价比排序（与参考项目一致）

@@ -50,67 +50,74 @@
             <text class="lib-title">指南库</text>
             <text class="lib-count">{{totalCount}} 条结果</text>
           </view>
-          <view class="search">
-            <text class="search-icon">搜</text>
-            <input
-              class="search-input"
-              placeholder="搜索生活问题，例如租房、戒烟、账号安全"
-              placeholder-class="search-ph"
-              value="{{keyword}}"
-              bindinput="onKeyword"
-              confirm-type="search"
-            />
-          </view>
-          <view class="outcome-row">
-            <view
-              wx:for="{{outcomeItems}}"
-              wx:key="key"
-              class="outcome {{outcome === item.key ? 'outcome-active' : ''}}"
-              data-key="{{item.key}}"
-              bindtap="onOutcome"
-            >
-              <text>{{item.label}}</text>
+          <view class="search-row">
+            <view class="search">
+              <text class="search-icon">搜</text>
+              <input
+                class="search-input"
+                placeholder="搜索生活问题，例如租房、戒烟"
+                placeholder-class="search-ph"
+                value="{{keyword}}"
+                bindinput="onKeyword"
+                confirm-type="search"
+              />
+            </view>
+            <view class="filter-toggle {{filterPanelOpen ? 'filter-toggle-on' : ''}}" bindtap="onFilterPanel">
+              <text>筛选{{activeFilterCount > 0 ? ' · ' + activeFilterCount : ''}} {{filterPanelOpen ? '▴' : '▾'}}</text>
             </view>
           </view>
-          <view class="filters">
-            <picker class="filter" range="{{chapterOptions}}" value="{{chapterIdx}}" data-field="chapter" bindchange="onPick">
-              <view class="filter-pill"><text>章节：{{chapterLabel}} ▾</text></view>
-            </picker>
-            <picker class="filter" range="{{evOptions}}" data-field="ev" bindchange="onPick">
-              <view class="filter-pill"><text>证据：{{ev || '不限'}} ▾</text></view>
-            </picker>
-            <picker class="filter" range="{{roiOptions}}" data-field="roi" bindchange="onPick">
-              <view class="filter-pill"><text>性价比：{{roi || '不限'}} ▾</text></view>
-            </picker>
-            <picker class="filter" range="{{moneyOptions}}" data-field="money" bindchange="onPick">
-              <view class="filter-pill"><text>钱成本：{{money || '不限'}} ▾</text></view>
-            </picker>
-            <picker class="filter" range="{{timeOptions}}" data-field="time" bindchange="onPick">
-              <view class="filter-pill"><text>时间：{{time || '不限'}} ▾</text></view>
-            </picker>
-            <picker class="filter" range="{{effortOptions}}" data-field="effort" bindchange="onPick">
-              <view class="filter-pill"><text>毅力：{{effort || '不限'}} ▾</text></view>
-            </picker>
-            <picker class="filter" range="{{audienceOptions}}" data-field="audience" bindchange="onPick">
-              <view class="filter-pill"><text>人群：{{audienceLabel}} ▾</text></view>
-            </picker>
-            <picker class="filter" range="{{['章节顺序', '性价比优先', '证据优先']}}" data-field="sort" bindchange="onPick">
-              <view class="filter-pill"><text>排序：{{sortLabel}} ▾</text></view>
-            </picker>
-          </view>
-          <view class="filters">
-            <view class="toggle {{controversy ? 'toggle-active' : ''}}" bindtap="onToggleControversy">
-              <text>只看争议</text>
+          <view wx:if="{{filterPanelOpen}}" class="filter-panel">
+            <view class="outcome-row">
+              <view
+                wx:for="{{outcomeItems}}"
+                wx:key="key"
+                class="outcome {{outcome === item.key ? 'outcome-active' : ''}}"
+                data-key="{{item.key}}"
+                bindtap="onOutcome"
+              >
+                <text>{{item.label}}</text>
+              </view>
             </view>
-            <view class="toggle {{needsVerification ? 'toggle-active' : ''}}" bindtap="onToggleNeedsVerification">
-              <text>待核实</text>
+            <view class="filters">
+              <picker class="filter" range="{{chapterOptions}}" value="{{chapterIdx}}" data-field="chapter" bindchange="onPick">
+                <view class="filter-pill"><text>章节：{{chapterLabel}} ▾</text></view>
+              </picker>
+              <picker class="filter" range="{{evOptions}}" data-field="ev" bindchange="onPick">
+                <view class="filter-pill"><text>证据：{{ev || '不限'}} ▾</text></view>
+              </picker>
+              <picker class="filter" range="{{roiOptions}}" data-field="roi" bindchange="onPick">
+                <view class="filter-pill"><text>性价比：{{roi || '不限'}} ▾</text></view>
+              </picker>
+              <picker class="filter" range="{{moneyOptions}}" data-field="money" bindchange="onPick">
+                <view class="filter-pill"><text>钱成本：{{money || '不限'}} ▾</text></view>
+              </picker>
+              <picker class="filter" range="{{timeOptions}}" data-field="time" bindchange="onPick">
+                <view class="filter-pill"><text>时间：{{time || '不限'}} ▾</text></view>
+              </picker>
+              <picker class="filter" range="{{effortOptions}}" data-field="effort" bindchange="onPick">
+                <view class="filter-pill"><text>毅力：{{effort || '不限'}} ▾</text></view>
+              </picker>
+              <picker class="filter" range="{{audienceOptions}}" data-field="audience" bindchange="onPick">
+                <view class="filter-pill"><text>人群：{{audienceLabel}} ▾</text></view>
+              </picker>
+              <picker class="filter" range="{{['章节顺序', '性价比优先', '证据优先']}}" data-field="sort" bindchange="onPick">
+                <view class="filter-pill"><text>排序：{{sortLabel}} ▾</text></view>
+              </picker>
             </view>
-            <view class="toggle toggle-reset" bindtap="onResetFilters">
-              <text>重置筛选</text>
+            <view class="filters">
+              <view class="toggle {{controversy ? 'toggle-active' : ''}}" bindtap="onToggleControversy">
+                <text>只看争议</text>
+              </view>
+              <view class="toggle {{needsVerification ? 'toggle-active' : ''}}" bindtap="onToggleNeedsVerification">
+                <text>待核实</text>
+              </view>
+              <view class="toggle toggle-reset" bindtap="onResetFilters">
+                <text>重置筛选</text>
+              </view>
             </view>
-          </view>
-          <view class="explanation">
-            <text>{{sortExplanation}}</text>
+            <view class="explanation">
+              <text>{{sortExplanation}}</text>
+            </view>
           </view>
         </view>
 
