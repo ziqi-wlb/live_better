@@ -1,216 +1,40 @@
 <navigation-bar title="人生指南" back="{{false}}" color="black" background="#FFFDF6"></navigation-bar>
-<view class="page">
-  <view class="tabs">
-    <view class="tab {{activeTab === 'guide' ? 'tab-active' : ''}}" data-tab="guide" bindtap="onSwitchTab">
-      <text>指南</text>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="landing">
+    <view class="hero">
+      <text class="hero-eyebrow">A LITTLE BETTER, EVERY DAY</text>
+      <text class="hero-title">把有限的精力，</text>
+      <text class="hero-title">花在值得的地方。</text>
+      <text class="hero-sub">有出处、能筛选、可行动。先查清楚，再选适合自己的那一件。</text>
+      <text class="hero-stats">{{chapterCount}} 个章节 · {{totalGuides}} 条真实建议</text>
     </view>
-    <view class="tab {{activeTab === 'fav' ? 'tab-active' : ''}}" data-tab="fav" bindtap="onSwitchTab">
-      <text>收藏</text>
-      <text wx:if="{{favCount > 0}}" class="badge">{{favCount}}</text>
+
+    <view class="quote">
+      <text class="quote-label">给今天的你</text>
+      <text class="quote-title">不用全做。挑走一两条，就算数。</text>
+      <text class="quote-text">从自己的生活开始，不必和别人比赛。</text>
     </view>
-    <view class="tab {{activeTab === 'todo' ? 'tab-active' : ''}}" data-tab="todo" bindtap="onSwitchTab">
-      <text>清单</text>
-      <text wx:if="{{todoLeft > 0}}" class="badge">{{todoLeft}}</text>
+
+    <view class="cta" bindtap="onExplore">
+      <text>开始探索指南 →</text>
     </view>
-  </view>
 
-  <!-- 指南：首屏为宣言落地页，下滑进入指南库 -->
-  <view wx:if="{{activeTab === 'guide'}}" class="pane">
-    <scroll-view
-      class="scrollarea"
-      scroll-y
-      type="list"
-      scroll-into-view="{{scrollInto}}"
-      scroll-with-animation
-      bindscrolltolower="onLoadMore"
-      lower-threshold="200"
-    >
-      <view class="list">
-        <view class="landing">
-          <view class="hero">
-            <text class="hero-eyebrow">A LITTLE BETTER, EVERY DAY</text>
-            <text class="hero-title">把有限的精力，</text>
-            <text class="hero-title">花在值得的地方。</text>
-            <text class="hero-sub">有出处、能筛选、可行动。先查清楚，再选适合自己的那一件。</text>
-            <text class="hero-stats">{{chapterCount}} 个章节 · {{totalGuides}} 条真实建议</text>
-          </view>
-          <view class="quote">
-            <text class="quote-label">给今天的你</text>
-            <text class="quote-title">不用全做。挑走一两条，就算数。</text>
-            <text class="quote-text">从自己的生活开始，不必和别人比赛。</text>
-          </view>
-          <view class="scroll-hint" bindtap="onExplore">
-            <text class="scroll-hint-arrow">↓</text>
-            <text>开始探索指南</text>
-          </view>
-        </view>
-
-        <view class="library" id="lib-top">
-          <view class="lib-head">
-            <text class="lib-title">指南库</text>
-            <text class="lib-count">{{totalCount}} 条结果</text>
-          </view>
-          <view class="search-row">
-            <view class="search">
-              <text class="search-icon">搜</text>
-              <input
-                class="search-input"
-                placeholder="搜索生活问题，例如租房、戒烟"
-                placeholder-class="search-ph"
-                value="{{keyword}}"
-                bindinput="onKeyword"
-                confirm-type="search"
-              />
-            </view>
-            <view class="filter-toggle {{filterPanelOpen ? 'filter-toggle-on' : ''}}" bindtap="onFilterPanel">
-              <text>筛选{{activeFilterCount > 0 ? ' · ' + activeFilterCount : ''}} {{filterPanelOpen ? '▴' : '▾'}}</text>
-            </view>
-          </view>
-          <view wx:if="{{filterPanelOpen}}" class="filter-panel">
-            <view class="outcome-row">
-              <view
-                wx:for="{{outcomeItems}}"
-                wx:key="key"
-                class="outcome {{outcome === item.key ? 'outcome-active' : ''}}"
-                data-key="{{item.key}}"
-                bindtap="onOutcome"
-              >
-                <text>{{item.label}}</text>
-              </view>
-            </view>
-            <view class="filters">
-              <picker class="filter" range="{{chapterOptions}}" value="{{chapterIdx}}" data-field="chapter" bindchange="onPick">
-                <view class="filter-pill"><text>章节：{{chapterLabel}} ▾</text></view>
-              </picker>
-              <picker class="filter" range="{{evOptions}}" data-field="ev" bindchange="onPick">
-                <view class="filter-pill"><text>证据：{{ev || '不限'}} ▾</text></view>
-              </picker>
-              <picker class="filter" range="{{roiOptions}}" data-field="roi" bindchange="onPick">
-                <view class="filter-pill"><text>性价比：{{roi || '不限'}} ▾</text></view>
-              </picker>
-              <picker class="filter" range="{{moneyOptions}}" data-field="money" bindchange="onPick">
-                <view class="filter-pill"><text>钱成本：{{money || '不限'}} ▾</text></view>
-              </picker>
-              <picker class="filter" range="{{timeOptions}}" data-field="time" bindchange="onPick">
-                <view class="filter-pill"><text>时间：{{time || '不限'}} ▾</text></view>
-              </picker>
-              <picker class="filter" range="{{effortOptions}}" data-field="effort" bindchange="onPick">
-                <view class="filter-pill"><text>毅力：{{effort || '不限'}} ▾</text></view>
-              </picker>
-              <picker class="filter" range="{{audienceOptions}}" data-field="audience" bindchange="onPick">
-                <view class="filter-pill"><text>人群：{{audienceLabel}} ▾</text></view>
-              </picker>
-              <picker class="filter" range="{{['章节顺序', '性价比优先', '证据优先']}}" data-field="sort" bindchange="onPick">
-                <view class="filter-pill"><text>排序：{{sortLabel}} ▾</text></view>
-              </picker>
-            </view>
-            <view class="filters">
-              <view class="toggle {{controversy ? 'toggle-active' : ''}}" bindtap="onToggleControversy">
-                <text>只看争议</text>
-              </view>
-              <view class="toggle {{needsVerification ? 'toggle-active' : ''}}" bindtap="onToggleNeedsVerification">
-                <text>待核实</text>
-              </view>
-              <view class="toggle toggle-reset" bindtap="onResetFilters">
-                <text>重置筛选</text>
-              </view>
-            </view>
-            <view class="explanation">
-              <text>{{sortExplanation}}</text>
-            </view>
-          </view>
-        </view>
-
-        <view wx:if="{{filtered.length === 0}}" class="empty">
-          <text class="empty-title">没有符合条件的条目</text>
-          <text class="empty-sub">试试减少筛选条件</text>
-          <view class="empty-btn" bindtap="onResetFilters"><text>重置筛选</text></view>
-        </view>
-        <guide-card
-          wx:for="{{filtered}}"
-          wx:key="id"
-          item="{{item}}"
-          bind:open="onOpenDetail"
-          bind:fav="onToggleFav"
-          bind:add="onAddTodo"
-        />
-        <view wx:if="{{hasMore}}" class="footnote" bindtap="onLoadMore">
-          <text>已显示 {{filtered.length}} / {{totalCount}} 条 · 点击加载更多</text>
-        </view>
-        <view wx:elif="{{filtered.length > 0}}" class="footnote">
-          <text>共 {{totalCount}} 条</text>
-        </view>
-        <view class="footnote source-note">
-          <text>内容来自《高性价比人生指南》(HowToLiveBetter)，作者 eternity4719，CC BY 4.0</text>
-          <view class="doc-links">
-            <text class="doc-link" data-type="terms" bindtap="onOpenAgreement">用户协议</text>
-            <text class="doc-link-sep">·</text>
-            <text class="doc-link" data-type="privacy" bindtap="onOpenAgreement">隐私政策</text>
-          </view>
-        </view>
+    <view class="entries">
+      <view class="entry" data-tab="fav" bindtap="onOpenTab">
+        <text>收藏{{favCount > 0 ? ' · ' + favCount : ''}}</text>
       </view>
-    </scroll-view>
-    <view wx:if="{{hasActiveFilters}}" class="fab-filter" bindtap="onBackToFilter">
-      <text>↑ 筛选</text>
+      <view class="entry" data-tab="todo" bindtap="onOpenTab">
+        <text>行动清单{{todoLeft > 0 ? ' · ' + todoLeft : ''}}</text>
+      </view>
+    </view>
+
+    <view class="footnote source-note">
+      <text>内容来自《高性价比人生指南》(HowToLiveBetter)，作者 eternity4719，CC BY 4.0</text>
+      <view class="doc-links">
+        <text class="doc-link" data-type="terms" bindtap="onOpenAgreement">用户协议</text>
+        <text class="doc-link-sep">·</text>
+        <text class="doc-link" data-type="privacy" bindtap="onOpenAgreement">隐私政策</text>
+      </view>
     </view>
   </view>
-
-  <!-- 收藏 -->
-  <view wx:elif="{{activeTab === 'fav'}}" class="pane">
-    <scroll-view class="scrollarea" scroll-y type="list">
-      <view class="list">
-        <view wx:if="{{favList.length === 0}}" class="empty">
-          <text class="empty-title">还没有收藏</text>
-          <text class="empty-sub">在指南里点 ☆，收藏你觉得值得的建议</text>
-        </view>
-        <guide-card
-          wx:for="{{favList}}"
-          wx:key="id"
-          item="{{item}}"
-          bind:open="onOpenDetail"
-          bind:fav="onToggleFav"
-          bind:add="onAddTodo"
-        />
-      </view>
-    </scroll-view>
-  </view>
-
-  <!-- 行动清单 -->
-  <view wx:else class="pane">
-    <scroll-view class="scrollarea" scroll-y type="list">
-      <view class="list">
-        <view wx:if="{{todoList.length === 0}}" class="empty">
-          <text class="empty-title">行动清单还是空的</text>
-          <text class="empty-sub">在建议卡片上点「+ 清单」，一件一件做起来</text>
-        </view>
-        <view
-          wx:for="{{todoList}}"
-          wx:key="id"
-          class="todo {{item.status === '已完成' ? 'todo-done' : ''}}"
-        >
-          <view
-            class="todo-check {{item.status === '已完成' ? 'todo-check-on' : ''}}"
-            data-id="{{item.id}}"
-            catchtap="onToggleDone"
-          >
-            <text wx:if="{{item.status === '已完成'}}">✓</text>
-          </view>
-          <view class="todo-body" data-id="{{item.id}}" data-has-guide="{{item.hasGuide}}" catchtap="onOpenFromTodo">
-            <text class="todo-title">{{item.title}}</text>
-            <view class="todo-tags">
-              <text class="status {{item.stClass}}">{{item.status}}</text>
-              <text class="todo-date">{{item.dateText}}加入</text>
-            </view>
-            <text wx:if="{{item.note}}" class="todo-note">{{item.note}}</text>
-          </view>
-          <view class="todo-del" data-id="{{item.id}}" catchtap="onRemoveTodo">
-            <text>删除</text>
-          </view>
-        </view>
-        <view wx:if="{{todoList.length > 0}}" class="footnote">
-          <text>已完成 {{todoDone}} / {{todoList.length}} · 每完成一件，生活就变好一点</text>
-        </view>
-      </view>
-    </scroll-view>
-  </view>
-</view>
+</scroll-view>
