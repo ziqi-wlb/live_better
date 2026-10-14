@@ -18,6 +18,14 @@ const ROI_RANK = ['极高', '高', '一般', '未标注'];
 
 const guideIds = new Set(guides.map((g) => g.id));
 
+// 状态样式类（wxss 类名需 ASCII，真机编译器不支持中文类名选择器）
+const STATUS_CLASS = {
+  准备做: 'st-ready',
+  进行中: 'st-doing',
+  已完成: 'st-done',
+  暂不适用: 'st-na'
+};
+
 function decorate(g, favSet) {
   return {
     id: g.id,
@@ -147,6 +155,7 @@ Page({
       id: t.id,
       title: t.title,
       status: t.status || '准备做',
+      stClass: STATUS_CLASS[t.status] || 'st-ready',
       note: t.note || '',
       hasGuide: guideIds.has(t.id),
       dateText: formatDate(t.addedAt)

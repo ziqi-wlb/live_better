@@ -404,22 +404,22 @@ page {
   margin-right: 14rpx;
 }
 
-.st-准备做 {
+.st-ready {
   background: #eef3e8;
   color: #477347;
 }
 
-.st-进行中 {
+.st-doing {
   background: #faf0d9;
   color: #956e27;
 }
 
-.st-已完成 {
+.st-done {
   background: #e7eddf;
   color: #214d3f;
 }
 
-.st-暂不适用 {
+.st-na {
   background: #f2f4f7;
   color: #6b7480;
 }

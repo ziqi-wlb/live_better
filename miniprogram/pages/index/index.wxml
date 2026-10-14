@@ -186,7 +186,7 @@
           <view class="todo-body" data-id="{{item.id}}" data-has-guide="{{item.hasGuide}}" catchtap="onOpenFromTodo">
             <text class="todo-title">{{item.title}}</text>
             <view class="todo-tags">
-              <text class="status st-{{item.status}}">{{item.status}}</text>
+              <text class="status {{item.stClass}}">{{item.status}}</text>
               <text class="todo-date">{{item.dateText}}加入</text>
             </view>
             <text wx:if="{{item.note}}" class="todo-note">{{item.note}}</text>
