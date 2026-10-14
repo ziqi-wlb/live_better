@@ -1,6 +1,6 @@
 const { chapters, guides } = require('../../data/guides');
 const store = require('../../utils/store');
-const { pickDaily, todayLabel } = require('../../utils/daily');
+const { pickDaily, pickRandom, todayLabel } = require('../../utils/daily');
 
 // 圆角矩形
 function rr(ctx, x, y, w, h, r) {
@@ -43,12 +43,23 @@ Page({
   onLoad() {
     wx.showShareMenu({ menus: ['shareAppMessage', 'shareTimeline'] });
     this.refreshCounts();
+    this._dailyShuffled = false;
     this.setData({ daily: pickDaily(), todayLabel: todayLabel() });
   },
 
   onShow() {
     this.refreshCounts();
-    this.setData({ daily: pickDaily(), todayLabel: todayLabel() });
+    // 手动换过的条目保留，返回主页不重置
+    if (!this._dailyShuffled) {
+      this.setData({ daily: pickDaily(), todayLabel: todayLabel() });
+    }
+  },
+
+  // 换一条：随机切换
+  onShuffleDaily() {
+    this._dailyShuffled = true;
+    const current = this.data.daily && this.data.daily.id;
+    this.setData({ daily: pickRandom(current) });
   },
 
   refreshCounts() {

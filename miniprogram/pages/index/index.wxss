@@ -72,6 +72,19 @@ page {
   color: #44745b;
 }
 
+.daily-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.daily-refresh {
+  font-size: 22rpx;
+  color: #44745b;
+  padding: 6rpx 14rpx;
+}
+
 .daily-title {
   font-size: 33rpx;
   font-weight: 650;
@@ -140,20 +153,20 @@ page {
   margin-top: 22rpx;
 }
 
-/* 主 CTA（箭头滑动动画引导点击） */
+/* 主 CTA（浅绿药丸，弱化突兀感；箭头滑动动画引导点击） */
 .cta {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 60rpx;
-  height: 104rpx;
+  margin-top: 56rpx;
+  height: 100rpx;
   border-radius: 999rpx;
-  background: #214d3f;
-  color: #ffffff;
-  font-size: 31rpx;
+  background: #e7eddf;
+  color: #214d3f;
+  font-size: 30rpx;
   font-weight: 650;
-  box-shadow: 0 10rpx 30rpx rgba(33, 77, 63, 0.3);
+  border: 2rpx solid #d3ddcb;
 }
 
 .cta-arrow {
@@ -174,11 +187,12 @@ page {
   }
 }
 
-/* 次级入口（沉底） */
+/* 次级入口（沉底，白底描边弱化层级） */
 .landing-foot {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 90rpx;
 }
 
 .entries {
@@ -188,8 +202,9 @@ page {
 }
 
 .entry {
-  background: #e7eddf;
-  color: #214d3f;
+  background: #ffffff;
+  border: 1rpx solid #dfe4d7;
+  color: #727b72;
   border-radius: 999rpx;
   font-size: 24rpx;
   padding: 16rpx 36rpx;

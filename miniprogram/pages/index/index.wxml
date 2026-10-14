@@ -11,7 +11,12 @@
       </view>
 
       <view class="daily">
-        <text class="quote-label">今日一条 · {{todayLabel}}</text>
+        <view class="daily-head">
+          <text class="quote-label">今日一条 · {{todayLabel}}</text>
+          <view class="daily-refresh" bindtap="onShuffleDaily">
+            <text>换一条 ↻</text>
+          </view>
+        </view>
         <text class="daily-title">{{daily.title}}</text>
         <text class="daily-text">{{daily.summary}}</text>
         <view class="daily-meta">
