@@ -17,7 +17,7 @@ ENABLE_DEV_AUTH=0
 
 小程序必须使用完整 HTTPS API 地址；H5 本地调试时 VITE_API_BASE_URL 留空，继续使用 Vite 代理。正式 H5 需同源部署，以保持 cookie 与 CSRF 来源一致。AppSecret 不能使用 VITE_ 前缀，不能提交 Git。
 
-运行 `npm run import`、`npm run build:mp`，在微信开发者工具导入 `/Users/ziqi/project/github/live_better/dist/build/mp-weixin`，选择对应 AppID。构建后脚本写入 AppID 与 urlCheck。通过微信后台设置 HTTPS 合法请求域名，服务端配置同一 AppID/AppSecret。在工具中使用 3.17.4 或更新的受支持基础库检查。
+主开发目录为 `/Users/ziqi/WeChatProjects/live_better/`。运行 `npm run import`、`npm run build:mp`，在微信开发者工具导入主目录，或其 `dist/build/mp-weixin` 子目录，选择对应 AppID。构建后脚本写入 AppID 与 urlCheck。通过微信后台设置 HTTPS 合法请求域名，服务端配置同一 AppID/AppSecret。在工具中使用 3.17.4 或更新的受支持基础库检查。
 
 ## 已实现
 

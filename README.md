@@ -12,6 +12,8 @@
 
 ## 本地启动
 
+主开发目录：`/Users/ziqi/WeChatProjects/live_better/`。微信开发者工具直接打开此目录；原目录与原生模板备份见 [迁移记录](docs/migration.md)。
+
 需要 Node.js 22.13+（推荐 24/26，本次使用 26）、npm。
 
 ```sh
