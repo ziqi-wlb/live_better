@@ -57,8 +57,8 @@ page {
   margin-top: 18rpx;
 }
 
-/* 每日一句 */
-.quote {
+/* 今日一条（可分享的原子单元） */
+.daily {
   display: flex;
   flex-direction: column;
   background: #e7eddf;
@@ -72,7 +72,7 @@ page {
   color: #44745b;
 }
 
-.quote-title {
+.daily-title {
   font-size: 33rpx;
   font-weight: 650;
   color: #214d3f;
@@ -80,10 +80,64 @@ page {
   margin-top: 12rpx;
 }
 
-.quote-text {
-  font-size: 24rpx;
-  color: #727b72;
+.daily-text {
+  font-size: 25rpx;
+  color: #4e5a4e;
+  line-height: 1.7;
   margin-top: 14rpx;
+}
+
+.daily-meta {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 18rpx;
+}
+
+.daily-badge {
+  font-size: 21rpx;
+  background: #faf0d9;
+  color: #956e27;
+  border-radius: 8rpx;
+  padding: 4rpx 14rpx;
+  margin-right: 16rpx;
+}
+
+.daily-ch {
+  font-size: 22rpx;
+  color: #44745b;
+}
+
+.daily-actions {
+  display: flex;
+  flex-direction: row;
+  margin-top: 26rpx;
+}
+
+.daily-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 80rpx;
+  border-radius: 999rpx;
+  border: 2rpx solid #214d3f;
+  color: #214d3f;
+  font-size: 26rpx;
+  margin-right: 16rpx;
+}
+
+.daily-btn-main {
+  margin-right: 0;
+  background: #214d3f;
+  color: #ffffff;
+}
+
+.daily-foot {
+  font-size: 22rpx;
+  color: #727b72;
+  margin-top: 22rpx;
 }
 
 /* 主 CTA（箭头滑动动画引导点击） */

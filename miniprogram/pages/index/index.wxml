@@ -10,10 +10,23 @@
         <text class="hero-stats">{{chapterCount}} 个章节 · {{totalGuides}} 条真实建议</text>
       </view>
 
-      <view class="quote">
-        <text class="quote-label">给今天的你</text>
-        <text class="quote-title">不用全做。挑走一两条，就算数。</text>
-        <text class="quote-text">从自己的生活开始，不必和别人比赛。</text>
+      <view class="daily">
+        <text class="quote-label">今日一条 · {{todayLabel}}</text>
+        <text class="daily-title">{{daily.title}}</text>
+        <text class="daily-text">{{daily.summary}}</text>
+        <view class="daily-meta">
+          <text class="daily-badge">证据 {{daily.ev}}</text>
+          <text class="daily-ch">{{daily.chapterTitle}}</text>
+        </view>
+        <view class="daily-actions">
+          <view class="daily-btn" data-id="{{daily.id}}" bindtap="onOpenDaily">
+            <text>查看全文</text>
+          </view>
+          <view class="daily-btn daily-btn-main" bindtap="onSavePoster">
+            <text>存图分享</text>
+          </view>
+        </view>
+        <text class="daily-foot">不用全做。挑走一两条，就算数。</text>
       </view>
 
       <view class="cta" bindtap="onExplore">
