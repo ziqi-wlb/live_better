@@ -74,6 +74,7 @@ Page({
       fixedSourceUrl
     });
     this.refreshState();
+    wx.showShareMenu({ menus: ['shareAppMessage', 'shareTimeline'] });
   },
 
   onShow() {
@@ -148,11 +149,27 @@ Page({
     wx.setClipboardData({ data: e.currentTarget.dataset.link });
   },
 
+  onOpenAgreement(e) {
+    wx.navigateTo({
+      url: `/pages/agreement/agreement?type=${e.currentTarget.dataset.type}`
+    });
+  },
+
   onShareAppMessage() {
     const item = this.data.item;
     return {
       title: item ? item.title : '人生指南',
-      path: `/packageDetail/pages/detail/detail?id=${item ? item.id : ''}`
+      path: `/packageDetail/pages/detail/detail?id=${item ? item.id : ''}`,
+      imageUrl: '/assets/share-cover.png'
+    };
+  },
+
+  onShareTimeline() {
+    const item = this.data.item;
+    return {
+      title: item ? item.title : '人生指南',
+      query: item ? `id=${item.id}` : '',
+      imageUrl: '/assets/share-cover.png'
     };
   }
 });

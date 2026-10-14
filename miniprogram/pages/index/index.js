@@ -134,6 +134,7 @@ Page({
     this._all = [];
     this.applyFilters();
     this.refreshState();
+    wx.showShareMenu({ menus: ['shareAppMessage', 'shareTimeline'] });
   },
 
   onShow() {
@@ -411,5 +412,27 @@ Page({
         url: `/packageDetail/pages/detail/detail?id=${id}`
       });
     }
+  },
+
+  onOpenAgreement(e) {
+    wx.navigateTo({
+      url: `/pages/agreement/agreement?type=${e.currentTarget.dataset.type}`
+    });
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '把有限的精力，花在值得的地方｜人生指南',
+      path: '/pages/index/index',
+      imageUrl: '/assets/share-cover.png'
+    };
+  },
+
+  onShareTimeline() {
+    return {
+      title: '把有限的精力，花在值得的地方｜人生指南',
+      query: '',
+      imageUrl: '/assets/share-cover.png'
+    };
   }
 });

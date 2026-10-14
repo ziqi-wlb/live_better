@@ -346,6 +346,26 @@ page {
   line-height: 1.6;
 }
 
+.doc-links {
+  margin-top: 14rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.doc-link {
+  color: #214d3f;
+  font-size: 22rpx;
+  padding: 6rpx 4rpx;
+}
+
+.doc-link-sep {
+  color: #a2aaa2;
+  font-size: 22rpx;
+  margin: 0 12rpx;
+}
+
 /* 行动清单 */
 .todo {
   display: flex;

@@ -135,6 +135,11 @@
         </view>
         <view class="footnote source-note">
           <text>内容来自《高性价比人生指南》(HowToLiveBetter)，作者 eternity4719，CC BY 4.0</text>
+          <view class="doc-links">
+            <text class="doc-link" data-type="terms" bindtap="onOpenAgreement">用户协议</text>
+            <text class="doc-link-sep">·</text>
+            <text class="doc-link" data-type="privacy" bindtap="onOpenAgreement">隐私政策</text>
+          </view>
         </view>
       </view>
     </scroll-view>

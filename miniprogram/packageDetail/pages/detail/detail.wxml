@@ -97,6 +97,11 @@
 
     <view class="footnote">
       <text>内容来自《高性价比人生指南》(HowToLiveBetter)，作者 eternity4719，CC BY 4.0。原文内容保留，政策和研究可能更新，请结合当地实际与专业建议。仅供参考，不构成医疗或投资建议。</text>
+      <view class="doc-links">
+        <text class="doc-link" data-type="terms" bindtap="onOpenAgreement">用户协议</text>
+        <text class="doc-link-sep">·</text>
+        <text class="doc-link" data-type="privacy" bindtap="onOpenAgreement">隐私政策</text>
+      </view>
     </view>
   </view>
 </scroll-view>
