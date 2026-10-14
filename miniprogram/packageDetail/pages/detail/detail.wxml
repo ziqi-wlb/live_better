@@ -1,4 +1,4 @@
-<navigation-bar title="{{navTitle}}" back="{{true}}" color="black" background="#F6F7F9"></navigation-bar>
+<navigation-bar title="{{navTitle}}" back="{{true}}" color="black" background="#FFFDF6"></navigation-bar>
 <scroll-view class="scrollarea" scroll-y type="list">
   <view class="detail" wx:if="{{item}}">
     <view class="d-meta">
@@ -8,7 +8,7 @@
 
     <view class="tags">
       <text class="tag tag-roi">{{item.roi}} 性价比</text>
-      <text class="tag">证据 {{item.ev}}</text>
+      <text class="tag tag-ev">证据 {{item.ev}}</text>
       <text wx:if="{{item.cv}}" class="tag tag-cv">有争议</text>
       <text wx:if="{{item.nv}}" class="tag tag-nv">待核实</text>
     </view>

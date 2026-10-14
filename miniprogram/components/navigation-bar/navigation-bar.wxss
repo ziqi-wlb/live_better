@@ -45,7 +45,7 @@
 .nav-back text {
   font-size: 46rpx;
   line-height: 46rpx;
-  color: #1c2430;
+  color: #214d3f;
   font-weight: 600;
 }
 

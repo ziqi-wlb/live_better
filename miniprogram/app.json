@@ -13,7 +13,7 @@
   "window": {
     "navigationBarTextStyle": "black",
     "navigationStyle": "custom",
-    "backgroundColor": "#F6F7F9"
+    "backgroundColor": "#FFFDF6"
   },
   "style": "v2",
   "renderer": "skyline",

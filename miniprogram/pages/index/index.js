@@ -73,6 +73,8 @@ const SORT_EXPLANATIONS = {
 Page({
   data: {
     activeTab: 'guide',
+    totalGuides: guides.length,
+    chapterCount: chapters.length,
     // 收益口径
     outcomeItems: [{ key: '', label: '全部指南' }].concat(
       Object.keys(outcomes).map((k) => ({ key: k, label: outcomes[k] }))
