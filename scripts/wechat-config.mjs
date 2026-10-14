@@ -1,0 +1,10 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+const appid=process.env.WECHAT_APP_ID||'wxf6089afd28b90008';
+if(appid&&!/^wx[a-f0-9]{16}$/.test(appid))throw new Error('WECHAT_APP_ID 格式不正确');
+if(process.env.NODE_ENV==='production'&&!appid)throw new Error('正式构建需要 WECHAT_APP_ID');
+const path='dist/build/mp-weixin/project.config.json';
+const config=JSON.parse(readFileSync(path,'utf8'));
+config.appid=appid||'touristappid';config.projectname='life-winner';
+config.setting={...config.setting,urlCheck:true};
+writeFileSync(path,JSON.stringify(config,null,2));
+console.log(appid?'已配置微信 AppID':'未配置 AppID：生成游客模式产物，仅供界面预览');

@@ -6,7 +6,7 @@
 - `GET /guides`：q、chapter、outcome、evidenceGrade、roi、money、time、effort、audience、controversy=1、needsVerification=1、sort=chapter|roi|evidence、offset、limit（最多 50）。返回 total、items、nextOffset。roi 排序须指定 outcome。
 - `GET /guides/:id`：完整正文、备注、原始 Markdown 与固定版本来源。
 - `POST /auth/dev`：开发模式，正文 `{consent:true}`；随机账号及 7 天 cookie 会话。
-- `POST /auth/wechat`：预留，当前 501；`DELETE /auth/session` 退出。
+- `POST /auth/wechat`：小程序发送 `{code,consent:true}`，返回 `{id,token,expiresAt}`。原生请求设置 X-Life-Platform: weixin、X-Life-Client: 1，个人数据接口携带 Authorization: Bearer token。未配置返回 503，交换失败 502，重复 code 400；`DELETE /auth/session` 撤销当前会话。
 - `GET /me`：当前用户；`PATCH /me/preferences`：可选 outcome。
 - `GET /me/saved`、`GET /me/actions`：按条目 ID 映射的记录。
 - `PUT /me/saved/:id`：`{saved:true}`；`PUT /me/actions/:id`：`{status:"准备做|进行中|已完成|暂不适用",note:"..."}`，备注最多 2000 字。相应 DELETE 删除记录。

@@ -6,7 +6,7 @@
     "dev:api": "node --experimental-strip-types --env-file-if-exists=.env apps/api/server.ts",
     "dev:h5": "uni -p h5 --host 127.0.0.1",
     "build": "uni build -p h5",
-    "build:mp": "uni build -p mp-weixin",
+    "build:mp": "uni build -p mp-weixin && node --env-file-if-exists=.env scripts/wechat-config.mjs",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "typecheck": "vue-tsc --noEmit"
   },
