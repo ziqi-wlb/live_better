@@ -1,6 +1,6 @@
 {
-  "miniprogramRoot": "dist/build/mp-weixin/",
-  "projectname": "life-winner",
+  "miniprogramRoot": "miniprogram/",
+  "projectname": "live_better",
   "setting": {
     "es6": true,
     "postcss": true,
@@ -18,7 +18,12 @@
   "compileType": "miniprogram",
   "simulatorPluginLibVersion": {},
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      {
+        "type": "folder",
+        "value": "scripts"
+      }
+    ],
     "include": []
   },
   "appid": "wxf6089afd28b90008",
