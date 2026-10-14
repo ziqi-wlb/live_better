@@ -4,6 +4,8 @@
 
 ## 配置
 
+开发者工具也可直接导入当前仓库根目录：根目录 `project.config.json` 的 `miniprogramRoot` 指向 `dist/build/mp-weixin/`。先执行 `npm run build:mp`，再重新打开或编译项目。若提示根目录缺少 app.json，请确认该配置已加载；不要在源码根目录手工复制 app.json。
+
 将 `.env.example` 复制为 `.env` 并设置：
 
 ```dotenv

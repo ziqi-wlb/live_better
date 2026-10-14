@@ -5,3 +5,4 @@ data/*.sqlite*
 data/catalog.json
 test-results/
 .DS_Store
+project.private.config.json
