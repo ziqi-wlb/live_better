@@ -17,6 +17,7 @@ page {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
 }
 
 .scrollarea {
@@ -68,11 +69,18 @@ page {
   justify-content: center;
 }
 
-/* Hero 与每日一句 */
+/* Hero 落地页与每日一句 */
+.landing {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 960rpx;
+  padding: 40rpx 8rpx 20rpx;
+}
+
 .hero {
   display: flex;
   flex-direction: column;
-  padding: 30rpx 8rpx 10rpx;
 }
 
 .hero-eyebrow {
@@ -82,25 +90,25 @@ page {
 }
 
 .hero-title {
-  font-size: 54rpx;
+  font-size: 60rpx;
   font-weight: 700;
   color: #214d3f;
   line-height: 1.35;
   letter-spacing: -1rpx;
-  margin-top: 14rpx;
+  margin-top: 16rpx;
 }
 
 .hero-sub {
-  font-size: 25rpx;
+  font-size: 26rpx;
   color: #727b72;
   line-height: 1.7;
-  margin-top: 18rpx;
+  margin-top: 22rpx;
 }
 
 .hero-stats {
   font-size: 23rpx;
   color: #727b72;
-  margin-top: 16rpx;
+  margin-top: 18rpx;
 }
 
 .quote {
@@ -108,8 +116,8 @@ page {
   flex-direction: column;
   background: #e7eddf;
   border-radius: 24rpx;
-  padding: 30rpx;
-  margin: 26rpx 0 34rpx;
+  padding: 32rpx;
+  margin-top: 50rpx;
 }
 
 .quote-label {
@@ -118,7 +126,7 @@ page {
 }
 
 .quote-title {
-  font-size: 32rpx;
+  font-size: 33rpx;
   font-weight: 650;
   color: #214d3f;
   line-height: 1.5;
@@ -131,13 +139,43 @@ page {
   margin-top: 14rpx;
 }
 
-/* 筛选区 */
-.filterbar {
-  background: #fffef8;
-  padding: 20rpx 28rpx 20rpx;
-  border-bottom: 1rpx solid #e3e6db;
+.scroll-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 46rpx;
+  font-size: 23rpx;
+  color: #44745b;
 }
 
+/* 指南库（筛选工具区） */
+.library {
+  margin: 30rpx -28rpx 0;
+  background: #fffef8;
+  border-top: 1rpx solid #e3e6db;
+  padding: 26rpx 28rpx 24rpx;
+}
+
+.lib-head {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 18rpx;
+}
+
+.lib-title {
+  font-size: 31rpx;
+  font-weight: 700;
+  color: #214d3f;
+}
+
+.lib-count {
+  font-size: 23rpx;
+  color: #a2aaa2;
+}
+
+/* 筛选控件 */
 .search {
   display: flex;
   flex-direction: row;
@@ -387,4 +425,17 @@ page {
   color: #b9c1b6;
   padding: 10rpx 14rpx;
   flex-shrink: 0;
+}
+
+/* 悬浮：回到筛选区 */
+.fab-filter {
+  position: absolute;
+  right: 28rpx;
+  bottom: 48rpx;
+  background: #214d3f;
+  color: #ffffff;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  padding: 18rpx 34rpx;
+  box-shadow: 0 8rpx 24rpx rgba(33, 77, 63, 0.35);
 }

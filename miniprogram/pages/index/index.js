@@ -109,6 +109,9 @@ Page({
     filtered: [],
     totalCount: 0,
     hasMore: false,
+    // 布局辅助
+    scrollInto: '',
+    hasActiveFilters: false,
     // 收藏与清单
     favList: [],
     todoList: [],
@@ -203,11 +206,34 @@ Page({
     this._all = list;
     this._shownCount = PAGE_SIZE;
     const shown = list.slice(0, this._shownCount);
+    const hasActiveFilters = !!(
+      kw ||
+      q.outcome ||
+      q.chapter ||
+      q.ev ||
+      q.roi ||
+      q.money ||
+      q.time ||
+      q.effort ||
+      q.audience ||
+      q.controversy ||
+      q.needsVerification ||
+      q.sort !== 'chapter'
+    );
     this.setData({
       filtered: shown,
       totalCount: list.length,
-      hasMore: list.length > shown.length
+      hasMore: list.length > shown.length,
+      hasActiveFilters
     });
+  },
+
+  // 从列表深处一键回到顶部筛选区
+  onBackToFilter() {
+    this.setData({ scrollInto: '' });
+    setTimeout(() => {
+      this.setData({ scrollInto: 'lib-top' });
+    }, 60);
   },
 
   onLoadMore() {
