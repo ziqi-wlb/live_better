@@ -85,6 +85,10 @@ uni-app 版依赖后端 API（未部署时列表为空并提示「请配置 HTTP
 - 「今日一条」头部新增**「换一条 ↻」**随机切换（`pickRandom` 避开当前条目；手动换过后返回主页不重置，当日固定挑选用 `_dailyShuffled` 标记保护）
 - 主 CTA 视觉弱化：深绿实底+投影改为**浅绿药丸**（`#e7eddf` 底 + 细描边 `#d3ddcb` + 深绿字），箭头滑动动画保留；底部「收藏/行动清单」入口改为白底描边弱化层级；`landing-foot` 加 90rpx 顶距，短屏下不再与 CTA 相切
 
+### 发布用 AppID 切换
+
+`project.config.json`（原生版，开发者工具读取）与 `src/manifest.json`（uni-app 版 mp-weixin 配置）的 AppID 由调试号 `wxf6089afd28b90008` 改为正式号 `wx89c451bfbf0ab95b`。切换后需在开发者工具重新打开项目，并确认「详情 → 基本信息」显示新 AppID；上传权限需该 AppID 名下开发者/管理员身份。
+
 ## 维护约定
 
 1. 每个核心改动单独 `git add` + 提交（conventional commits，与既有历史风格一致）。
