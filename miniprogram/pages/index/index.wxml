@@ -38,6 +38,14 @@
         <text>开始探索指南</text>
         <text class="cta-arrow">→</text>
       </view>
+
+      <view class="doc-links">
+        <text class="doc-link" data-type="terms" bindtap="onOpenAgreement">用户协议</text>
+        <text class="doc-link-sep">·</text>
+        <text class="doc-link" data-type="privacy" bindtap="onOpenAgreement">隐私政策</text>
+        <text class="doc-link-sep">·</text>
+        <button class="doc-link doc-link-btn" open-type="feedback">意见反馈</button>
+      </view>
     </view>
 
     <view class="landing-foot">
@@ -52,13 +60,6 @@
 
       <view class="footnote source-note">
         <text>内容来自《高性价比人生指南》(HowToLiveBetter)，作者 eternity4719，CC BY 4.0</text>
-        <view class="doc-links">
-          <text class="doc-link" data-type="terms" bindtap="onOpenAgreement">用户协议</text>
-          <text class="doc-link-sep">·</text>
-          <text class="doc-link" data-type="privacy" bindtap="onOpenAgreement">隐私政策</text>
-          <text class="doc-link-sep">·</text>
-          <button class="doc-link doc-link-btn" open-type="feedback">意见反馈</button>
-        </view>
       </view>
     </view>
   </view>

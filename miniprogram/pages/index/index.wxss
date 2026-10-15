@@ -224,8 +224,9 @@ page {
   line-height: 1.6;
 }
 
+/* 协议 / 隐私 / 反馈：紧跟主 CTA，避免沉到页面最底部 */
 .doc-links {
-  margin-top: 14rpx;
+  margin-top: 48rpx;
   display: flex;
   flex-direction: row;
   align-items: center;
