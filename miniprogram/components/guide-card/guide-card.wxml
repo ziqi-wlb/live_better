@@ -10,8 +10,18 @@
       <text>{{item.fav ? '★' : '☆'}}</text>
     </view>
   </view>
-  <view class="card-title"><text>{{item.title}}</text></view>
-  <view class="card-summary"><text>{{item.summary}}</text></view>
+  <view class="card-title">
+    <block wx:if="{{item.titleSegs}}">
+      <text wx:for="{{item.titleSegs}}" wx:for-item="seg" class="{{seg.h ? 'hit' : ''}}">{{seg.t}}</text>
+    </block>
+    <text wx:else>{{item.title}}</text>
+  </view>
+  <view class="card-summary">
+    <block wx:if="{{item.summarySegs}}">
+      <text wx:for="{{item.summarySegs}}" wx:for-item="seg" class="{{seg.h ? 'hit' : ''}}">{{seg.t}}</text>
+    </block>
+    <text wx:else>{{item.summary}}</text>
+  </view>
   <view class="cost">
     <text>钱：{{item.money || '未标注'}}　时间：{{item.time || '未标注'}}　毅力：{{item.effort || '未标注'}}</text>
   </view>

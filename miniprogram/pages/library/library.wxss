@@ -256,6 +256,17 @@ page {
   color: #a2aaa2;
 }
 
+/* 模糊匹配提示 */
+.fuzzy-hint {
+  background: #faf0d9;
+  color: #956e27;
+  border-radius: 16rpx;
+  font-size: 23rpx;
+  line-height: 1.6;
+  padding: 16rpx 22rpx;
+  margin-bottom: 20rpx;
+}
+
 .empty-btn {
   margin-top: 28rpx;
   padding: 14rpx 44rpx;

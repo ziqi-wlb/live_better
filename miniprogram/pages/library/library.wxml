@@ -36,7 +36,7 @@
               <text class="search-icon">搜</text>
               <input
                 class="search-input"
-                placeholder="搜索生活问题，例如租房、戒烟"
+                placeholder="搜「租房 押金」，多个词用空格"
                 placeholder-class="search-ph"
                 value="{{keyword}}"
                 bindinput="onKeyword"
@@ -102,9 +102,12 @@
           </view>
         </view>
 
+        <view wx:if="{{fuzzyMode === 'loose'}}" class="fuzzy-hint">
+          <text>没有全部命中「{{keyword}}」的结果，已按相关度显示最相近的条目</text>
+        </view>
         <view wx:if="{{filtered.length === 0}}" class="empty">
           <text class="empty-title">没有符合条件的条目</text>
-          <text class="empty-sub">试试减少筛选条件</text>
+          <text class="empty-sub">换个说法，或减少筛选条件</text>
           <view class="empty-btn" bindtap="onResetFilters"><text>重置筛选</text></view>
         </view>
         <guide-card

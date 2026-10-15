@@ -26,8 +26,8 @@ const STATUS_CLASS = {
   暂不适用: 'st-na'
 };
 
-function decorate(g, favSet) {
-  return {
+function decorate(g, favSet, terms) {
+  const item = {
     id: g.id,
     ch: g.ch,
     no: g.no,
@@ -45,6 +45,12 @@ function decorate(g, favSet) {
     nv: g.nv,
     fav: favSet.has(g.id)
   };
+  // 搜索时附带高亮分段与命中片段
+  if (terms && terms.length) {
+    item.titleSegs = search.highlight(g.title, terms);
+    item.summarySegs = search.highlight(search.snippet(g.summary, terms), terms);
+  }
+  return item;
 }
 
 function formatDate(ts) {
@@ -53,25 +59,27 @@ function formatDate(ts) {
 }
 
 // 与参考项目 filterGuides 排序逻辑一致
-function sortGuides(list, q) {
-  const cmp = (a, b) => {
-    if (q.sort === 'roi') {
-      const diff =
-        ROI_RANK.indexOf(a.roi) - ROI_RANK.indexOf(b.roi) ||
-        (WEIGHTS.money[a.money] ?? 9) - (WEIGHTS.money[b.money] ?? 9) ||
-        (WEIGHTS.time[a.time] ?? 9) - (WEIGHTS.time[b.time] ?? 9) ||
-        (WEIGHTS.effort[a.effort] ?? 9) - (WEIGHTS.effort[b.effort] ?? 9);
-      if (diff) return diff;
-    }
-    if (q.sort === 'evidence') {
-      const diff = a.ev.localeCompare(b.ev);
-      if (diff) return diff;
-    }
-    return a.ch - b.ch || a.no - b.no;
-  };
-  return list.sort(cmp);
+function cmpGuide(a, b, q) {
+  if (q.sort === 'roi') {
+    const diff =
+      ROI_RANK.indexOf(a.roi) - ROI_RANK.indexOf(b.roi) ||
+      (WEIGHTS.money[a.money] ?? 9) - (WEIGHTS.money[b.money] ?? 9) ||
+      (WEIGHTS.time[a.time] ?? 9) - (WEIGHTS.time[b.time] ?? 9) ||
+      (WEIGHTS.effort[a.effort] ?? 9) - (WEIGHTS.effort[b.effort] ?? 9);
+    if (diff) return diff;
+  }
+  if (q.sort === 'evidence') {
+    const diff = a.ev.localeCompare(b.ev);
+    if (diff) return diff;
+  }
+  return a.ch - b.ch || a.no - b.no;
 }
 
+function sortGuides(list, q) {
+  return list.sort((a, b) => cmpGuide(a, b, q));
+}
+
+const search = require('../../utils/search');
 const SORT_EXPLANATIONS = {
   chapter: '按章节与条目顺序。选择一种收益口径后，可按性价比排序。',
   roi: '同口径内按性价比档、钱、时间、毅力及章节排序。档位是作者判断，不是研究证据。',
@@ -121,6 +129,8 @@ Page({
     // 高级筛选面板（默认折叠，顶部只留搜索框）
     filterPanelOpen: false,
     activeFilterCount: 0,
+    // 模糊搜索状态：'' 正常 / 'loose' 已放宽为部分匹配 / 'none' 无结果
+    fuzzyMode: '',
     // 收藏与清单
     favList: [],
     todoList: [],
@@ -196,9 +206,11 @@ Page({
       needsVerification: this.data.needsVerification,
       sort: this.data.sort
     };
-    const kw = (q.keyword || '').trim().toLowerCase();
+    const terms = search.tokenize(q.keyword);
+    const kw = (q.keyword || '').trim();
 
-    let list = guides.filter((g) => {
+    // 除关键词外的结构化筛选
+    const baseFilter = (g) => {
       if (q.outcome && g.out !== q.outcome) return false;
       if (q.chapter !== 0 && g.ch !== q.chapter) return false;
       if (q.ev && g.ev !== q.ev) return false;
@@ -209,14 +221,36 @@ Page({
       if (q.audience && !g.aud.some((group) => group.indexOf(q.audience) >= 0)) return false;
       if (q.controversy && !g.cv) return false;
       if (q.needsVerification && !g.nv) return false;
-      if (kw) {
-        const hay = `${g.title} ${g.summary} ${chapterMap[g.ch] || ''}`.toLowerCase();
-        if (hay.indexOf(kw) < 0) return false;
-      }
       return true;
-    });
+    };
 
-    list = sortGuides(list, q).map((g) => decorate(g, this._favSet));
+    let list;
+    let fuzzyMode = '';
+
+    if (terms.length) {
+      const pool = guides.filter(baseFilter);
+      // 第一阶段：每个词都命中（精确或模糊）
+      let scored = [];
+      pool.forEach((g) => {
+        const m = search.matchGuide(g, terms, chapterMap);
+        if (m.all) scored.push({ g, m });
+      });
+      // 第二阶段：完全无结果时放宽为「命中任一词」，并按相关度排序
+      if (!scored.length) {
+        pool.forEach((g) => {
+          const m = search.matchGuide(g, terms, chapterMap);
+          if (m.any) scored.push({ g, m });
+        });
+        fuzzyMode = scored.length ? 'loose' : 'none';
+      }
+      scored.sort((a, b) => {
+        if (b.m.score !== a.m.score) return b.m.score - a.m.score;
+        return cmpGuide(a.g, b.g, q);
+      });
+      list = scored.map((x) => decorate(x.g, this._favSet, terms));
+    } else {
+      list = sortGuides(guides.filter(baseFilter), q).map((g) => decorate(g, this._favSet));
+    }
 
     this._all = list;
     this._shownCount = PAGE_SIZE;
@@ -245,7 +279,8 @@ Page({
       totalCount: list.length,
       hasMore: list.length > shown.length,
       hasActiveFilters,
-      activeFilterCount
+      activeFilterCount,
+      fuzzyMode
     });
   },
 

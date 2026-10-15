@@ -76,6 +76,14 @@
   margin-bottom: 20rpx;
 }
 
+/* 搜索命中高亮 */
+.hit {
+  color: #956e27;
+  background: #faf0d9;
+  border-radius: 4rpx;
+  font-weight: 600;
+}
+
 .cost {
   border-top: 1rpx solid #eef1e9;
   padding-top: 18rpx;
