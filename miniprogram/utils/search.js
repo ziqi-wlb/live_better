@@ -1,7 +1,9 @@
 /**
  * 离线模糊搜索：不依赖后端、不依赖分词库。
- * 策略：多关键词「且」匹配 + 2-gram 相似度兜底 + 相关度打分 + 命中高亮。
+ * 策略：多关键词「且」匹配 + 同义词扩展 + 2-gram 相似度兜底 + 相关度打分 + 命中高亮。
  */
+
+const { alternatives, expandTerms } = require('./synonyms');
 
 const PUNCT = /[\s,，、;；/。.！!？?：:（）()「」【】]/g;
 
@@ -42,8 +44,22 @@ function fuzzyCover(term, text) {
 }
 
 const FUZZY_THRESHOLD = 0.6;
+// 同义词命中权重：低于原词，保证「原词命中」排在「同义词命中」前面
+const SYN_WEIGHT = 0.6;
 
-// 单条打分：标题 > 摘要 > 章节 > 人群/口径，模糊命中权重最低
+function fieldWeight(alt, title, summary, chapter, extra) {
+  if (title.indexOf(alt) >= 0) return title === alt ? 20 : 12;
+  if (summary.indexOf(alt) >= 0) return 5;
+  if (chapter.indexOf(alt) >= 0) return 4;
+  if (extra.indexOf(alt) >= 0) return 3;
+  return 0;
+}
+
+/**
+ * 单条打分：标题 > 摘要 > 章节 > 人群/口径；
+ * 每个查询词先试自身，再试同义词（降权），最后试 2-gram 模糊；
+ * 都不中时退到「单字命中」——记为 weak，只在放宽阶段计入。
+ */
 function matchGuide(g, terms, chapterMap) {
   const title = (g.title || '').toLowerCase();
   const summary = (g.summary || '').toLowerCase();
@@ -56,29 +72,41 @@ function matchGuide(g, terms, chapterMap) {
   let fuzzy = 0;
 
   terms.forEach((term) => {
-    if (title.indexOf(term) >= 0) {
-      score += 12;
-      if (title === term) score += 8;
-      strict += 1;
-    } else if (summary.indexOf(term) >= 0) {
-      score += 5;
-      strict += 1;
-    } else if (chapter.indexOf(term) >= 0) {
-      score += 4;
-      strict += 1;
-    } else if (extra.indexOf(term) >= 0) {
-      score += 3;
-      strict += 1;
-    } else if (fuzzyCover(term, hay) >= FUZZY_THRESHOLD) {
-      score += 1;
-      fuzzy += 1;
+    const alts = alternatives(term);
+    let best = 0;
+    let bestFuzzy = false;
+
+    for (let i = 0; i < alts.length; i += 1) {
+      const w = fieldWeight(alts[i], title, summary, chapter, extra);
+      if (!w) continue;
+      // i === 0 为原词；同义词降权，且越靠后的同义词亲缘越远，权重再递减
+      const decay = i === 0 ? 1 : SYN_WEIGHT * Math.max(0.35, 1 - (i - 1) * 0.06);
+      const s = w * decay;
+      if (s > best) {
+        best = s;
+        bestFuzzy = false;
+      }
     }
+
+    if (!best && fuzzyCover(term, hay) >= FUZZY_THRESHOLD) {
+      best = 1;
+      bestFuzzy = true;
+    }
+
+    if (best) {
+      score += best;
+      if (bestFuzzy) fuzzy += 1;
+      else strict += 1;
+    }
+    // 到此仍未命中即放弃该词：中文单字回退命中面太广（如「存不下钱」会命中数百条
+    // 无关条目），宁可返回空结果并提示换个说法，也不展示噪音。
   });
 
+  const hit = strict + fuzzy;
   return {
-    all: strict + fuzzy === terms.length, // 每个词都有命中
-    strict: strict === terms.length, // 每个词都精确命中
-    any: strict + fuzzy > 0,
+    all: hit === terms.length, // 每个词都有命中（原词/同义/模糊）
+    strict: strict === terms.length, // 每个词都精确命中原词或同义词
+    any: hit > 0,
     score
   };
 }
@@ -134,4 +162,14 @@ function highlight(text, terms) {
   return segs;
 }
 
-module.exports = { tokenize, bigrams, fuzzyCover, matchGuide, snippet, highlight, FUZZY_THRESHOLD };
+module.exports = {
+  tokenize,
+  bigrams,
+  fuzzyCover,
+  matchGuide,
+  snippet,
+  highlight,
+  expandTerms,
+  FUZZY_THRESHOLD,
+  SYN_WEIGHT
+};

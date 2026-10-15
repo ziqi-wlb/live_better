@@ -26,7 +26,7 @@ const STATUS_CLASS = {
   暂不适用: 'st-na'
 };
 
-function decorate(g, favSet, terms) {
+function decorate(g, favSet, hlTerms) {
   const item = {
     id: g.id,
     ch: g.ch,
@@ -45,10 +45,10 @@ function decorate(g, favSet, terms) {
     nv: g.nv,
     fav: favSet.has(g.id)
   };
-  // 搜索时附带高亮分段与命中片段
-  if (terms && terms.length) {
-    item.titleSegs = search.highlight(g.title, terms);
-    item.summarySegs = search.highlight(search.snippet(g.summary, terms), terms);
+  // 搜索时附带高亮分段与命中片段（hlTerms 含同义词，搜「炒股」也能标出「股票」）
+  if (hlTerms && hlTerms.length) {
+    item.titleSegs = search.highlight(g.title, hlTerms);
+    item.summarySegs = search.highlight(search.snippet(g.summary, hlTerms), hlTerms);
   }
   return item;
 }
@@ -229,13 +229,14 @@ Page({
 
     if (terms.length) {
       const pool = guides.filter(baseFilter);
-      // 第一阶段：每个词都命中（精确或模糊）
+      const hl = search.expandTerms(terms);
+      // 第一阶段：每个词都命中（原词 / 同义词 / 模糊）
       let scored = [];
       pool.forEach((g) => {
         const m = search.matchGuide(g, terms, chapterMap);
         if (m.all) scored.push({ g, m });
       });
-      // 第二阶段：完全无结果时放宽为「命中任一词」，并按相关度排序
+      // 第二阶段：完全无结果时放宽为「命中任一词」，按相关度排序
       if (!scored.length) {
         pool.forEach((g) => {
           const m = search.matchGuide(g, terms, chapterMap);
@@ -247,7 +248,7 @@ Page({
         if (b.m.score !== a.m.score) return b.m.score - a.m.score;
         return cmpGuide(a.g, b.g, q);
       });
-      list = scored.map((x) => decorate(x.g, this._favSet, terms));
+      list = scored.map((x) => decorate(x.g, this._favSet, hl));
     } else {
       list = sortGuides(guides.filter(baseFilter), q).map((g) => decorate(g, this._favSet));
     }
