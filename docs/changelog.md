@@ -89,6 +89,10 @@ uni-app 版依赖后端 API（未部署时列表为空并提示「请配置 HTTP
 
 `project.config.json`（原生版，开发者工具读取）与 `src/manifest.json`（uni-app 版 mp-weixin 配置）的 AppID 由调试号 `wxf6089afd28b90008` 改为正式号 `wx89c451bfbf0ab95b`。切换后需在开发者工具重新打开项目，并确认「详情 → 基本信息」显示新 AppID；上传权限需该 AppID 名下开发者/管理员身份。
 
+### 回退到原 AppID
+
+`wx89c451bfbf0ab95b` 实测为微信小游戏账号，工具报错 `miniprogram/game.json 未找到`（小游戏结构与小程序不同）。回退到 `wxf6089afd28b90008` 继续开发；正式发布用小程序 AppID 待用同一邮箱另行注册「微信小程序」账号后获取并替换。
+
 ## 维护约定
 
 1. 每个核心改动单独 `git add` + 提交（conventional commits，与既有历史风格一致）。
