@@ -12,6 +12,20 @@
       ]
     }
   ],
+  "preloadRule": {
+    "pages/index/index": {
+      "network": "wifi",
+      "packages": [
+        "packageDetail"
+      ]
+    },
+    "pages/library/library": {
+      "network": "all",
+      "packages": [
+        "packageDetail"
+      ]
+    }
+  },
   "window": {
     "navigationBarTextStyle": "black",
     "navigationStyle": "custom",

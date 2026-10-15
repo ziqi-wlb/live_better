@@ -56,9 +56,9 @@ function fieldWeight(alt, title, summary, chapter, extra) {
 }
 
 /**
- * 单条打分：标题 > 摘要 > 章节 > 人群/口径；
- * 每个查询词先试自身，再试同义词（降权），最后试 2-gram 模糊；
- * 都不中时退到「单字命中」——记为 weak，只在放宽阶段计入。
+ * 单条打分：标题 > 摘要 > 章节 > 人群/口径。
+ * 每个查询词依次尝试：①原词子串命中 ②同义词子串命中（降权且按组内距离递减）
+ * ③2-gram 模糊相似（阈值 0.6）。三者都不中则该词未命中，直接放弃，不再做单字回退。
  */
 function matchGuide(g, terms, chapterMap) {
   const title = (g.title || '').toLowerCase();

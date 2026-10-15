@@ -243,3 +243,19 @@ page {
   font-size: 22rpx;
   margin: 0 12rpx;
 }
+
+/* 官方意见反馈：button 需清掉默认样式与 ::after 边框 */
+.doc-link-btn {
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 6rpx 4rpx;
+  line-height: 1.6;
+  font-size: 22rpx;
+  font-weight: normal;
+  color: #214d3f;
+}
+
+.doc-link-btn::after {
+  border: none;
+}
