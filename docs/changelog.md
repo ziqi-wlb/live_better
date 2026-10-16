@@ -89,6 +89,10 @@ uni-app 版依赖后端 API（未部署时列表为空并提示「请配置 HTTP
 
 `project.config.json`（原生版，开发者工具读取）与 `src/manifest.json`（uni-app 版 mp-weixin 配置）的 AppID 由调试号 `wxf6089afd28b90008` 改为正式号 `wx89c451bfbf0ab95b`。切换后需在开发者工具重新打开项目，并确认「详情 → 基本信息」显示新 AppID；上传权限需该 AppID 名下开发者/管理员身份。
 
+### 正式小程序 AppID
+
+`project.config.json` 与 `src/manifest.json` 的 mp-weixin AppID 切换为正式号 `wx57899135d259a2a6`（新注册的微信小程序账号）。此前 `wx89c451bfbf0ab95b` 为小游戏号（报 `game.json 未找到`），`wxf6089afd28b90008` 为开发期使用的号。切换后需在开发者工具重新打开项目并确认「详情 → 基本信息」。
+
 ### 首页链接位置上移
 
 「用户协议 · 隐私政策 · 意见反馈」原本排在落地页最底部（收藏/行动清单与署名之后），小屏要滚动很远才看得到。现移到主 CTA 正下方（`landing-main` 内，`margin-top:48rpx`），位置上提约 300rpx，首屏基本可见；署名注记仍留在底部。收藏/行动清单保持沉底不变。
