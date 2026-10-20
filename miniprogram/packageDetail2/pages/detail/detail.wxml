@@ -1,5 +1,5 @@
-<navigation-bar title="{{navTitle}}" back="{{true}}" color="black" background="#FFFDF6"></navigation-bar>
-<scroll-view class="scrollarea" scroll-y type="list">
+<navigation-bar title="{{navTitle}}" back="{{true}}" color="black" background="#FFFDF6" show="{{!navHidden}}"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list" bindscroll="onScroll">
   <view class="detail" wx:if="{{item}}">
     <view class="d-meta">
       <text class="muted">第 {{item.ch}} 节 · 第 {{item.no}} 条</text>

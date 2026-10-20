@@ -19,6 +19,8 @@ Page({
   data: {
     item: null,
     navTitle: '建议详情',
+    // 沉浸式阅读：继续往下读时淡出导航栏，往回滑时淡入
+    navHidden: false,
     fav: false,
     inTodo: false,
     actionLabel: '加入行动清单',
@@ -28,6 +30,24 @@ Page({
     evidenceDescText: '',
     hasNotes: false,
     fixedSourceUrl: ''
+  },
+
+  // 沉浸阅读：按滚动方向淡出 / 淡入导航栏
+  //   继续往下读 -> 隐藏，把屏幕让给正文
+  //   往回滑     -> 显示，方便点返回
+  onScroll(e) {
+    const top = e.detail.scrollTop || 0;
+    const last = this._lastTop || 0;
+    this._lastTop = top;
+    const delta = top - last;
+    if (Math.abs(delta) < 8) return; // 小幅抖动不处理，避免闪烁
+    if (top <= 40) {
+      // 回到顶部区域时始终显示
+      if (this.data.navHidden) this.setData({ navHidden: false });
+      return;
+    }
+    const hide = delta > 0;
+    if (hide !== this.data.navHidden) this.setData({ navHidden: hide });
   },
 
   onLoad(options) {
