@@ -156,8 +156,7 @@ Page({
     favCount: 0,
     todoLeft: 0,
     todoDone: 0,
-    // 通读模式（一章一章读，不施加任何筛选）
-    readMode: false,
+    // 通读 tab（一章一章读，不施加任何筛选）
     // toc = 目录页（进入通读先看这个），chapter = 正文
     readView: 'toc',
     readResume: null,
@@ -190,8 +189,8 @@ Page({
   onShow() {
     this.refreshState();
     this.applyFilters();
-    // 通读模式停在正文时，收藏状态可能刚在详情页改过，回到本页要同步
-    if (this.data.readMode && this.data.readView === 'chapter') {
+    // 通读 tab 停在正文时，收藏状态可能刚在详情页改过，回到本页要同步
+    if (this.data.activeTab === 'read' && this.data.readView === 'chapter') {
       this.buildReader();
     }
   },
@@ -333,11 +332,6 @@ Page({
   },
 
   onLoadMore() {
-    // 通读模式：滚动到底自动续读本章剩余条目
-    if (this.data.readMode) {
-      this.onLoadMoreRead();
-      return;
-    }
     if (!this.data.hasMore || this._loading) return;
     this._loading = true;
     this._shownCount += PAGE_SIZE;
@@ -354,22 +348,6 @@ Page({
   },
 
   /* ---------------- 通读模式：一章一章读 ---------------- */
-
-  // 切换「查找筛选 / 通读全书」
-  onSwitchMode(e) {
-    const mode = e.currentTarget.dataset.mode;
-    if (mode === 'read') {
-      if (this.data.readMode) return;
-      // 先落到目录页；上次读到哪章在这里标出来，方便接着读
-      const pos = store.getReadPos();
-      const found = readChapters.findIndex((c) => c.id === pos.chapter);
-      const resume =
-        found >= 0 ? { index: found, chapter: pos.chapter, title: readChapters[found].title } : null;
-      this.setData({ readMode: true, readView: 'toc', readResume: resume, scrollInto: 'read-top' });
-      return;
-    }
-    this.setData({ readMode: false, scrollInto: 'lib-top' });
-  },
 
   // 正文 -> 目录
   onOpenToc() {
@@ -430,7 +408,8 @@ Page({
 
   // 超过 30 条的长章：续读本章剩余部分
   onLoadMoreRead() {
-    if (this._readLoading) return;
+    // 目录页滚动到底也会触发 scrolltolower，那时不该加载正文
+    if (this.data.readView !== 'chapter' || this._readLoading) return;
     const ch = readChapters[this.data.readChapterIdx];
     const all = byChapter.get(ch.id) || [];
     if (this.data.readItems.length >= all.length) return;
@@ -447,7 +426,22 @@ Page({
   },
 
   onSwitchTab(e) {
-    this.setData({ activeTab: e.currentTarget.dataset.tab });
+    const tab = e.currentTarget.dataset.tab;
+    if (tab === 'read') {
+      // 进通读先落目录页；上次读到哪章在这里标出来，方便接着读
+      const pos = store.getReadPos();
+      const found = readChapters.findIndex((c) => c.id === pos.chapter);
+      const resume =
+        found >= 0 ? { index: found, chapter: pos.chapter, title: readChapters[found].title } : null;
+      this.setData({
+        activeTab: 'read',
+        readView: 'toc',
+        readResume: resume,
+        scrollInto: 'read-top'
+      });
+      return;
+    }
+    this.setData({ activeTab: tab });
   },
 
   onKeyword(e) {

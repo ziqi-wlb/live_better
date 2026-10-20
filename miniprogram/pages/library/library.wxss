@@ -424,34 +424,6 @@ page {
   box-shadow: 0 8rpx 24rpx rgba(33, 77, 63, 0.35);
 }
 
-/* 模式切换：查找筛选 / 通读全书 */
-.mode-switch {
-  display: flex;
-  flex-direction: row;
-  background: #ffffff;
-  border: 1rpx solid #e3e6db;
-  border-radius: 999rpx;
-  padding: 6rpx;
-  margin-bottom: 24rpx;
-}
-
-.mode-btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 64rpx;
-  border-radius: 999rpx;
-  font-size: 26rpx;
-  color: #727b72;
-}
-
-.mode-on {
-  background: #214d3f;
-  color: #ffffff;
-  font-weight: 600;
-}
-
 /* 章节目录（固定在列表顶部，不随内容滚动） */
 .reader-bar {
   display: flex;

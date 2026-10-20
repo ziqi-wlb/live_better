@@ -4,6 +4,9 @@
     <view class="tab {{activeTab === 'guide' ? 'tab-active' : ''}}" data-tab="guide" bindtap="onSwitchTab">
       <text>指南</text>
     </view>
+    <view class="tab {{activeTab === 'read' ? 'tab-active' : ''}}" data-tab="read" bindtap="onSwitchTab">
+      <text>通读</text>
+    </view>
     <view class="tab {{activeTab === 'fav' ? 'tab-active' : ''}}" data-tab="fav" bindtap="onSwitchTab">
       <text>收藏</text>
       <text wx:if="{{favCount > 0}}" class="badge">{{favCount}}</text>
@@ -14,25 +17,8 @@
     </view>
   </view>
 
-  <!-- 指南 -->
+  <!-- 指南：查找筛选 -->
   <view wx:if="{{activeTab === 'guide'}}" class="pane">
-    <view wx:if="{{readMode && readView === 'chapter'}}" class="reader-bar">
-      <view class="toc-btn" bindtap="onOpenToc">
-        <text>目录</text>
-      </view>
-      <scroll-view class="chapter-bar" scroll-x scroll-into-view="{{readChip}}" scroll-with-animation>
-        <view
-          class="chapter-chip {{index === readChapterIdx ? 'chip-on' : ''}}"
-          wx:for="{{readChapters}}"
-          wx:key="id"
-          id="chip-{{item.id}}"
-          data-idx="{{index}}"
-          bindtap="onPickChapter"
-        >
-          <text>{{index + 1}}</text>
-        </view>
-      </scroll-view>
-    </view>
     <scroll-view
       class="scrollarea"
       scroll-y
@@ -45,18 +31,9 @@
       <view class="list">
         <view class="library" id="lib-top">
           <view class="lib-head">
-            <text class="lib-title">{{readMode ? '通读全书' : '指南库'}}</text>
-            <text class="lib-count">{{readMode ? readChapters.length + ' 章 · 共 ' + bookTotal + ' 条' : totalCount + ' 条结果'}}</text>
+            <text class="lib-title">指南库</text>
+            <text class="lib-count">{{totalCount}} 条结果</text>
           </view>
-          <view class="mode-switch">
-            <view class="mode-btn {{readMode ? '' : 'mode-on'}}" data-mode="find" bindtap="onSwitchMode">
-              <text>查找筛选</text>
-            </view>
-            <view class="mode-btn {{readMode ? 'mode-on' : ''}}" data-mode="read" bindtap="onSwitchMode">
-              <text>通读全书</text>
-            </view>
-          </view>
-          <block wx:if="{{!readMode}}">
           <view class="search-row">
             <view class="search">
               <text class="search-icon">搜</text>
@@ -126,10 +103,8 @@
               <text>{{sortExplanation}}</text>
             </view>
           </view>
-          </block>
         </view>
 
-        <block wx:if="{{!readMode}}">
         <view wx:if="{{fuzzyMode === 'loose'}}" class="fuzzy-hint">
           <text>没有全部命中「{{keyword}}」的结果，已按相关度显示最相近的条目</text>
         </view>
@@ -152,44 +127,82 @@
         <view wx:elif="{{filtered.length > 0}}" class="footnote">
           <text>共 {{totalCount}} 条</text>
         </view>
-        </block>
+        <view class="footnote source-note">
+          <text>内容来自《高性价比人生指南》(HowToLiveBetter)，作者 eternity4719，CC BY 4.0</text>
+          <view class="doc-links">
+            <text class="doc-link" data-type="terms" bindtap="onOpenAgreement">用户协议</text>
+            <text class="doc-link-sep">·</text>
+            <text class="doc-link" data-type="privacy" bindtap="onOpenAgreement">隐私政策</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+    <view wx:if="{{hasActiveFilters}}" class="fab-filter" bindtap="onBackToFilter">
+      <text>↑ 筛选</text>
+    </view>
+  </view>
 
-        <!-- 通读模式：先目录，选章后才进正文 -->
-        <block wx:else>
-          <!-- 目录页 -->
-          <block wx:if="{{readView === 'toc'}}">
-            <view class="toc" id="read-top">
-              <view class="toc-head">
-                <text class="toc-book">高性价比人生指南</text>
-                <text class="toc-sub">共 {{readChapters.length}} 章 · {{bookTotal}} 条 · CC BY 4.0</text>
+  <!-- 通读：先看目录，选章后才进正文 -->
+  <view wx:elif="{{activeTab === 'read'}}" class="pane">
+    <view wx:if="{{readView === 'chapter'}}" class="reader-bar">
+      <view class="toc-btn" bindtap="onOpenToc">
+        <text>目录</text>
+      </view>
+      <scroll-view class="chapter-bar" scroll-x scroll-into-view="{{readChip}}" scroll-with-animation>
+        <view
+          class="chapter-chip {{index === readChapterIdx ? 'chip-on' : ''}}"
+          wx:for="{{readChapters}}"
+          wx:key="id"
+          id="chip-{{item.id}}"
+          data-idx="{{index}}"
+          bindtap="onPickChapter"
+        >
+          <text>{{index + 1}}</text>
+        </view>
+      </scroll-view>
+    </view>
+    <scroll-view
+      class="scrollarea"
+      scroll-y
+      type="list"
+      scroll-into-view="{{scrollInto}}"
+      scroll-with-animation
+      bindscrolltolower="onLoadMoreRead"
+      lower-threshold="200"
+    >
+      <view class="list">
+        <block wx:if="{{readView === 'toc'}}">
+          <view class="toc" id="read-top">
+            <view class="toc-head">
+              <text class="toc-book">高性价比人生指南</text>
+              <text class="toc-sub">共 {{readChapters.length}} 章 · {{bookTotal}} 条 · CC BY 4.0</text>
+            </view>
+
+            <view wx:if="{{readResume}}" class="toc-resume" bindtap="onResumeRead">
+              <view class="resume-left">
+                <text class="resume-label">上次读到</text>
+                <text class="resume-title">第 {{readResume.index + 1}} 章 · {{readResume.title}}</text>
               </view>
+              <text class="resume-go">继续 →</text>
+            </view>
 
-              <view wx:if="{{readResume}}" class="toc-resume" bindtap="onResumeRead">
-                <view class="resume-left">
-                  <text class="resume-label">上次读到</text>
-                  <text class="resume-title">第 {{readResume.index + 1}} 章 · {{readResume.title}}</text>
-                </view>
-                <text class="resume-go">继续 →</text>
-              </view>
-
-              <view class="toc-list">
-                <view
-                  class="toc-row {{readResume && readResume.index === index ? 'toc-row-here' : ''}}"
-                  wx:for="{{readChapters}}"
-                  wx:key="id"
-                  data-idx="{{index}}"
-                  bindtap="onPickChapter"
-                >
-                  <text class="toc-num">{{index + 1}}</text>
-                  <text class="toc-title">{{item.title}}</text>
-                  <text class="toc-count">{{item.count}}</text>
-                </view>
+            <view class="toc-list">
+              <view
+                class="toc-row {{readResume && readResume.index === index ? 'toc-row-here' : ''}}"
+                wx:for="{{readChapters}}"
+                wx:key="id"
+                data-idx="{{index}}"
+                bindtap="onPickChapter"
+              >
+                <text class="toc-num">{{index + 1}}</text>
+                <text class="toc-title">{{item.title}}</text>
+                <text class="toc-count">{{item.count}} 条</text>
               </view>
             </view>
-          </block>
+          </view>
+        </block>
 
-          <!-- 正文 -->
-          <block wx:else>
+        <block wx:else>
           <view class="reader-head" id="read-top">
             <text class="reader-title">第 {{readChapterIdx + 1}} 章 · {{readChapter.title}}</text>
             <text class="reader-sub">本章 {{readTotal}} 条<text wx:if="{{readHasMore}}">，还有 {{readTotal - readItems.length}} 条没读</text></text>
@@ -213,21 +226,13 @@
               <text>下一章 →</text>
             </view>
           </view>
-          </block>
         </block>
+
         <view class="footnote source-note">
           <text>内容来自《高性价比人生指南》(HowToLiveBetter)，作者 eternity4719，CC BY 4.0</text>
-          <view class="doc-links">
-            <text class="doc-link" data-type="terms" bindtap="onOpenAgreement">用户协议</text>
-            <text class="doc-link-sep">·</text>
-            <text class="doc-link" data-type="privacy" bindtap="onOpenAgreement">隐私政策</text>
-          </view>
         </view>
       </view>
     </scroll-view>
-    <view wx:if="{{hasActiveFilters && !readMode}}" class="fab-filter" bindtap="onBackToFilter">
-      <text>↑ 筛选</text>
-    </view>
   </view>
 
   <!-- 收藏 -->
