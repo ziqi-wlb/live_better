@@ -167,8 +167,6 @@
       type="list"
       scroll-into-view="{{scrollInto}}"
       scroll-with-animation
-      bindscrolltolower="onLoadMoreRead"
-      lower-threshold="200"
     >
       <view class="list">
         <block wx:if="{{readView === 'toc'}}">
@@ -205,7 +203,7 @@
         <block wx:else>
           <view class="reader-head" id="read-top">
             <text class="reader-title">第 {{readChapterIdx + 1}} 章 · {{readChapter.title}}</text>
-            <text class="reader-sub">本章 {{readTotal}} 条<text wx:if="{{readHasMore}}">，还有 {{readTotal - readItems.length}} 条没读</text></text>
+            <text class="reader-sub">本章 {{readTotal}} 条 · 全篇</text>
           </view>
           <guide-card
             wx:for="{{readItems}}"
@@ -215,9 +213,6 @@
             bind:fav="onToggleFav"
             bind:add="onAddTodo"
           />
-          <view wx:if="{{readHasMore}}" class="footnote" bindtap="onLoadMoreRead">
-            <text>本章还有 {{readTotal - readItems.length}} 条 · 继续读</text>
-          </view>
           <view class="chapter-nav">
             <view class="nav-btn {{readIsFirst ? 'nav-off' : ''}}" bindtap="onPrevChapter">
               <text>← 上一章</text>

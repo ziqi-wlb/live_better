@@ -25,7 +25,6 @@ const readChapters = chapters.map((c) => ({
   title: c.title,
   count: (byChapter.get(c.id) || []).length
 }));
-const READ_PAGE = 30;
 
 // 与参考项目 packages/domain/catalog.ts 同口径
 const WEIGHTS = {
@@ -167,7 +166,6 @@ Page({
     readChapter: readChapters[0],
     readItems: [],
     readTotal: 0,
-    readHasMore: false,
     readIsFirst: true,
     readIsLast: false,
     readChip: ''
@@ -366,13 +364,12 @@ Page({
     const idx = Math.max(0, Math.min(this.data.readChapterIdx, readChapters.length - 1));
     const ch = readChapters[idx];
     const all = byChapter.get(ch.id) || [];
-    const shown = all.slice(0, READ_PAGE);
+    // 通读是一次读完一整章，不做分页：最长一章 50 条，一次渲染没问题
     this.setData({
       readChapterIdx: idx,
       readChapter: ch,
-      readItems: shown.map((g) => decorate(g, this._favSet)),
+      readItems: all.map((g) => decorate(g, this._favSet)),
       readTotal: all.length,
-      readHasMore: all.length > shown.length,
       readIsFirst: idx === 0,
       readIsLast: idx === readChapters.length - 1,
       readChip: `chip-${ch.id}`,
@@ -406,26 +403,7 @@ Page({
     );
   },
 
-  // 超过 30 条的长章：续读本章剩余部分
-  onLoadMoreRead() {
-    // 目录页滚动到底也会触发 scrolltolower，那时不该加载正文
-    if (this.data.readView !== 'chapter' || this._readLoading) return;
-    const ch = readChapters[this.data.readChapterIdx];
-    const all = byChapter.get(ch.id) || [];
-    if (this.data.readItems.length >= all.length) return;
-    this._readLoading = true;
-    const next = all
-      .slice(0, this.data.readItems.length + READ_PAGE)
-      .map((g) => decorate(g, this._favSet));
-    this.setData(
-      { readItems: next, readHasMore: all.length > next.length },
-      () => {
-        this._readLoading = false;
-      }
-    );
-  },
-
-  onSwitchTab(e) {
+    onSwitchTab(e) {
     const tab = e.currentTarget.dataset.tab;
     if (tab === 'read') {
       // 进通读先落目录页；上次读到哪章在这里标出来，方便接着读
