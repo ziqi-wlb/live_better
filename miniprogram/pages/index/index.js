@@ -71,23 +71,31 @@ Page({
     });
   },
 
+  // navigateTo 失败默认完全静默（看起来就是"点了没反应"），这里补一个可见反馈
+  nav(url) {
+    wx.navigateTo({
+      url,
+      fail: (err) => {
+        console.error('[nav fail]', url, err);
+        wx.showToast({ title: '打开失败，请重试', icon: 'none' });
+      }
+    });
+  },
+
   // 主 CTA：进入指南库（搜索/筛选/排序都在那里）
   onExplore() {
-    wx.navigateTo({
-      url: '/pages/library/library'
-    });
+    this.nav('/pages/library/library');
   },
 
   // 次级入口：直达收藏 / 行动清单
   onOpenTab(e) {
-    wx.navigateTo({
-      url: `/pages/library/library?tab=${e.currentTarget.dataset.tab}`
-    });
+    this.nav(`/pages/library/library?tab=${e.currentTarget.dataset.tab}`);
   },
 
   // 查看今日一条的全文
   onOpenDaily(e) {
-    wx.navigateTo({ url: detailUrl(e.currentTarget.dataset.id, this.data.daily.ch) });
+    const ch = this.data.daily && this.data.daily.ch;
+    this.nav(detailUrl(e.currentTarget.dataset.id, ch));
   },
 
   // 生成分享图并保存到相册（绿底 + 一条结论 + 证据等级 + 出处）
