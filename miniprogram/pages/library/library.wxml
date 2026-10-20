@@ -16,7 +16,10 @@
 
   <!-- 指南 -->
   <view wx:if="{{activeTab === 'guide'}}" class="pane">
-    <view wx:if="{{readMode}}" class="reader-bar">
+    <view wx:if="{{readMode && readView === 'chapter'}}" class="reader-bar">
+      <view class="toc-btn" bindtap="onOpenToc">
+        <text>目录</text>
+      </view>
       <scroll-view class="chapter-bar" scroll-x scroll-into-view="{{readChip}}" scroll-with-animation>
         <view
           class="chapter-chip {{index === readChapterIdx ? 'chip-on' : ''}}"
@@ -43,7 +46,7 @@
         <view class="library" id="lib-top">
           <view class="lib-head">
             <text class="lib-title">{{readMode ? '通读全书' : '指南库'}}</text>
-            <text class="lib-count">{{readMode ? readChapters.length + ' 章 · 共 ' + totalCount + ' 条' : totalCount + ' 条结果'}}</text>
+            <text class="lib-count">{{readMode ? readChapters.length + ' 章 · 共 ' + bookTotal + ' 条' : totalCount + ' 条结果'}}</text>
           </view>
           <view class="mode-switch">
             <view class="mode-btn {{readMode ? '' : 'mode-on'}}" data-mode="find" bindtap="onSwitchMode">
@@ -151,8 +154,42 @@
         </view>
         </block>
 
-        <!-- 通读模式：一章一读，章末可续读或翻章 -->
+        <!-- 通读模式：先目录，选章后才进正文 -->
         <block wx:else>
+          <!-- 目录页 -->
+          <block wx:if="{{readView === 'toc'}}">
+            <view class="toc" id="read-top">
+              <view class="toc-head">
+                <text class="toc-book">高性价比人生指南</text>
+                <text class="toc-sub">共 {{readChapters.length}} 章 · {{bookTotal}} 条 · CC BY 4.0</text>
+              </view>
+
+              <view wx:if="{{readResume}}" class="toc-resume" bindtap="onResumeRead">
+                <view class="resume-left">
+                  <text class="resume-label">上次读到</text>
+                  <text class="resume-title">第 {{readResume.index + 1}} 章 · {{readResume.title}}</text>
+                </view>
+                <text class="resume-go">继续 →</text>
+              </view>
+
+              <view class="toc-list">
+                <view
+                  class="toc-row {{readResume && readResume.index === index ? 'toc-row-here' : ''}}"
+                  wx:for="{{readChapters}}"
+                  wx:key="id"
+                  data-idx="{{index}}"
+                  bindtap="onPickChapter"
+                >
+                  <text class="toc-num">{{index + 1}}</text>
+                  <text class="toc-title">{{item.title}}</text>
+                  <text class="toc-count">{{item.count}}</text>
+                </view>
+              </view>
+            </view>
+          </block>
+
+          <!-- 正文 -->
+          <block wx:else>
           <view class="reader-head" id="read-top">
             <text class="reader-title">第 {{readChapterIdx + 1}} 章 · {{readChapter.title}}</text>
             <text class="reader-sub">本章 {{readTotal}} 条<text wx:if="{{readHasMore}}">，还有 {{readTotal - readItems.length}} 条没读</text></text>
@@ -176,6 +213,7 @@
               <text>下一章 →</text>
             </view>
           </view>
+          </block>
         </block>
         <view class="footnote source-note">
           <text>内容来自《高性价比人生指南》(HowToLiveBetter)，作者 eternity4719，CC BY 4.0</text>

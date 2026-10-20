@@ -158,7 +158,12 @@ Page({
     todoDone: 0,
     // 通读模式（一章一章读，不施加任何筛选）
     readMode: false,
+    // toc = 目录页（进入通读先看这个），chapter = 正文
+    readView: 'toc',
+    readResume: null,
     readChapters,
+    // 全书条数，与筛选结果 totalCount 区分：目录页必须显示全书
+    bookTotal: guides.length,
     readChapterIdx: 0,
     readChapter: readChapters[0],
     readItems: [],
@@ -185,8 +190,8 @@ Page({
   onShow() {
     this.refreshState();
     this.applyFilters();
-    // 通读模式下收藏状态可能刚在详情页改过，回到本页要同步
-    if (this.data.readMode) {
+    // 通读模式停在正文时，收藏状态可能刚在详情页改过，回到本页要同步
+    if (this.data.readMode && this.data.readView === 'chapter') {
       this.buildReader();
     }
   },
@@ -355,14 +360,27 @@ Page({
     const mode = e.currentTarget.dataset.mode;
     if (mode === 'read') {
       if (this.data.readMode) return;
-      // 上次读到哪一章，就从哪一章接着读
+      // 先落到目录页；上次读到哪章在这里标出来，方便接着读
       const pos = store.getReadPos();
       const found = readChapters.findIndex((c) => c.id === pos.chapter);
-      const idx = found >= 0 ? found : 0;
-      this.setData({ readMode: true, readChapterIdx: idx }, () => this.buildReader());
+      const resume =
+        found >= 0 ? { index: found, chapter: pos.chapter, title: readChapters[found].title } : null;
+      this.setData({ readMode: true, readView: 'toc', readResume: resume, scrollInto: 'read-top' });
       return;
     }
     this.setData({ readMode: false, scrollInto: 'lib-top' });
+  },
+
+  // 正文 -> 目录
+  onOpenToc() {
+    this.setData({ readView: 'toc', scrollInto: 'read-top' });
+  },
+
+  // 目录页的「上次读到」
+  onResumeRead() {
+    const r = this.data.readResume;
+    if (!r) return;
+    this.setData({ readChapterIdx: r.index, readView: 'chapter' }, () => this.buildReader());
   },
 
   // 构建当前章的阅读视图
@@ -386,21 +404,28 @@ Page({
     store.setReadPos({ chapter: ch.id });
   },
 
-  // 章节目录：点击跳章
+  // 目录页 / 顶部章节条：点击进正文
   onPickChapter(e) {
     const idx = Number(e.currentTarget.dataset.idx);
-    if (!Number.isFinite(idx) || idx === this.data.readChapterIdx) return;
-    this.setData({ readChapterIdx: idx }, () => this.buildReader());
+    if (!Number.isFinite(idx)) return;
+    if (idx === this.data.readChapterIdx && this.data.readView === 'chapter') return;
+    this.setData({ readChapterIdx: idx, readView: 'chapter' }, () => this.buildReader());
   },
 
   onPrevChapter() {
     if (this.data.readIsFirst) return;
-    this.setData({ readChapterIdx: this.data.readChapterIdx - 1 }, () => this.buildReader());
+    this.setData(
+      { readChapterIdx: this.data.readChapterIdx - 1, readView: 'chapter' },
+      () => this.buildReader()
+    );
   },
 
   onNextChapter() {
     if (this.data.readIsLast) return;
-    this.setData({ readChapterIdx: this.data.readChapterIdx + 1 }, () => this.buildReader());
+    this.setData(
+      { readChapterIdx: this.data.readChapterIdx + 1, readView: 'chapter' },
+      () => this.buildReader()
+    );
   },
 
   // 超过 30 条的长章：续读本章剩余部分
