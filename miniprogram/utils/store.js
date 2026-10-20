@@ -1,6 +1,7 @@
 // 本地存储：收藏与行动清单（状态 + 备注）
 const FAV_KEY = 'life_guide_favs';
 const TODO_KEY = 'life_guide_todos';
+const READ_KEY = 'life_guide_read_pos';
 
 const STATUSES = ['准备做', '进行中', '已完成', '暂不适用'];
 
@@ -108,6 +109,16 @@ function hasTodo(id) {
   return getTodos().some((t) => t.id === id);
 }
 
+// 通读进度：记住上次读到哪一章，下次进入直接接着读
+function getReadPos() {
+  const p = read(READ_KEY, null);
+  return p && typeof p === 'object' && p.chapter ? p : { chapter: 1 };
+}
+
+function setReadPos(pos) {
+  write(READ_KEY, pos);
+}
+
 module.exports = {
   STATUSES,
   getFavs,
@@ -119,5 +130,7 @@ module.exports = {
   setTodoNote,
   toggleTodoDone,
   removeTodo,
-  hasTodo
+  hasTodo,
+  getReadPos,
+  setReadPos
 };

@@ -12,6 +12,21 @@ chapters.forEach((c) => {
 // 清单里只有 id，跳转详情需要知道它属于哪个章节（决定加载哪个分包）
 const chapterOf = new Map(guides.map((g) => [g.id, g.ch]));
 
+// 通读模式：全书按章组织，完全不受筛选影响（每章 7~50 条，多数一章可一次读完）
+const byChapter = new Map();
+guides.forEach((g) => {
+  const arr = byChapter.get(g.ch) || [];
+  arr.push(g);
+  byChapter.set(g.ch, arr);
+});
+byChapter.forEach((arr) => arr.sort((a, b) => a.no - b.no));
+const readChapters = chapters.map((c) => ({
+  id: c.id,
+  title: c.title,
+  count: (byChapter.get(c.id) || []).length
+}));
+const READ_PAGE = 30;
+
 // 与参考项目 packages/domain/catalog.ts 同口径
 const WEIGHTS = {
   money: { '0': 0, '少': 1, '多': 2 },
@@ -140,7 +155,18 @@ Page({
     todoList: [],
     favCount: 0,
     todoLeft: 0,
-    todoDone: 0
+    todoDone: 0,
+    // 通读模式（一章一章读，不施加任何筛选）
+    readMode: false,
+    readChapters,
+    readChapterIdx: 0,
+    readChapter: readChapters[0],
+    readItems: [],
+    readTotal: 0,
+    readHasMore: false,
+    readIsFirst: true,
+    readIsLast: false,
+    readChip: ''
   },
 
   onLoad(options) {
@@ -159,6 +185,10 @@ Page({
   onShow() {
     this.refreshState();
     this.applyFilters();
+    // 通读模式下收藏状态可能刚在详情页改过，回到本页要同步
+    if (this.data.readMode) {
+      this.buildReader();
+    }
   },
 
   refreshState() {
@@ -298,6 +328,11 @@ Page({
   },
 
   onLoadMore() {
+    // 通读模式：滚动到底自动续读本章剩余条目
+    if (this.data.readMode) {
+      this.onLoadMoreRead();
+      return;
+    }
     if (!this.data.hasMore || this._loading) return;
     this._loading = true;
     this._shownCount += PAGE_SIZE;
@@ -309,6 +344,79 @@ Page({
       },
       () => {
         this._loading = false;
+      }
+    );
+  },
+
+  /* ---------------- 通读模式：一章一章读 ---------------- */
+
+  // 切换「查找筛选 / 通读全书」
+  onSwitchMode(e) {
+    const mode = e.currentTarget.dataset.mode;
+    if (mode === 'read') {
+      if (this.data.readMode) return;
+      // 上次读到哪一章，就从哪一章接着读
+      const pos = store.getReadPos();
+      const found = readChapters.findIndex((c) => c.id === pos.chapter);
+      const idx = found >= 0 ? found : 0;
+      this.setData({ readMode: true, readChapterIdx: idx }, () => this.buildReader());
+      return;
+    }
+    this.setData({ readMode: false, scrollInto: 'lib-top' });
+  },
+
+  // 构建当前章的阅读视图
+  buildReader() {
+    const idx = Math.max(0, Math.min(this.data.readChapterIdx, readChapters.length - 1));
+    const ch = readChapters[idx];
+    const all = byChapter.get(ch.id) || [];
+    const shown = all.slice(0, READ_PAGE);
+    this.setData({
+      readChapterIdx: idx,
+      readChapter: ch,
+      readItems: shown.map((g) => decorate(g, this._favSet)),
+      readTotal: all.length,
+      readHasMore: all.length > shown.length,
+      readIsFirst: idx === 0,
+      readIsLast: idx === readChapters.length - 1,
+      readChip: `chip-${ch.id}`,
+      // 换章后回到本章开头
+      scrollInto: 'read-top'
+    });
+    store.setReadPos({ chapter: ch.id });
+  },
+
+  // 章节目录：点击跳章
+  onPickChapter(e) {
+    const idx = Number(e.currentTarget.dataset.idx);
+    if (!Number.isFinite(idx) || idx === this.data.readChapterIdx) return;
+    this.setData({ readChapterIdx: idx }, () => this.buildReader());
+  },
+
+  onPrevChapter() {
+    if (this.data.readIsFirst) return;
+    this.setData({ readChapterIdx: this.data.readChapterIdx - 1 }, () => this.buildReader());
+  },
+
+  onNextChapter() {
+    if (this.data.readIsLast) return;
+    this.setData({ readChapterIdx: this.data.readChapterIdx + 1 }, () => this.buildReader());
+  },
+
+  // 超过 30 条的长章：续读本章剩余部分
+  onLoadMoreRead() {
+    if (this._readLoading) return;
+    const ch = readChapters[this.data.readChapterIdx];
+    const all = byChapter.get(ch.id) || [];
+    if (this.data.readItems.length >= all.length) return;
+    this._readLoading = true;
+    const next = all
+      .slice(0, this.data.readItems.length + READ_PAGE)
+      .map((g) => decorate(g, this._favSet));
+    this.setData(
+      { readItems: next, readHasMore: all.length > next.length },
+      () => {
+        this._readLoading = false;
       }
     );
   },

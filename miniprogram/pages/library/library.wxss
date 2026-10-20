@@ -423,3 +423,111 @@ page {
   padding: 18rpx 34rpx;
   box-shadow: 0 8rpx 24rpx rgba(33, 77, 63, 0.35);
 }
+
+/* 模式切换：查找筛选 / 通读全书 */
+.mode-switch {
+  display: flex;
+  flex-direction: row;
+  background: #ffffff;
+  border: 1rpx solid #e3e6db;
+  border-radius: 999rpx;
+  padding: 6rpx;
+  margin-bottom: 24rpx;
+}
+
+.mode-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64rpx;
+  border-radius: 999rpx;
+  font-size: 26rpx;
+  color: #727b72;
+}
+
+.mode-on {
+  background: #214d3f;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* 章节目录（固定在列表顶部，不随内容滚动） */
+.reader-bar {
+  background: #fffef8;
+  border-bottom: 1rpx solid #e3e6db;
+  padding: 18rpx 0;
+}
+
+.chapter-bar {
+  white-space: nowrap;
+  padding: 0 24rpx;
+}
+
+.chapter-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 999rpx;
+  background: #ffffff;
+  border: 1rpx solid #e3e6db;
+  color: #727b72;
+  font-size: 24rpx;
+  margin-right: 14rpx;
+}
+
+.chip-on {
+  background: #214d3f;
+  border-color: #214d3f;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* 章首 */
+.reader-head {
+  display: flex;
+  flex-direction: column;
+  padding: 8rpx 4rpx 28rpx;
+}
+
+.reader-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #214d3f;
+  line-height: 1.4;
+}
+
+.reader-sub {
+  font-size: 23rpx;
+  color: #727b72;
+  margin-top: 10rpx;
+}
+
+/* 章末翻章 */
+.chapter-nav {
+  display: flex;
+  flex-direction: row;
+  margin-top: 32rpx;
+}
+
+.nav-btn {
+  flex: 1;
+  margin: 0 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 84rpx;
+  border-radius: 999rpx;
+  background: #ffffff;
+  border: 1rpx solid #d3ddcb;
+  color: #214d3f;
+  font-size: 26rpx;
+}
+
+.nav-off {
+  color: #b9c1b6;
+  border-color: #e8ebe2;
+  background: #f7f8f4;
+}

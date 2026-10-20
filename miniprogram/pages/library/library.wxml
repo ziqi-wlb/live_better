@@ -16,6 +16,20 @@
 
   <!-- 指南 -->
   <view wx:if="{{activeTab === 'guide'}}" class="pane">
+    <view wx:if="{{readMode}}" class="reader-bar">
+      <scroll-view class="chapter-bar" scroll-x scroll-into-view="{{readChip}}" scroll-with-animation>
+        <view
+          class="chapter-chip {{index === readChapterIdx ? 'chip-on' : ''}}"
+          wx:for="{{readChapters}}"
+          wx:key="id"
+          id="chip-{{item.id}}"
+          data-idx="{{index}}"
+          bindtap="onPickChapter"
+        >
+          <text>{{index + 1}}</text>
+        </view>
+      </scroll-view>
+    </view>
     <scroll-view
       class="scrollarea"
       scroll-y
@@ -28,9 +42,18 @@
       <view class="list">
         <view class="library" id="lib-top">
           <view class="lib-head">
-            <text class="lib-title">指南库</text>
-            <text class="lib-count">{{totalCount}} 条结果</text>
+            <text class="lib-title">{{readMode ? '通读全书' : '指南库'}}</text>
+            <text class="lib-count">{{readMode ? readChapters.length + ' 章 · 共 ' + totalCount + ' 条' : totalCount + ' 条结果'}}</text>
           </view>
+          <view class="mode-switch">
+            <view class="mode-btn {{readMode ? '' : 'mode-on'}}" data-mode="find" bindtap="onSwitchMode">
+              <text>查找筛选</text>
+            </view>
+            <view class="mode-btn {{readMode ? 'mode-on' : ''}}" data-mode="read" bindtap="onSwitchMode">
+              <text>通读全书</text>
+            </view>
+          </view>
+          <block wx:if="{{!readMode}}">
           <view class="search-row">
             <view class="search">
               <text class="search-icon">搜</text>
@@ -100,8 +123,10 @@
               <text>{{sortExplanation}}</text>
             </view>
           </view>
+          </block>
         </view>
 
+        <block wx:if="{{!readMode}}">
         <view wx:if="{{fuzzyMode === 'loose'}}" class="fuzzy-hint">
           <text>没有全部命中「{{keyword}}」的结果，已按相关度显示最相近的条目</text>
         </view>
@@ -124,6 +149,34 @@
         <view wx:elif="{{filtered.length > 0}}" class="footnote">
           <text>共 {{totalCount}} 条</text>
         </view>
+        </block>
+
+        <!-- 通读模式：一章一读，章末可续读或翻章 -->
+        <block wx:else>
+          <view class="reader-head" id="read-top">
+            <text class="reader-title">第 {{readChapterIdx + 1}} 章 · {{readChapter.title}}</text>
+            <text class="reader-sub">本章 {{readTotal}} 条<text wx:if="{{readHasMore}}">，还有 {{readTotal - readItems.length}} 条没读</text></text>
+          </view>
+          <guide-card
+            wx:for="{{readItems}}"
+            wx:key="id"
+            item="{{item}}"
+            bind:open="onOpenDetail"
+            bind:fav="onToggleFav"
+            bind:add="onAddTodo"
+          />
+          <view wx:if="{{readHasMore}}" class="footnote" bindtap="onLoadMoreRead">
+            <text>本章还有 {{readTotal - readItems.length}} 条 · 继续读</text>
+          </view>
+          <view class="chapter-nav">
+            <view class="nav-btn {{readIsFirst ? 'nav-off' : ''}}" bindtap="onPrevChapter">
+              <text>← 上一章</text>
+            </view>
+            <view class="nav-btn {{readIsLast ? 'nav-off' : ''}}" bindtap="onNextChapter">
+              <text>下一章 →</text>
+            </view>
+          </view>
+        </block>
         <view class="footnote source-note">
           <text>内容来自《高性价比人生指南》(HowToLiveBetter)，作者 eternity4719，CC BY 4.0</text>
           <view class="doc-links">
@@ -134,7 +187,7 @@
         </view>
       </view>
     </scroll-view>
-    <view wx:if="{{hasActiveFilters}}" class="fab-filter" bindtap="onBackToFilter">
+    <view wx:if="{{hasActiveFilters && !readMode}}" class="fab-filter" bindtap="onBackToFilter">
       <text>↑ 筛选</text>
     </view>
   </view>
