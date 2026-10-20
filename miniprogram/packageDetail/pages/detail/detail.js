@@ -1,6 +1,7 @@
 const { chapters, guides } = require('../../../data/guides.js');
 const details = require('../../data/details.js');
 const store = require('../../../utils/store');
+const { detailPath } = require('../../../utils/detail-path');
 
 const chapterMap = {};
 chapters.forEach((c) => {
@@ -159,7 +160,7 @@ Page({
     const item = this.data.item;
     return {
       title: item ? item.title : '人生指南',
-      path: `/packageDetail/pages/detail/detail?id=${item ? item.id : ''}`,
+      path: `${detailPath(item ? item.ch : 1)}?id=${item ? item.id : ''}`,
       imageUrl: '/assets/share-cover.png'
     };
   },

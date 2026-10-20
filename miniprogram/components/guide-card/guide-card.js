@@ -7,7 +7,8 @@ Component({
   },
   methods: {
     onOpen() {
-      this.triggerEvent('open', { id: this.data.item.id });
+      // 带上 ch：详情页按章节分布在不同的分包里
+      this.triggerEvent('open', { id: this.data.item.id, ch: this.data.item.ch });
     },
     onFav() {
       this.triggerEvent('fav', { id: this.data.item.id });

@@ -10,19 +10,27 @@
       "pages": [
         "pages/detail/detail"
       ]
+    },
+    {
+      "root": "packageDetail2",
+      "pages": [
+        "pages/detail/detail"
+      ]
     }
   ],
   "preloadRule": {
     "pages/index/index": {
       "network": "wifi",
       "packages": [
-        "packageDetail"
+        "packageDetail",
+        "packageDetail2"
       ]
     },
     "pages/library/library": {
-      "network": "all",
+      "network": "wifi",
       "packages": [
-        "packageDetail"
+        "packageDetail",
+        "packageDetail2"
       ]
     }
   },

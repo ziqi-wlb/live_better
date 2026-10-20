@@ -1,6 +1,7 @@
 const { chapters, guides } = require('../../data/guides');
 const store = require('../../utils/store');
 const { pickDaily, pickRandom, todayLabel } = require('../../utils/daily');
+const { detailUrl } = require('../../utils/detail-path');
 
 // 圆角矩形
 function rr(ctx, x, y, w, h, r) {
@@ -86,9 +87,7 @@ Page({
 
   // 查看今日一条的全文
   onOpenDaily(e) {
-    wx.navigateTo({
-      url: `/packageDetail/pages/detail/detail?id=${e.currentTarget.dataset.id}`
-    });
+    wx.navigateTo({ url: detailUrl(e.currentTarget.dataset.id, this.data.daily.ch) });
   },
 
   // 生成分享图并保存到相册（绿底 + 一条结论 + 证据等级 + 出处）

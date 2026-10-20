@@ -1,5 +1,6 @@
 const { chapters, guides, outcomes, audiences } = require('../../data/guides');
 const store = require('../../utils/store');
+const { detailUrl } = require('../../utils/detail-path');
 
 const PAGE_SIZE = 50;
 
@@ -7,6 +8,9 @@ const chapterMap = {};
 chapters.forEach((c) => {
   chapterMap[c.id] = c.title;
 });
+
+// 清单里只有 id，跳转详情需要知道它属于哪个章节（决定加载哪个分包）
+const chapterOf = new Map(guides.map((g) => [g.id, g.ch]));
 
 // 与参考项目 packages/domain/catalog.ts 同口径
 const WEIGHTS = {
@@ -425,9 +429,7 @@ Page({
   },
 
   onOpenDetail(e) {
-    wx.navigateTo({
-      url: `/packageDetail/pages/detail/detail?id=${e.detail.id}`
-    });
+    wx.navigateTo({ url: detailUrl(e.detail.id, e.detail.ch) });
   },
 
   onToggleFav(e) {
@@ -459,9 +461,7 @@ Page({
   onOpenFromTodo(e) {
     const { id, hasGuide } = e.currentTarget.dataset;
     if (hasGuide) {
-      wx.navigateTo({
-        url: `/packageDetail/pages/detail/detail?id=${id}`
-      });
+      wx.navigateTo({ url: detailUrl(id, chapterOf.get(id)) });
     }
   },
 

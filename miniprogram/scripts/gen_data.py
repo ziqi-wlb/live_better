@@ -3,7 +3,8 @@
 
 生成：
   miniprogram/data/guides.js                 —— 主包列表轻量数据（含筛选/排序所需全部字段）
-  miniprogram/packageDetail/data/details.js  —— 分包详情重数据
+  miniprogram/packageDetail/data/details.js   —— 分包详情重数据（第 1-SPLIT_CHAPTER 章）
+  miniprogram/packageDetail2/data/details.js  —— 分包详情重数据（其余章节）
 
 用法：python3 miniprogram/scripts/gen_data.py [catalog.json 路径]
 默认读取仓库根目录 data/catalog.json，其次读取 ~/project/github/live_better/data/catalog.json。
@@ -31,6 +32,11 @@ CANDIDATES = [
 ATTRIBUTION = '《高性价比人生指南》(HowToLiveBetter)，作者 eternity4719，遵循 CC BY 4.0：creativecommons.org/licenses/by/4.0/'
 LICENSE_URL = 'https://creativecommons.org/licenses/by/4.0/'
 REPO_URL = 'https://github.com/eternity4719/HowToLiveBetter'
+
+# 详情数据按章节拆到两个分包：单个分包上限 2MB，765 条详情（约 2.3MB）已超。
+# 切在第 11 章：1–11 约 1.05MB，12–34 约 1.15MB，两边都留足增长余量。
+# 改动此值必须同步 miniprogram/utils/detail-path.js 的 SPLIT_CHAPTER。
+SPLIT_CHAPTER = 11
 
 # 与 packages/domain/catalog.ts 保持一致
 OUTCOMES = {'死亡率': '换寿命', '金钱': '换钱', '时间': '换时间精力', '自由': '换人身自由'}
@@ -88,7 +94,8 @@ def main():
     ]
 
     guides = []
-    details = []
+    details_a = []  # 第 1..SPLIT_CHAPTER 章 -> packageDetail
+    details_b = []  # 其余章节 -> packageDetail2
     for g in catalog['guides']:
         gid = g['id']
         guides.append(
@@ -110,7 +117,7 @@ def main():
                 f'aud: {js_str(g.get("audienceGroups") or [])}',
             ]) + '}'
         )
-        details.append(
+        detail_line = (
             '  {0}: {{ text: {1}, costText: {2}, benefitText: {3}, notes: {4}, source: {5}, audienceGroups: {6}, links: {7}, sourcePath: {8} }}'.format(
                 js_str(gid),
                 js_str((g.get('plainText') or '').strip()),
@@ -123,6 +130,10 @@ def main():
                 js_str(g.get('sourcePath') or ''),
             )
         )
+        if int(g['chapterId']) <= SPLIT_CHAPTER:
+            details_a.append(detail_line)
+        else:
+            details_b.append(detail_line)
 
     chapter_lines = ', '.join(
         f'{{ id: {c["id"]}, title: {js_str(c["title"])} }}' for c in chapters
@@ -150,30 +161,44 @@ def main():
         '};\n'
     )
 
-    details_js = (
-        '// 本文件由 scripts/gen_data.py 生成，请勿手改。详情数据按需加载。\n'
-        f'// 内容来源：{ATTRIBUTION}\n'
-        'module.exports = {\n'
-        f'  attribution: {js_str(ATTRIBUTION)},\n'
-        f'  repoUrl: {js_str(REPO_URL)},\n'
-        f'  sourceCommit: {js_str(catalog.get("sourceCommit") or "")},\n'
-        f'  items: {{\n{", ".join(details)}\n  }}\n'
-        '};\n'
-    )
+    def details_js(items, note):
+        return (
+            '// 本文件由 scripts/gen_data.py 生成，请勿手改。详情数据按需加载。\n'
+            f'// {note}\n'
+            f'// 内容来源：{ATTRIBUTION}\n'
+            'module.exports = {\n'
+            f'  attribution: {js_str(ATTRIBUTION)},\n'
+            f'  repoUrl: {js_str(REPO_URL)},\n'
+            f'  sourceCommit: {js_str(catalog.get("sourceCommit") or "")},\n'
+            f'  items: {{\n{", ".join(items)}\n  }}\n'
+            '};\n'
+        )
 
     guides_path = os.path.join(ROOT, 'data', 'guides.js')
     details_path = os.path.join(ROOT, 'packageDetail', 'data', 'details.js')
-    os.makedirs(os.path.dirname(guides_path), exist_ok=True)
-    os.makedirs(os.path.dirname(details_path), exist_ok=True)
-    with open(guides_path, 'w', encoding='utf-8') as f:
-        f.write(guides_js)
-    with open(details_path, 'w', encoding='utf-8') as f:
-        f.write(details_js)
+    details2_path = os.path.join(ROOT, 'packageDetail2', 'data', 'details.js')
+
+    outputs = [
+        (guides_path, guides_js),
+        (
+            details_path,
+            details_js(details_a, f'第 1-{SPLIT_CHAPTER} 章，随 packageDetail 分包加载。')
+        ),
+        (
+            details2_path,
+            details_js(details_b, f'第 {SPLIT_CHAPTER + 1} 章及以后，随 packageDetail2 分包加载。')
+        ),
+    ]
+    for path, content in outputs:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(content)
 
     print(f'catalog: {catalog_path}')
     print(f'chapters: {len(chapters)}, guides: {len(guides)}')
     print(f'guides.js: {os.path.getsize(guides_path) // 1024} KB')
-    print(f'details.js: {os.path.getsize(details_path) // 1024} KB')
+    print(f'packageDetail/details.js:  {os.path.getsize(details_path) // 1024} KB ({len(details_a)} 条)')
+    print(f'packageDetail2/details.js: {os.path.getsize(details2_path) // 1024} KB ({len(details_b)} 条)')
 
 
 if __name__ == '__main__':
