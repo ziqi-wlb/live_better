@@ -89,6 +89,23 @@ uni-app 版依赖后端 API（未部署时列表为空并提示「请配置 HTTP
 
 `project.config.json`（原生版，开发者工具读取）与 `src/manifest.json`（uni-app 版 mp-weixin 配置）的 AppID 由调试号 `wxf6089afd28b90008` 改为正式号 `wx89c451bfbf0ab95b`。切换后需在开发者工具重新打开项目，并确认「详情 → 基本信息」显示新 AppID；上传权限需该 AppID 名下开发者/管理员身份。
 
+### 内容同步：699 → 765 条（submodule 更新到 5f210ca）
+
+- submodule `HowToLiveBetter` 从 `4540c90` 更新到上游最新 `5f210ca`（2026-10-15），重新导入后 **34 章 / 765 条**（净增 66 条）
+- **身份映射迁移 52 条**：上游有 52 条是改写/扩写（如「伤残鉴定要等治疗终结之后再做」→「…或者临床治疗效果稳定之后再做」）。`import-content.ts` 的护栏会因此拒绝导入。经逐一比对确认**无一条真删除**，全部是同条目改写，已把旧 id 迁移到新标题写入 `data/identity.json`，**用户收藏与行动清单不会失效**
+- 迁移后用护栏校验：旧 699 条中丢失 0 条，id 唯一
+
+### 详情数据拆分为两个分包（体积超限修复）
+
+765 条详情生成后 `packageDetail` 达 **2362 KB，超出单包 2048 KB 上限 314 KB**，必须拆包：
+
+- `gen_data.py` 按章节切分：新增 `SPLIT_CHAPTER = 11`，第 1–11 章写入 `packageDetail/data/details.js`（1140 KB / 367 条），第 12–34 章写入 `packageDetail2/data/details.js`（1209 KB / 398 条）。拆后两包各余 ~850–900 KB 增长空间
+- 新增分包 `packageDetail2`，其中详情页是 `packageDetail` 页面的副本（4 个文件、共 12 KB），`require('../../data/details.js')` 在各自包内自然解析到对应数据
+- 新增 `utils/detail-path.js`：按章节决定跳转哪个分包；`SPLIT_CHAPTER` 与 `gen_data.py` 的同名常量必须同步
+- 改造 4 处导航（首页今日一条、库页卡片、库页清单、详情页分享路径），`guide-card` 的 `open` 事件增加传 `ch`
+- `preloadRule` 改为两个包都预加载，但**仅 WiFi**——蜂窝网络下改为按需下载单个包（约 1.2MB），避免自动下载 2.3MB
+- 校验：两包数据无重叠、765 条无缺失、**每条路由到的包内都有对应数据（0 不一致）**
+
 ### 正式小程序 AppID
 
 `project.config.json` 与 `src/manifest.json` 的 mp-weixin AppID 切换为正式号 `wx57899135d259a2a6`（新注册的微信小程序账号）。此前 `wx89c451bfbf0ab95b` 为小游戏号（报 `game.json 未找到`），`wxf6089afd28b90008` 为开发期使用的号。切换后需在开发者工具重新打开项目并确认「详情 → 基本信息」。
