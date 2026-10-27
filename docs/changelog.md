@@ -2,6 +2,15 @@
 
 ## 2026-10-20
 
+### 再降一级：摘掉剪贴板调用，做到真正零隐私接口
+
+1.0.2 提审时微信仍提示「检测到隐私接口调用」。排查后发现残留在 `wx.setClipboardData`——微信隐私清单里的「剪切板」类型**同时包含读取和写入**，不只是 `getClipboardData`：
+
+- 详情页「复制固定版本原文链接」「链接 · 复制」改为直接展示链接文本，用 `user-select` 支持长按选中复制
+- 删掉 `onCopyFixedSource` / `onCopyLink`，两个分包同步
+- `navigation-bar` 中 `getSystemInfoSync` 的兜底分支一并移除（主路径本来就是 `getWindowInfo`）
+- 最终全项目只剩 `showToast / navigateTo / navigateBack / showShareMenu / getStorageSync / setStorageSync / getWindowInfo / getMenuButtonBoundingClientRect`，**均不在隐私接口清单内**
+
 ### 移除「存图分享」，改为零隐私接口
 
 后台的「用户隐私保护指引」一时找不到入口，而只要调用 `wx.saveImageToPhotosAlbum` 就必须声明「相册（仅写入）」。与其带着一个必然失败的功能上线，不如先摘掉：
