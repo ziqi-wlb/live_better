@@ -17,6 +17,6 @@
       </view>
     </view>
 
-    <view class="footnote"><text>本页内容最后更新：2026-10-15</text></view>
+    <view class="footnote"><text>本页内容最后更新：{{lastUpdated}}</text></view>
   </view>
 </scroll-view>
