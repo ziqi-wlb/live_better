@@ -57,18 +57,13 @@
       <view class="sec-title"><text>原始来源</text></view>
       <view class="sec-body sec-source"><text>{{item.source}}</text></view>
       <view class="sec-note"><text>证据等级 {{item.ev}}：{{evidenceDescText}}。等级与性价比相互独立。</text></view>
-      <view wx:if="{{fixedSourceUrl}}" class="copy-btn" bindtap="onCopyFixedSource">
-        <text>复制固定版本原文链接</text>
+      <view wx:if="{{fixedSourceUrl}}" class="source-link">
+        <text user-select="{{true}}">{{fixedSourceUrl}}</text>
       </view>
-      <view
-        wx:for="{{item.links}}"
-        wx:key="*this"
-        class="source-link"
-        data-link="{{item}}"
-        bindtap="onCopyLink"
-      >
-        <text>{{item}} · 复制</text>
+      <view wx:for="{{item.links}}" wx:key="*this" class="source-link">
+        <text user-select="{{true}}">{{item}}</text>
       </view>
+      <view class="sec-note"><text>长按链接可选中复制</text></view>
     </view>
 
     <view class="section">

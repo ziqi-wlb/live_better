@@ -56,11 +56,7 @@ Component({
       try {
         winInfo = wx.getWindowInfo();
       } catch (e) {
-        try {
-          winInfo = wx.getSystemInfoSync();
-        } catch (e2) {
-          // 忽略
-        }
+        // 工具窗未就绪时用兜底值
       }
       const statusBarHeight = winInfo.statusBarHeight || 20;
       const navHeight = Math.max(44, (rect.top - statusBarHeight) * 2 + rect.height);

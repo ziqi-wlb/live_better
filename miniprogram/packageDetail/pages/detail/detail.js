@@ -161,15 +161,6 @@ Page({
     wx.showToast({ title: '备注已保存', icon: 'none' });
   },
 
-  onCopyFixedSource() {
-    if (!this.data.fixedSourceUrl) return;
-    wx.setClipboardData({ data: this.data.fixedSourceUrl });
-  },
-
-  onCopyLink(e) {
-    wx.setClipboardData({ data: e.currentTarget.dataset.link });
-  },
-
   onOpenAgreement(e) {
     wx.navigateTo({
       url: `/pages/agreement/agreement?type=${e.currentTarget.dataset.type}`
