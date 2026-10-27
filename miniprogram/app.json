@@ -22,15 +22,13 @@
     "pages/index/index": {
       "network": "wifi",
       "packages": [
-        "packageDetail",
-        "packageDetail2"
+        "packageDetail"
       ]
     },
     "pages/library/library": {
       "network": "wifi",
       "packages": [
-        "packageDetail",
-        "packageDetail2"
+        "packageDetail"
       ]
     }
   },
