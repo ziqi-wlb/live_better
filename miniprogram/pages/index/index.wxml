@@ -27,9 +27,6 @@
           <view class="daily-btn" data-id="{{daily.id}}" bindtap="onOpenDaily">
             <text>查看全文</text>
           </view>
-          <view class="daily-btn daily-btn-main" bindtap="onSavePoster">
-            <text>存图分享</text>
-          </view>
         </view>
         <text class="daily-foot">不用全做。挑走一两条，就算数。</text>
       </view>

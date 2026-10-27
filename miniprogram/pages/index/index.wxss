@@ -127,6 +127,7 @@ page {
   margin-top: 26rpx;
 }
 
+/* 卡片上只剩「查看全文」一个动作，做成实心主按钮 */
 .daily-btn {
   flex: 1;
   display: flex;
@@ -135,16 +136,9 @@ page {
   justify-content: center;
   height: 80rpx;
   border-radius: 999rpx;
-  border: 2rpx solid #214d3f;
-  color: #214d3f;
-  font-size: 26rpx;
-  margin-right: 16rpx;
-}
-
-.daily-btn-main {
-  margin-right: 0;
   background: #214d3f;
   color: #ffffff;
+  font-size: 26rpx;
 }
 
 .daily-foot {
