@@ -8,7 +8,7 @@ chapters.forEach((c) => {
   chapterMap[c.id] = c.title;
 });
 
-const ACTION_OPTIONS = ['准备做', '进行中', '已完成', '暂不适用', '移出行动'];
+const ACTION_OPTIONS = ['准备做', '进行中', '已完成', '暂不适用', '移出清单'];
 const evidenceDesc = {
   A: '可核对数字及原始研究或官方文件',
   B: '研究支持但有限',
@@ -23,7 +23,7 @@ Page({
     navHidden: false,
     fav: false,
     inTodo: false,
-    actionLabel: '加入行动清单',
+    actionLabel: '加入清单',
     note: '',
     actionOptions: ACTION_OPTIONS,
     audienceText: '',
@@ -109,7 +109,7 @@ Page({
     this.setData({
       fav: store.getFavs().indexOf(id) >= 0,
       inTodo: !!todo,
-      actionLabel: todo ? todo.status : '加入行动清单',
+      actionLabel: todo ? todo.status : '加入清单',
       note: todo ? todo.note || '' : this.data.note || ''
     });
   },
@@ -126,7 +126,7 @@ Page({
   onAddTodo() {
     const { id, title } = this.data.item;
     const ok = store.addTodo(id, title);
-    wx.showToast({ title: ok ? '已加入行动清单（准备做）' : '已在清单中', icon: 'none' });
+    wx.showToast({ title: ok ? '已加入清单（准备做）' : '已在清单中', icon: 'none' });
     this.refreshState();
   },
 
@@ -134,7 +134,7 @@ Page({
     const idx = Number(e.detail.value);
     const value = ACTION_OPTIONS[idx];
     const { id, title } = this.data.item;
-    if (value === '移出行动') {
+    if (value === '移出清单') {
       store.setTodoStatus(id, null);
       this.setData({ note: '' });
     } else {
@@ -144,7 +144,7 @@ Page({
       store.setTodoStatus(id, value);
     }
     this.refreshState();
-    wx.showToast({ title: value === '移出行动' ? '已移出清单' : `状态：${value}`, icon: 'none' });
+    wx.showToast({ title: value === '移出清单' ? '已移出清单' : `状态：${value}`, icon: 'none' });
   },
 
   onNoteInput(e) {
@@ -154,7 +154,7 @@ Page({
   onSaveNote() {
     const todo = store.getTodo(this.data.item.id);
     if (!todo) {
-      wx.showToast({ title: '请先加入行动清单', icon: 'none' });
+      wx.showToast({ title: '请先加入清单', icon: 'none' });
       return;
     }
     store.setTodoNote(this.data.item.id, this.data.note);
