@@ -244,3 +244,26 @@ page {
   font-size: 22rpx;
   margin: 0 12rpx;
 }
+
+/* ===== 等级配色 =====
+   性价比 roi：暖色，越值得做越醒目（极高/高/一般）
+   证据等级 ev：绿色，越可靠越深（A/B/C）
+   标签用背景色区分，数值用字体色区分。 ===== */
+
+/* 标签：背景色 */
+.roi-top { background: #c05621; color: #ffffff; }
+.roi-high { background: #c98a1b; color: #ffffff; }
+.roi-mid { background: #e7eddf; color: #214d3f; }
+
+.ev-a { background: #214d3f; color: #ffffff; }
+.ev-b { background: #7d9670; color: #ffffff; }
+.ev-c { background: #f1f4ec; color: #8a917d; }
+
+/* 数值：字体色 */
+.roi-text-top { color: #c05621; }
+.roi-text-high { color: #c98a1b; }
+.roi-text-mid { color: #8a917d; }
+
+.ev-text-a { color: #214d3f; }
+.ev-text-b { color: #7d9670; }
+.ev-text-c { color: #9aa08f; }

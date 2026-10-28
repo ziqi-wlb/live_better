@@ -1,4 +1,4 @@
-<navigation-bar title="人生指南" back="{{false}}" color="black" background="#FFFDF6"></navigation-bar>
+<navigation-bar title="高性价比人生笔记" back="{{false}}" color="black" background="#FFFDF6"></navigation-bar>
 <scroll-view class="scrollarea" scroll-y type="list">
   <view class="landing">
     <view class="landing-main">
@@ -20,7 +20,7 @@
         <text class="daily-title">{{daily.title}}</text>
         <text class="daily-text">{{daily.summary}}</text>
         <view class="daily-meta">
-          <text class="daily-badge">证据 {{daily.ev}}</text>
+          <text class="daily-badge {{daily.ev === 'A' ? 'ev-a' : (daily.ev === 'B' ? 'ev-b' : 'ev-c')}}">证据 {{daily.ev}}</text>
           <text class="daily-ch">{{daily.chapterTitle}}</text>
         </view>
         <view class="daily-actions">

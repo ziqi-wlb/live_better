@@ -1,8 +1,8 @@
 <view class="card" bindtap="onOpen">
   <view class="card-top">
     <view class="tags">
-      <text class="tag tag-roi">{{item.roi}}</text>
-      <text class="tag tag-ev">证据 {{item.ev}}</text>
+      <text class="tag tag-roi {{item.roi === '极高' ? 'roi-top' : (item.roi === '高' ? 'roi-high' : 'roi-mid')}}">{{item.roi}}</text>
+      <text class="tag tag-ev {{item.ev === 'A' ? 'ev-a' : (item.ev === 'B' ? 'ev-b' : 'ev-c')}}">证据 {{item.ev}}</text>
       <text wx:if="{{item.cv}}" class="tag tag-cv">争议</text>
       <text wx:if="{{item.nv}}" class="tag tag-nv">待核实</text>
     </view>
