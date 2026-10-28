@@ -141,20 +141,7 @@ page {
   font-size: 26rpx;
 }
 
-/* 分享用 button open-type=share，需重置组件自带样式 */
-button.daily-btn {
-  margin: 0;
-  padding: 0;
-  line-height: normal;
-  font-size: 26rpx;
-  border-radius: 999rpx;
-}
-
-button.daily-btn::after {
-  border: none;
-}
-
-button.daily-btn-share {
+.daily-btn-share {
   margin-left: 16rpx;
   background: transparent;
   color: #214d3f;

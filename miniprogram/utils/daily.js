@@ -9,6 +9,9 @@ function decorate(g) {
   const summary = g.summary.length > 90 ? `${g.summary.slice(0, 90)}…` : g.summary;
   return {
     id: g.id,
+    // ch 必须带出去：详情页按章节分在两个分包里，
+    // 没有 ch 就会算错分包，导致「未找到该建议」
+    ch: g.ch,
     title: g.title,
     summary,
     ev: g.ev,

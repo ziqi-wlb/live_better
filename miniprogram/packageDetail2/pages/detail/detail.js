@@ -167,6 +167,21 @@ Page({
     });
   },
 
+  // 页面内分享按钮：Skyline 下 button open-type=share 渲染不可靠，
+  // 改用 view + 主动拉起分享面板
+  onShareItem() {
+    const item = this.data.item;
+    if (typeof wx.shareAppMessage === 'function') {
+      wx.shareAppMessage({
+        title: item ? `${item.title}｜高性价比人生笔记` : '高性价比人生笔记',
+        path: `${detailPath(item ? item.ch : 1)}?id=${item ? item.id : ''}`,
+        imageUrl: '/assets/share-cover.png'
+      });
+      return;
+    }
+    wx.showToast({ title: '请点右上角「···」转发给朋友', icon: 'none' });
+  },
+
   onShareAppMessage() {
     const item = this.data.item;
     return {

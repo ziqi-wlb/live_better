@@ -83,6 +83,7 @@ Page({
 
   onLoad(options) {
     this.setTab(options && options.type === 'privacy' ? 'privacy' : 'terms');
+    wx.showShareMenu({ menus: ['shareAppMessage', 'shareTimeline'] });
   },
 
   setTab(tab) {
@@ -95,5 +96,21 @@ Page({
 
   onSwitchTab(e) {
     this.setTab(e.currentTarget.dataset.tab);
+  },
+
+  onShareAppMessage() {
+    return {
+      title: `高性价比人生笔记 · ${this.data.navTitle}`,
+      path: `/pages/agreement/agreement?type=${this.data.tab}`,
+      imageUrl: '/assets/share-cover.png'
+    };
+  },
+
+  onShareTimeline() {
+    return {
+      title: `高性价比人生笔记 · ${this.data.navTitle}`,
+      query: `type=${this.data.tab}`,
+      imageUrl: '/assets/share-cover.png'
+    };
   }
 });

@@ -77,9 +77,9 @@
             <text>{{actionLabel}} ▾</text>
           </view>
         </picker>
-        <button class="act act-share" open-type="share">
+        <view class="act act-share" bindtap="onShareItem">
           <text>分享</text>
-        </button>
+        </view>
       </view>
       <textarea
         class="note-input"

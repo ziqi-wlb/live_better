@@ -66,14 +66,38 @@ Page({
 
   // 查看今日一条的全文
   onOpenDaily(e) {
-    const ch = this.data.daily && this.data.daily.ch;
-    this.nav(detailUrl(e.currentTarget.dataset.id, ch));
+    const id = e.currentTarget.dataset.id;
+    const daily = this.data.daily;
+    let ch = daily ? daily.ch : undefined;
+    // 兜底：万一 daily 没带 ch，回源查一次，避免算出错误的分包
+    if (ch === undefined || ch === null) {
+      const found = guides.find((g) => g.id === id);
+      ch = found ? found.ch : 1;
+    }
+    this.nav(detailUrl(id, ch));
   },
 
   onOpenAgreement(e) {
     wx.navigateTo({
       url: `/pages/agreement/agreement?type=${e.currentTarget.dataset.type}`
     });
+  },
+
+  // 页面内分享按钮：Skyline 下 button open-type=share 渲染不可靠，
+  // 改用 view + 主动拉起分享面板
+  onShareDaily() {
+    const daily = this.data.daily;
+    if (typeof wx.shareAppMessage === 'function') {
+      wx.shareAppMessage({
+        title: daily
+          ? `${daily.title}｜高性价比人生笔记`
+          : '把有限的精力，花在值得的地方｜高性价比人生笔记',
+        path: '/pages/index/index',
+        imageUrl: '/assets/share-cover.png'
+      });
+      return;
+    }
+    wx.showToast({ title: '请点右上角「···」转发给朋友', icon: 'none' });
   },
 
   onShareAppMessage() {
