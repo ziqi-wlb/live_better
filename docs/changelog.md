@@ -44,9 +44,21 @@
 - **协议页漏了分享配置**（其余四个页面都有），补齐 `showShareMenu` + `onShareAppMessage` + `onShareTimeline`
 - 五个页面 json 补 `enableShareAppMessage` / `enableShareTimeline`（基础库 2.11.3+ 需显式开启，**此前一直没配**）
 - **修断链**：分享标题原写「…｜人生指南」，与小程序名「高性价比人生笔记」不一致，收到分享的人按名字搜会搜不到。全部改掉；详情页分享标题带上条目标题
-- 首页卡片加「分享给朋友」、详情页行动区加「分享」。Skyline 下 `<button open-type="share">` 渲染不出来，改用 `<view bindtap>` + `wx.shareAppMessage()`
+- 首页卡片加「分享给朋友」、详情页行动区加「分享」，都用 `<button open-type="share">`
+
+**踩过的坑（值得记）**：一度以为 Skyline 不渲染 button，改成 `<view bindtap>` + `wx.shareAppMessage()`。但 `wx.shareAppMessage` 是**小游戏**的 API，**小程序里根本没有**——按钮点了只会弹一句「请点右上角」，根本分享不出去。
+
+微信的规则是：触发转发**只有两条路**
+
+1. 右上角「···」→ 转发给朋友（需页面定义 `onShareAppMessage`）
+2. `<button open-type="share">`（**必须是 button 组件，view 上加 open-type 无效**）
+
+两条路触发的是**同一个 `onShareAppMessage`**，效果完全等价。小程序没有"主动拉起分享面板"的 API（这是刻意设计，防止骚扰用户）。
+
+另外 button 自带一圈去不掉的边框，要用 `plain="true"` 配合 `button[plain] { border: 0 }` 消掉。
 
 > 注意：开发者工具的模拟器**不显示右上角「···」里的分享入口**，这是已知行为，必须在真机（或已发布的正式版）上验证。
+> 朋友圈分享**只能走右上角菜单**，按钮触发不了。
 
 ## 2026-10-20
 
