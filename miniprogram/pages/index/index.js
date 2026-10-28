@@ -78,7 +78,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '把有限的精力，花在值得的地方｜人生指南',
+      title: '把有限的精力，花在值得的地方｜高性价比人生笔记',
       path: '/pages/index/index',
       imageUrl: '/assets/share-cover.png'
     };
@@ -86,7 +86,7 @@ Page({
 
   onShareTimeline() {
     return {
-      title: '把有限的精力，花在值得的地方｜人生指南',
+      title: '把有限的精力，花在值得的地方｜高性价比人生笔记',
       query: '',
       imageUrl: '/assets/share-cover.png'
     };

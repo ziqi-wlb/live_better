@@ -170,7 +170,7 @@ Page({
   onShareAppMessage() {
     const item = this.data.item;
     return {
-      title: item ? item.title : '人生指南',
+      title: item ? `${item.title}｜高性价比人生笔记` : '高性价比人生笔记',
       path: `${detailPath(item ? item.ch : 1)}?id=${item ? item.id : ''}`,
       imageUrl: '/assets/share-cover.png'
     };
@@ -179,7 +179,7 @@ Page({
   onShareTimeline() {
     const item = this.data.item;
     return {
-      title: item ? item.title : '人生指南',
+      title: item ? `${item.title}｜高性价比人生笔记` : '高性价比人生笔记',
       query: item ? `id=${item.id}` : '',
       imageUrl: '/assets/share-cover.png'
     };
