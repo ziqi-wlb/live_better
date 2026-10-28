@@ -27,9 +27,9 @@
           <view class="daily-btn" data-id="{{daily.id}}" bindtap="onOpenDaily">
             <text>查看全文</text>
           </view>
-          <view class="daily-btn daily-btn-share" bindtap="onShareDaily">
+          <button class="daily-btn daily-btn-share" open-type="share" plain="true">
             <text>分享给朋友</text>
-          </view>
+          </button>
         </view>
         <text class="daily-foot">不用全做。挑走一两条，就算数。</text>
       </view>

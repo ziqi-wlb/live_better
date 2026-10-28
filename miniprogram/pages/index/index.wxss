@@ -141,6 +141,25 @@ page {
   font-size: 26rpx;
 }
 
+/* button open-type=share 是唯一等价于右上角「转发给朋友」的写法：
+   官方规定必须是 button 组件，view 上加 open-type 无效。
+   plain 用于去掉 button 自带的边框，否则会出现一圈去不掉的黑边。 */
+button.daily-btn {
+  margin: 0;
+  padding: 0;
+  line-height: normal;
+  font-size: 26rpx;
+  border-radius: 999rpx;
+}
+
+button.daily-btn::after {
+  border: none;
+}
+
+button[plain] {
+  border: 0;
+}
+
 .daily-btn-share {
   margin-left: 16rpx;
   background: transparent;

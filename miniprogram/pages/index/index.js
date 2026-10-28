@@ -83,26 +83,15 @@ Page({
     });
   },
 
-  // 页面内分享按钮：Skyline 下 button open-type=share 渲染不可靠，
-  // 改用 view + 主动拉起分享面板
-  onShareDaily() {
-    const daily = this.data.daily;
-    if (typeof wx.shareAppMessage === 'function') {
-      wx.shareAppMessage({
-        title: daily
-          ? `${daily.title}｜高性价比人生笔记`
-          : '把有限的精力，花在值得的地方｜高性价比人生笔记',
-        path: '/pages/index/index',
-        imageUrl: '/assets/share-cover.png'
-      });
-      return;
-    }
-    wx.showToast({ title: '请点右上角「···」转发给朋友', icon: 'none' });
-  },
-
+  // 首页分享：右上角「···」和页面内 button open-type=share 都会走这里。
+  // 带条目标题比一句口号点击率高，故优先用 daily 的标题。
   onShareAppMessage() {
+    const daily = this.data.daily;
+    const t = daily && daily.title ? daily.title : '';
     return {
-      title: '把有限的精力，花在值得的地方｜高性价比人生笔记',
+      title: t
+        ? `${t.length > 20 ? `${t.slice(0, 20)}…` : t}｜高性价比人生笔记`
+        : '把有限的精力，花在值得的地方｜高性价比人生笔记',
       path: '/pages/index/index',
       imageUrl: '/assets/share-cover.png'
     };
