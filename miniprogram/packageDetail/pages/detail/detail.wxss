@@ -182,6 +182,14 @@ page {
   margin-left: 22rpx;
 }
 
+/* picker 内部的按钮要撑满 picker。它不像左右两个那样是 .actions 的直接
+   子元素，flex:1 对它无效，宽度会退化成由文字长短决定，于是比两边宽。 */
+.act-picker .act {
+  width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
 /* button open-type=share 是唯一等价于右上角「转发给朋友」的写法：
    官方规定必须是 button 组件，view 上加 open-type 无效。
    plain 用于去掉 button 自带的边框。 */
