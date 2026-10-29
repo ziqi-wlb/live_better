@@ -18,10 +18,11 @@ Page({
     this.refreshCounts();
     this._dailyShuffled = false;
     this.setData({ daily: pickDaily(), todayLabel: todayLabel() });
-    // preloadRule 里首页只预下载 packageDetail（单页限额 2M），
-    // 这里再补上另一个分包，覆盖第 12 章以后的条目
+    // preloadRule 每个页面只能放 2M，放不下两个详情分包（1.1M + 1.2M），
+    // 所以首页预下载 detailA，这里手动补 detailB，让第 12 章以后也能秒开。
+    // 注意传的是 name（分包别名），不是 root —— 官方说预下载时用别名。
     if (typeof wx.preloadSubpackage === 'function') {
-      wx.preloadSubpackage({ name: 'packageDetail2' });
+      wx.preloadSubpackage({ name: 'detailB' });
     }
   },
 

@@ -7,12 +7,14 @@
   "subPackages": [
     {
       "root": "packageDetail",
+      "name": "detailA",
       "pages": [
         "pages/detail/detail"
       ]
     },
     {
       "root": "packageDetail2",
+      "name": "detailB",
       "pages": [
         "pages/detail/detail"
       ]

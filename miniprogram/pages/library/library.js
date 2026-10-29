@@ -229,6 +229,11 @@ Page({
     this.refreshState();
     this.setData({ searchHistory: getSearchHistory() });
     wx.showShareMenu({ menus: ['shareAppMessage', 'shareTimeline'] });
+    // 本页 preloadRule 预下载的是 packageDetail2，这里补上另一个分包，
+    // 让第 1-11 章的条目点进去也不用等
+    if (typeof wx.preloadSubpackage === 'function') {
+      wx.preloadSubpackage({ name: 'detailA' });
+    }
   },
 
   onShow() {

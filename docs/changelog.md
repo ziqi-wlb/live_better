@@ -32,7 +32,8 @@
 
 - 两个页面的 `network` 都改为 `all`
 - 首页预下载 `packageDetail`，指南页预下载 `packageDetail2`（微信限制单页预下载 2M，两个包合计 2.3M 放不下一页，只能分开）
-- 首页 `onLoad` 额外调 `wx.preloadSubpackage({ name: 'packageDetail2' })` 补上另一半
+- 两个分包都补上 `name`（`detailA` / `detailB`）—— **`wx.preloadSubpackage` 传的是分包别名，不是 root**，原先传 root 很可能根本没生效
+- 首页 `onLoad` 调 `wx.preloadSubpackage({ name: 'detailB' })`，指南页 `onLoad` 调 `detailA`，两个页面合起来覆盖两个包
 - 跳转加**延迟 200ms 的 loading**：跳得快不会闪，分包加载慢时用户能看到「加载中」而不是干等
 
 ### 搜索框提示词去重
