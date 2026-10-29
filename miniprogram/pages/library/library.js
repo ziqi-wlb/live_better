@@ -14,12 +14,13 @@ const chapterOf = new Map(guides.map((g) => [g.id, g.ch]));
 
 // 搜索历史：只存关键词本身，留在本机，用于下次少打字
 const HISTORY_KEY = 'searchHistory';
-const HISTORY_MAX = 10; // 最多留几条
+const HISTORY_MAX = 6; // 最多留几条（也就是「最近在搜」显示几条）
 const HISTORY_LEN = 30; // 单条最长几个字
 
 // 读出来的东西一律当脏数据处理：storage 可能被别的版本、别的逻辑或用户
-// 手动改过，里面可能有非字符串、空串、超长串、重复项。统一在这里洗干净，
-// 保证下游拿到的永远是「非空、去重、不超长、不超量」的字符串数组。
+// 手动改过，里面可能有非字符串、空串、超长串、重复项，也可能超过 6 条
+// （比如从旧版本升级上来）。统一在这里洗干净，保证下游拿到的永远是
+// 「非空、去重、不超长、不超量」的字符串数组。
 function cleanHistory(raw) {
   if (!Array.isArray(raw)) return [];
   const out = [];
