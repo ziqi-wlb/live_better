@@ -18,6 +18,11 @@ Page({
     this.refreshCounts();
     this._dailyShuffled = false;
     this.setData({ daily: pickDaily(), todayLabel: todayLabel() });
+    // preloadRule 里首页只预下载 packageDetail（单页限额 2M），
+    // 这里再补上另一个分包，覆盖第 12 章以后的条目
+    if (typeof wx.preloadSubpackage === 'function') {
+      wx.preloadSubpackage({ name: 'packageDetail2' });
+    }
   },
 
   onShow() {
@@ -43,11 +48,24 @@ Page({
     });
   },
 
-  // navigateTo 失败默认完全静默（看起来就是"点了没反应"），这里补一个可见反馈
+  // navigateTo 失败默认完全静默（看起来就是"点了没反应"），这里补一个可见反馈。
+  // 首次进详情页要下载并解析 1MB 多的详情分包，慢的时候中间有几秒空窗，
+  // 所以延迟 200ms 才出 loading：跳得快就不会闪，跳得慢用户能看到在加载。
   nav(url) {
+    let shown = false;
+    const timer = setTimeout(() => {
+      shown = true;
+      wx.showLoading({ title: '加载中', mask: true });
+    }, 200);
+    const done = () => {
+      clearTimeout(timer);
+      if (shown) wx.hideLoading();
+    };
     wx.navigateTo({
       url,
+      success: done,
       fail: (err) => {
+        done();
         console.error('[nav fail]', url, err);
         wx.showToast({ title: '打开失败，请重试', icon: 'none' });
       }

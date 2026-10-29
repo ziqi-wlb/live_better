@@ -627,3 +627,59 @@ page {
   border-color: #e8ebe2;
   background: #f7f8f4;
 }
+
+
+/* ===== 最近在搜 ===== */
+.history {
+  margin: 26rpx 0 6rpx;
+}
+
+.history-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14rpx;
+}
+
+.history-title {
+  font-size: 24rpx;
+  color: #8a917d;
+}
+
+.history-clear {
+  font-size: 24rpx;
+  color: #8a917d;
+  padding: 4rpx 0 4rpx 20rpx;
+}
+
+.history-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.history-item {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 68rpx;
+  box-sizing: border-box;
+  padding-right: 12rpx;
+}
+
+.history-clock {
+  font-size: 22rpx;
+  color: #b9beb1;
+  margin-right: 8rpx;
+}
+
+.history-kw {
+  flex: 1;
+  font-size: 26rpx;
+  color: #4a5445;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -12,6 +12,34 @@ chapters.forEach((c) => {
 // 清单里只有 id，跳转详情需要知道它属于哪个章节（决定加载哪个分包）
 const chapterOf = new Map(guides.map((g) => [g.id, g.ch]));
 
+// 搜索历史：只存关键词本身，留在本机，用于下次少打字
+const HISTORY_KEY = 'searchHistory';
+const HISTORY_MAX = 10;
+
+function getSearchHistory() {
+  try {
+    const v = wx.getStorageSync(HISTORY_KEY);
+    return Array.isArray(v) ? v : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function addSearchHistory(kw) {
+  const t = String(kw || '').trim();
+  if (!t) return getSearchHistory();
+  // 已经搜过的提到最前，不留重复
+  let list = getSearchHistory().filter((x) => x !== t);
+  list.unshift(t);
+  if (list.length > HISTORY_MAX) list = list.slice(0, HISTORY_MAX);
+  try {
+    wx.setStorageSync(HISTORY_KEY, list);
+  } catch (e) {
+    // 存储失败不影响搜索本身
+  }
+  return list;
+}
+
 // 通读模式：全书按章组织，完全不受筛选影响（每章 7~50 条，多数一章可一次读完）
 const byChapter = new Map();
 guides.forEach((g) => {
@@ -121,6 +149,7 @@ Page({
     audienceOptions: ['不限'].concat(audiences),
     // 筛选状态
     keyword: '',
+    searchHistory: [],
     chapterIdx: 0,
     outcome: '',
     ev: '',
@@ -181,6 +210,7 @@ Page({
     this._all = [];
     this.applyFilters();
     this.refreshState();
+    this.setData({ searchHistory: getSearchHistory() });
     wx.showShareMenu({ menus: ['shareAppMessage', 'shareTimeline'] });
   },
 
@@ -423,7 +453,8 @@ Page({
   },
 
   onKeyword(e) {
-    this.setData({ keyword: e.detail.value });
+    const value = e.detail.value;
+    this.setData({ keyword: value });
     // 输入即时筛选（bindinput 自动触发），加 300ms 防抖避免逐键重算列表
     if (this._kwTimer) {
       clearTimeout(this._kwTimer);
@@ -431,7 +462,31 @@ Page({
     this._kwTimer = setTimeout(() => {
       this._kwTimer = null;
       this.applyFilters();
+      // 停稳后记入历史；单字太泛，没有复用价值
+      if (value.trim().length >= 2) {
+        this.setData({ searchHistory: addSearchHistory(value) });
+      }
     }, 300);
+  },
+
+  // 点历史词直接搜，不用再手打
+  onPickHistory(e) {
+    const kw = e.currentTarget.dataset.kw || '';
+    if (this._kwTimer) {
+      clearTimeout(this._kwTimer);
+      this._kwTimer = null;
+    }
+    this.setData({ keyword: kw, searchHistory: addSearchHistory(kw) });
+    this.applyFilters();
+  },
+
+  onClearHistory() {
+    try {
+      wx.setStorageSync(HISTORY_KEY, []);
+    } catch (e) {
+      // 忽略
+    }
+    this.setData({ searchHistory: [] });
   },
 
   // 展开/收起高级筛选面板
@@ -533,8 +588,23 @@ Page({
     this.applyFilters();
   },
 
+  // 首次进某个详情分包要下载并解析 1MB 多，慢的时候中间有几秒空窗。
+  // 延迟 200ms 才出 loading：跳得快不闪，跳得慢用户能看到在加载。
+  openDetailPage(url) {
+    let shown = false;
+    const timer = setTimeout(() => {
+      shown = true;
+      wx.showLoading({ title: '加载中', mask: true });
+    }, 200);
+    const done = () => {
+      clearTimeout(timer);
+      if (shown) wx.hideLoading();
+    };
+    wx.navigateTo({ url, success: done, fail: done });
+  },
+
   onOpenDetail(e) {
-    wx.navigateTo({ url: detailUrl(e.detail.id, e.detail.ch) });
+    this.openDetailPage(detailUrl(e.detail.id, e.detail.ch));
   },
 
   onToggleFav(e) {
@@ -566,7 +636,7 @@ Page({
   onOpenFromTodo(e) {
     const { id, hasGuide } = e.currentTarget.dataset;
     if (hasGuide) {
-      wx.navigateTo({ url: detailUrl(id, chapterOf.get(id)) });
+      this.openDetailPage(detailUrl(id, chapterOf.get(id)));
     }
   },
 

@@ -20,15 +20,15 @@
   ],
   "preloadRule": {
     "pages/index/index": {
-      "network": "wifi",
+      "network": "all",
       "packages": [
         "packageDetail"
       ]
     },
     "pages/library/library": {
-      "network": "wifi",
+      "network": "all",
       "packages": [
-        "packageDetail"
+        "packageDetail2"
       ]
     }
   },

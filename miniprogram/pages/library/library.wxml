@@ -50,6 +50,29 @@
               <text>筛选{{activeFilterCount > 0 ? ' · ' + activeFilterCount : ''}} {{filterPanelOpen ? '▴' : '▾'}}</text>
             </view>
           </view>
+
+          <!-- 最近在搜：点一下直接填进搜索框，不用再手打 -->
+          <view wx:if="{{!keyword && searchHistory.length}}" class="history">
+            <view class="history-head">
+              <text class="history-title">最近在搜</text>
+              <view class="history-clear" bindtap="onClearHistory">
+                <text>清空</text>
+              </view>
+            </view>
+            <view class="history-grid">
+              <view
+                wx:for="{{searchHistory}}"
+                wx:key="*this"
+                class="history-item"
+                data-kw="{{item}}"
+                bindtap="onPickHistory"
+              >
+                <text class="history-clock">◷</text>
+                <text class="history-kw">{{item}}</text>
+              </view>
+            </view>
+          </view>
+
           <view wx:if="{{filterPanelOpen}}" class="filter-panel">
             <view class="outcome-row">
               <view
