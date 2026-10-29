@@ -14,28 +14,44 @@ const chapterOf = new Map(guides.map((g) => [g.id, g.ch]));
 
 // 搜索历史：只存关键词本身，留在本机，用于下次少打字
 const HISTORY_KEY = 'searchHistory';
-const HISTORY_MAX = 10;
+const HISTORY_MAX = 10; // 最多留几条
+const HISTORY_LEN = 30; // 单条最长几个字
+
+// 读出来的东西一律当脏数据处理：storage 可能被别的版本、别的逻辑或用户
+// 手动改过，里面可能有非字符串、空串、超长串、重复项。统一在这里洗干净，
+// 保证下游拿到的永远是「非空、去重、不超长、不超量」的字符串数组。
+function cleanHistory(raw) {
+  if (!Array.isArray(raw)) return [];
+  const out = [];
+  for (let i = 0; i < raw.length; i++) {
+    if (typeof raw[i] !== 'string') continue;
+    const t = raw[i].trim().slice(0, HISTORY_LEN);
+    if (!t || out.indexOf(t) >= 0) continue;
+    out.push(t);
+  }
+  return out.slice(0, HISTORY_MAX);
+}
 
 function getSearchHistory() {
   try {
-    const v = wx.getStorageSync(HISTORY_KEY);
-    return Array.isArray(v) ? v : [];
+    return cleanHistory(wx.getStorageSync(HISTORY_KEY));
   } catch (e) {
     return [];
   }
 }
 
 function addSearchHistory(kw) {
-  const t = String(kw || '').trim();
+  // 输入框本身没有长度限制，不截断的话一条长文本就能占掉几十 KB
+  const t = String(kw || '').trim().slice(0, HISTORY_LEN);
   if (!t) return getSearchHistory();
   // 已经搜过的提到最前，不留重复
   let list = getSearchHistory().filter((x) => x !== t);
   list.unshift(t);
-  if (list.length > HISTORY_MAX) list = list.slice(0, HISTORY_MAX);
+  list = list.slice(0, HISTORY_MAX);
   try {
     wx.setStorageSync(HISTORY_KEY, list);
   } catch (e) {
-    // 存储失败不影响搜索本身
+    // 存不下（配额满等）就算了，不影响搜索本身
   }
   return list;
 }

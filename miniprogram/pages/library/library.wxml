@@ -39,7 +39,7 @@
               <text class="search-icon">搜</text>
               <input
                 class="search-input"
-                placeholder="搜「租房 押金」，多个词用空格"
+                placeholder="「租房 押金」，多个词用空格"
                 placeholder-class="search-ph"
                 value="{{keyword}}"
                 bindinput="onKeyword"
