@@ -35,10 +35,8 @@
     >
       <view class="list">
         <view class="library" id="lib-top">
-          <view class="lib-head">
-            <text class="lib-title">指南库</text>
-            <text class="lib-count">{{totalCount}} 条结果</text>
-          </view>
+          <!-- 「指南库 · 767 条结果」那行已去掉：页面标题栏已经写着「指南库」，
+               条数在列表底部也有一份。这一栏只剩重复信息，白占一屏开头。 -->
           <view class="search-row">
             <view class="search">
               <text class="search-icon">搜</text>

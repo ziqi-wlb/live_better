@@ -80,25 +80,6 @@ page {
   padding: 26rpx 28rpx 24rpx;
 }
 
-.lib-head {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 18rpx;
-}
-
-.lib-title {
-  font-size: 31rpx;
-  font-weight: 700;
-  color: #214d3f;
-}
-
-.lib-count {
-  font-size: 23rpx;
-  color: #a2aaa2;
-}
-
 /* 搜索与筛选切换 */
 .search-row {
   display: flex;
