@@ -14,6 +14,8 @@
         class="toc-item {{openIndex === index ? 'toc-item-open' : ''}}"
       >
         <view class="toc-head" data-index="{{index}}" bindtap="onToggleSection">
+          <!-- 序号由 index 算出，不写死在 SECTIONS 里：调顺序时不会错位 -->
+          <text class="toc-num">{{index + 1}}.</text>
           <text class="toc-title">{{item.h}}</text>
           <text class="toc-arrow">{{openIndex === index ? '▾' : '▸'}}</text>
         </view>
