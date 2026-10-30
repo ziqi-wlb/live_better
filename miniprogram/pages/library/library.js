@@ -167,6 +167,8 @@ Page({
     // 筛选状态
     keyword: '',
     searchHistory: [],
+    // 是否点开了搜索框。历史面板只在点开后才显示，不替用户决定要搜什么
+    searchFocused: false,
     chapterIdx: 0,
     outcome: '',
     ev: '',
@@ -491,6 +493,26 @@ Page({
     }, 300);
   },
 
+  // 点开了搜索框才显示历史面板。之前进页面就摊着一排历史词，
+  // 用户还没决定要搜，等于替他做了决定。
+  onSearchFocus() {
+    if (this._blurTimer) {
+      clearTimeout(this._blurTimer);
+      this._blurTimer = null;
+    }
+    this.setData({ searchFocused: true });
+  },
+
+  // 收起要延迟一小会儿：点历史词时 input 会先 blur，
+  // 立刻隐藏的话面板就没了，这一下点击会落空。
+  onSearchBlur() {
+    if (this._blurTimer) clearTimeout(this._blurTimer);
+    this._blurTimer = setTimeout(() => {
+      this._blurTimer = null;
+      this.setData({ searchFocused: false });
+    }, 200);
+  },
+
   // 点历史词直接搜，不用再手打
   onPickHistory(e) {
     const kw = e.currentTarget.dataset.kw || '';
@@ -498,7 +520,11 @@ Page({
       clearTimeout(this._kwTimer);
       this._kwTimer = null;
     }
-    this.setData({ keyword: kw, searchHistory: addSearchHistory(kw) });
+    if (this._blurTimer) {
+      clearTimeout(this._blurTimer);
+      this._blurTimer = null;
+    }
+    this.setData({ keyword: kw, searchHistory: addSearchHistory(kw), searchFocused: false });
     this.applyFilters();
   },
 
@@ -509,6 +535,18 @@ Page({
       // 忽略
     }
     this.setData({ searchHistory: [] });
+  },
+
+  // 页面销毁时清掉两个定时器，否则它们还会在后台触发 setData
+  onUnload() {
+    if (this._kwTimer) {
+      clearTimeout(this._kwTimer);
+      this._kwTimer = null;
+    }
+    if (this._blurTimer) {
+      clearTimeout(this._blurTimer);
+      this._blurTimer = null;
+    }
   },
 
   // 展开/收起高级筛选面板

@@ -43,6 +43,8 @@
                 placeholder-class="search-ph"
                 value="{{keyword}}"
                 bindinput="onKeyword"
+                bindfocus="onSearchFocus"
+                bindblur="onSearchBlur"
                 confirm-type="search"
               />
             </view>
@@ -51,8 +53,10 @@
             </view>
           </view>
 
-          <!-- 最近在搜：点一下直接填进搜索框，不用再手打 -->
-          <view wx:if="{{!keyword && searchHistory.length}}" class="history">
+          <!-- 最近在搜：点一下直接填进搜索框，不用再手打。
+               只在**点了搜索框之后**显示——没点开就摊着一排历史词，
+               等于替用户决定了要搜什么。 -->
+          <view wx:if="{{searchFocused && !keyword && searchHistory.length}}" class="history">
             <view class="history-head">
               <text class="history-title">最近在搜</text>
               <view class="history-clear" bindtap="onClearHistory">
