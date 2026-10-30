@@ -41,6 +41,8 @@
       </view>
 
       <view class="doc-links">
+        <text class="doc-link doc-link-strong" bindtap="onOpenHelp">使用说明</text>
+        <text class="doc-link-sep">·</text>
         <text class="doc-link" data-type="terms" bindtap="onOpenAgreement">用户协议</text>
         <text class="doc-link-sep">·</text>
         <text class="doc-link" data-type="privacy" bindtap="onOpenAgreement">隐私政策</text>

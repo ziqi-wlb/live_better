@@ -1,0 +1,126 @@
+page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fffdf6;
+}
+
+.scrollarea {
+  flex: 1;
+  overflow-y: hidden;
+}
+
+.doc {
+  padding: 24rpx 36rpx 60rpx;
+}
+
+.intro {
+  margin-bottom: 36rpx;
+  padding: 24rpx 28rpx;
+  background: #e7eddf;
+  border-radius: 16rpx;
+}
+
+.intro-title {
+  display: block;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #214d3f;
+}
+
+.intro-sub {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #5c7a63;
+}
+
+.sec {
+  margin-bottom: 36rpx;
+}
+
+.sec-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #214d3f;
+  margin-bottom: 12rpx;
+}
+
+.sec-p {
+  font-size: 27rpx;
+  line-height: 1.75;
+  color: #3c463c;
+  margin-bottom: 10rpx;
+}
+
+.legend-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-bottom: 14rpx;
+}
+
+/* 色标固定宽度，多行解释文字才能左对齐。
+   宽度要装得下最长的「换时间精力」(5 字)，实测 132rpx 只多出 0.5px，
+   换种字体就会被裁，这里留到 150rpx。
+   不用 flex 分配：Skyline 下 button 那类受限元素会按内容强撑，排版会歪。 */
+.legend-tag {
+  flex: none;
+  width: 150rpx;
+  padding: 4rpx 8rpx;
+  box-sizing: border-box;
+  font-size: 23rpx;
+  text-align: center;
+  border-radius: 8rpx;
+  background: #eef3e8;
+  color: #477347;
+}
+
+.legend-desc {
+  flex: 1;
+  min-width: 0;
+  margin-left: 16rpx;
+  font-size: 25rpx;
+  line-height: 1.6;
+  color: #4a554a;
+}
+
+/* 容易理解错的点单独框出来 */
+.sec-tip {
+  margin-top: 16rpx;
+  padding: 18rpx 20rpx;
+  background: #fdf6e3;
+  border-radius: 12rpx;
+  font-size: 25rpx;
+  line-height: 1.7;
+  color: #7a5f22;
+}
+
+/* ===== 等级配色 =====
+   取值与详情页完全一致，用户看到实物能对上号：
+   性价比 极高/高/一般 -> 暖色
+   证据等级 A/B/C      -> 绿色，越可靠越深
+   收益档 大/中/小      -> 青绿，越大越深 */
+.lg-roi-top { background: #c05621; color: #ffffff; }
+.lg-roi-high { background: #c98a1b; color: #ffffff; }
+.lg-roi-mid { background: #e7eddf; color: #214d3f; }
+
+.lg-ev-a { background: #214d3f; color: #ffffff; }
+.lg-ev-b { background: #7d9670; color: #ffffff; }
+.lg-ev-c { background: #f1f4ec; color: #8a917d; }
+
+.lg-band-big { background: #14525c; color: #ffffff; }
+.lg-band-mid { background: #35707a; color: #ffffff; }
+.lg-band-small { background: #547a82; color: #ffffff; }
+
+.lg-cost { background: #eef3e8; color: #477347; }
+.lg-outcome { background: #eef3e8; color: #477347; }
+.lg-cv { background: #fdeaea; color: #d43a3f; }
+.lg-nv { background: #fdf1dd; color: #b06e00; }
+
+.footnote {
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  color: #9aa39a;
+  text-align: center;
+}

@@ -98,6 +98,29 @@ page {
   color: #23302a;
 }
 
+/* 标记说明的入口。紧跟在三个标记下面，用完就算，不占正文注意力 */
+.marks-help {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 0;
+  margin-top: -8rpx;
+  margin-bottom: 24rpx;
+  border-radius: 16rpx;
+  background: #f2f6ed;
+}
+
+.marks-help text {
+  font-size: 24rpx;
+  color: #4d6b52;
+}
+
+.marks-help-arrow {
+  margin-left: 4rpx;
+  font-size: 28rpx;
+}
+
 .section {
   background: #ffffff;
   border: 1rpx solid #e3e6db;

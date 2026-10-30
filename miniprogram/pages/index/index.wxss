@@ -266,6 +266,12 @@ button[plain] {
   padding: 6rpx 4rpx;
 }
 
+/* 使用说明比旁边的协议、反馈更值得点，稍微加重一点 */
+.doc-link-strong {
+  font-weight: 600;
+  color: #214d3f;
+}
+
 .doc-link-sep {
   color: #a2aaa2;
   font-size: 22rpx;

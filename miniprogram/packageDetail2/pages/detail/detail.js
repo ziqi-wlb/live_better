@@ -161,6 +161,11 @@ Page({
     wx.showToast({ title: '备注已保存', icon: 'none' });
   },
 
+  // 三个标记（收益 / 证据等级 / 性价比）的含义，都写在主包的使用说明页
+  onOpenHelp() {
+    wx.navigateTo({ url: '/pages/help/help' });
+  },
+
   onOpenAgreement(e) {
     wx.navigateTo({
       url: `/pages/agreement/agreement?type=${e.currentTarget.dataset.type}`

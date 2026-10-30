@@ -1,0 +1,30 @@
+<navigation-bar title="使用说明" back="{{true}}" color="black" background="#FFFDF6"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="doc">
+    <view class="intro">
+      <text class="intro-title">高性价比人生笔记</text>
+      <text class="intro-sub">{{guideCount}} 条建议 · {{chapterCount}} 章节</text>
+    </view>
+
+    <view class="sec" wx:for="{{sections}}" wx:key="h">
+      <view class="sec-title"><text>{{item.h}}</text></view>
+      <view class="sec-p" wx:for="{{item.p}}" wx:for-item="para" wx:key="*this">
+        <text>{{para}}</text>
+      </view>
+
+      <!-- 等级图例：左边色标右边解释，颜色与详情页一致，方便对上号 -->
+      <view class="legend" wx:if="{{item.legend}}">
+        <view class="legend-row" wx:for="{{item.legend}}" wx:for-item="row" wx:key="tag">
+          <text class="legend-tag {{row.cls}}">{{row.tag}}</text>
+          <text class="legend-desc">{{row.desc}}</text>
+        </view>
+      </view>
+
+      <view class="sec-tip" wx:if="{{item.tip}}">
+        <text>{{item.tip}}</text>
+      </view>
+    </view>
+
+    <view class="footnote"><text>本页随内容同步更新</text></view>
+  </view>
+</scroll-view>

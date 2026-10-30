@@ -26,7 +26,14 @@
         <text class="badge-label">性价比</text>
         <text class="badge-value roi-text-{{item.roi === '极高' ? 'top' : (item.roi === '高' ? 'high' : 'mid')}}">{{item.roi}}</text>
       </view>
-    </view>
+      </view>
+
+      <!-- 这三个数字不是自明的，给个就近入口。
+         放在这里而不是藏进胶囊，是因为用户正对着这几个字发懵。 -->
+      <view class="marks-help" bindtap="onOpenHelp">
+      <text>收益、证据等级、性价比是什么意思？</text>
+      <text class="marks-help-arrow">›</text>
+      </view>
 
     <view class="section" wx:if="{{item.text}}">
       <view class="sec-title"><text>说人话</text></view>
