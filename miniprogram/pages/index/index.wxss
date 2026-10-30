@@ -256,11 +256,17 @@ button[plain] {
   margin-top: 48rpx;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
 }
 
+/* Skyline 下 button 不当普通 flex item 看待：width:auto 时按块级铺满整行，
+   把同一行的文字挤到每行只剩三个字（「使用说／明」「用户协／议」）。
+   所以这一行的所有项一律不伸缩、不折行，按钮给一个够放四个字的确切宽度。 */
 .doc-link {
+  flex: none;
+  white-space: nowrap;
   color: #214d3f;
   font-size: 22rpx;
   padding: 6rpx 4rpx;
@@ -273,13 +279,20 @@ button[plain] {
 }
 
 .doc-link-sep {
+  flex: none;
+  white-space: nowrap;
   color: #a2aaa2;
   font-size: 22rpx;
   margin: 0 12rpx;
 }
 
-/* 官方意见反馈：button 需清掉默认样式与 ::after 边框 */
+/* 官方意见反馈：button 要清掉默认样式、去掉 ::after 边框，
+   并且必须给死宽度——四个字 22rpx 一共 88rpx，留点余量取 100rpx */
 .doc-link-btn {
+  flex: none;
+  width: 100rpx;
+  min-width: 0;
+  white-space: nowrap;
   background: transparent;
   border: none;
   margin: 0;
