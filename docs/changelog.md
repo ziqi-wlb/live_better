@@ -82,6 +82,21 @@
 
 左侧图标是「搜」，placeholder 又写「搜「租房 押金」…」，开头连着两个「搜」。去掉 placeholder 里的「搜」，保留 `「租房 押金」，多个词用空格`。
 
+### 详情页三个按钮最终改为固定百分比等宽
+
+第一次只修了 picker 内部宽度（`flex:1` 对它无效），真机上三块还是不等宽。
+
+根因有两层：
+
+1. **`button` 是「受限弹性容器」**——浏览器和小程序都会按内容强制加最小宽度保护，`flex:1` / `flex-basis:0` 在它身上被覆盖，宽度退化成由文字长短决定
+2. **项目跑的是 Skyline**（`"renderer": "skyline"` + `glass-easel`），`flex-shrink` 的默认值可能是 0，元素根本不会收缩
+
+改成**不依赖 flex 分配**：三块固定 `width: 31%`，剩下 7% 由 `justify-content: space-between` 分成两段间隙。
+
+顺带把 `button[plain] { border: 0 }` 换成类 `.act-share { border: 1rpx solid }`——Skyline 对 CSS 选择器的支持是子集，不保证支持属性选择器。分享按钮的描边改成显式写在类上，`box-sizing: border-box` 保证描边不额外撑宽。
+
+实测（含模拟 Skyline 的 `flex-shrink: 0`）：三块 103.84 / 103.84 / 103.84，差 **0.00px**，两段间隙均 12px。
+
 ### 修详情页「加入清单」按钮比左右宽
 
 中间那个按钮被 `picker` 包了一层，不是 `.actions` 的直接 flex 子元素，`flex: 1` 对它无效，宽度退化成由文字长短决定，于是比「收藏」「分享」宽。改成 `width: 100%` 撑满 picker。

@@ -158,11 +158,23 @@ page {
 .actions {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   margin-top: 8rpx;
 }
 
+/* 三块必须严格等宽，但**不能靠 flex:1 分配**：
+   1) button 是「受限弹性容器」，会按内容强制加最小宽度，flex-basis:0 被覆盖；
+   2) Skyline 下 flex-shrink 默认值还可能是 0，元素根本不会收缩。
+   所以直接用固定 31% 宽度（3×31=93%），剩下 7% 由 space-between 分成两段间隙。 */
+.actions > .act,
+.actions > .act-picker {
+  flex: none;
+  width: 31%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
 .act {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -177,13 +189,7 @@ page {
   color: #c98a1b;
 }
 
-.act-picker {
-  flex: 1;
-  margin-left: 22rpx;
-}
-
-/* picker 内部的按钮要撑满 picker。它不像左右两个那样是 .actions 的直接
-   子元素，flex:1 对它无效，宽度会退化成由文字长短决定，于是比两边宽。 */
+/* picker 里面的按钮不是 .actions 的直接子元素，宽度按父级撑满 */
 .act-picker .act {
   width: 100%;
   box-sizing: border-box;
@@ -191,11 +197,13 @@ page {
 }
 
 /* button open-type=share 是唯一等价于右上角「转发给朋友」的写法：
-   官方规定必须是 button 组件，view 上加 open-type 无效。
-   plain 用于去掉 button 自带的边框。 */
+   官方规定必须是 button 组件，view 上加 open-type 无效。 */
 button.act {
   padding: 0;
   margin: 0;
+  width: 31%;
+  min-width: 0;
+  flex: none;
   line-height: normal;
   font-size: 27rpx;
   border-radius: 16rpx;
@@ -205,12 +213,12 @@ button.act::after {
   border: none;
 }
 
-button[plain] {
-  border: 0;
-}
-
+/* 分享做成次要按钮（描边）。用类显式写，不依赖 button[plain] 属性选择器
+   —— Skyline 对 CSS 选择器的支持是子集，不保证支持属性选择器。
+   box-sizing: border-box 保证那 1rpx 描边不额外撑宽。 */
 .act-share {
-  margin-left: 22rpx;
+  border: 1rpx solid #214d3f;
+  background: transparent;
 }
 
 .act-primary {
