@@ -35,15 +35,53 @@ page {
   color: #5c7a63;
 }
 
-.sec {
-  margin-bottom: 36rpx;
+.intro-hint {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 23rpx;
+  color: #7d8f80;
 }
 
-.sec-title {
-  font-size: 30rpx;
-  font-weight: 700;
+/* ===== 折叠目录 =====
+   一节一张卡，标题常显，内容点开才载出来（wx:if）。
+   标题行的点击区域不能太小：上下各 26rpx 加上 28rpx 的字，
+   算下来约 80rpx 高，老人家也点得中。 */
+.toc-item {
+  margin-bottom: 16rpx;
+  background: #ffffff;
+  border: 1rpx solid #e3e6db;
+  border-radius: 16rpx;
+}
+
+.toc-item-open {
+  border-color: #c3ceb8;
+}
+
+.toc-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26rpx 28rpx;
+}
+
+.toc-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 28rpx;
+  font-weight: 600;
   color: #214d3f;
-  margin-bottom: 12rpx;
+}
+
+.toc-arrow {
+  flex: none;
+  margin-left: 16rpx;
+  font-size: 24rpx;
+  color: #8a917d;
+}
+
+.toc-body {
+  padding: 0 28rpx 28rpx;
 }
 
 .sec-p {

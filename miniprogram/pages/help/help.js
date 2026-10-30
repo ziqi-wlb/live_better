@@ -109,12 +109,22 @@ Page({
   data: {
     navTitle: '使用说明',
     sections: SECTIONS,
+    // 折叠目录：整页摊开要 3.6 屏，读起来像说明书。
+    // -1 = 全收起；换成 index 就是展开那一节。只存下标，不必改 sections 本身。
+    openIndex: -1,
     guideCount: guides.length,
     chapterCount: chapters.length
   },
 
   onLoad() {
     wx.showShareMenu({ menus: ['shareAppMessage', 'shareTimeline'] });
+  },
+
+  // 点标题展开 / 再点收起。同一时刻只开一节——
+  // 允许多开会重新变成一条长页面，也就失去了折起来的意义。
+  onToggleSection(e) {
+    const i = Number(e.currentTarget.dataset.index);
+    this.setData({ openIndex: this.data.openIndex === i ? -1 : i });
   },
 
   onShareAppMessage() {
