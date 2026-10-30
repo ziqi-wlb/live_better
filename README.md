@@ -22,7 +22,7 @@ npm ci
 npm run dev
 ```
 
-打开 http://127.0.0.1:5173 。API 位于 http://127.0.0.1:8787 。两者仅绑定本机；H5 通过 Vite 代理访问 API。`npm run dev` 会自动导入 34 章、699 条正文。可将 `.env.example` 复制为 `.env` 调整配置，默认本地启用开发登录，生产始终关闭。
+打开 http://127.0.0.1:5173 。API 位于 http://127.0.0.1:8787 。两者仅绑定本机；H5 通过 Vite 代理访问 API。`npm run dev` 会自动导入全书 34 章正文。可将 `.env.example` 复制为 `.env` 调整配置，默认本地启用开发登录，生产始终关闭。
 
 `npm run import` 导入内容；`npm test` 检查导入、排序、权限、隔离、合并和注销；`npm run typecheck` 检查类型；`npm run build` 构建 H5；`npm run build:mp` 构建微信产物到 `dist/build/mp-weixin`。
 

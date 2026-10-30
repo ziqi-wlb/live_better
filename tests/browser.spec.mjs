@@ -2,7 +2,8 @@ import {test,expect} from '@playwright/test';
 test('mobile browse, filter, detail, save and login',async({page})=>{
  await page.setViewportSize({width:375,height:812});
  await page.goto('http://127.0.0.1:5173');
- await expect(page.getByText('34 个章节 · 699 条真实建议')).toBeVisible();
+ // 条数由数据决定，别把具体数字写进断言
+ await expect(page.getByText(/34 个章节 · \d+ 条真实建议/)).toBeVisible();
  await page.locator('.search input').fill('戒烟');
  await page.getByText('搜索',{exact:true}).click();
  await expect(page.getByText(/条结果/)).toContainText('条结果');

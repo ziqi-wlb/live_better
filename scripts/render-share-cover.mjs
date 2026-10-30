@@ -1,6 +1,19 @@
 import { chromium } from '@playwright/test';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+
+// 条数和章节数直接从数据读，别再写死。
+// 之前这里印着「34 章节 · 699 条建议」，数据涨到 765 后没人记得重跑脚本，
+// 分享出去还是 699——数字必须单一来源。
+// 注意：根 package.json 是 type: module，guides.js 是 CJS 写法，
+// 直接 require/import 都会被当成 ESM 而报错，所以手动执行包一层。
+const guidesFile = fileURLToPath(new URL('../miniprogram/data/guides.js', import.meta.url));
+const mod = { exports: {} };
+new Function('module', 'exports', readFileSync(guidesFile, 'utf8'))(mod, mod.exports);
+const { guides, chapters } = mod.exports;
+
+const APP_NAME = '高性价比人生笔记';
+const STATS = `${chapters.length} 章节 · ${guides.length} 条建议`;
 
 const outDir = fileURLToPath(new URL('../miniprogram/assets/', import.meta.url));
 mkdirSync(outDir, { recursive: true });
@@ -20,15 +33,15 @@ const html = `<!doctype html>
   .title { font-size: 46px; font-weight: 800; line-height: 1.34; letter-spacing: 1px; }
   .title .dim { color: #cfe0d6; }
   .footer { display: flex; align-items: baseline; justify-content: space-between; }
-  .brand { font-size: 18px; font-weight: 700; letter-spacing: 2px; }
+  .brand { font-size: 16px; font-weight: 700; letter-spacing: 1px; }
   .stats { font-size: 15px; color: #8fb3a2; }
 </style></head>
 <body>
   <div class="eyebrow">A LITTLE BETTER, EVERY DAY</div>
   <div class="title">把有限的精力，<br>花在<span class="dim">值得</span>的地方。</div>
   <div class="footer">
-    <div class="brand">人生指南</div>
-    <div class="stats">34 章节 · 699 条建议</div>
+    <div class="brand">${APP_NAME}</div>
+    <div class="stats">${STATS}</div>
   </div>
 </body></html>`;
 
