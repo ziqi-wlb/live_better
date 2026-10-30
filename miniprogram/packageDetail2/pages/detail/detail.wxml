@@ -16,7 +16,7 @@
     <view class="badges">
       <view class="badge-box">
         <text class="badge-label">收益</text>
-        <text class="badge-value">{{item.band}}</text>
+        <text class="badge-value band-text-{{item.band === '大' ? 'big' : (item.band === '中' ? 'mid' : 'small')}}">{{item.band}}</text>
       </view>
       <view class="badge-box">
         <text class="badge-label">证据等级</text>

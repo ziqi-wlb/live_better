@@ -302,3 +302,13 @@ button.act::after {
 .ev-text-a { color: #214d3f; }
 .ev-text-b { color: #7d9670; }
 .ev-text-c { color: #9aa08f; }
+
+/* 收益档：大 / 中 / 小。原来只靠一个汉字区分，扫一眼看不出差别。
+   用深浅 + 字重做层次：收益越大颜色越深、字越重。
+   色相用偏青蓝的绿——跟「证据等级」那组橄榄绿差 30° 以上，
+   否则两栏的「深」撞在一起会看混。
+   三档对米白底 #fffdf6 的对比度分别约 8.6 / 5.5 / 4.6，都过 WCAG AA；
+   面向家里老人，不取更浅的色。 */
+.band-text-big { color: #14525c; font-weight: 600; }
+.band-text-mid { color: #35707a; font-weight: 500; }
+.band-text-small { color: #547a82; font-weight: 400; }
