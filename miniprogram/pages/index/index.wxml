@@ -20,6 +20,7 @@
         <text class="daily-title">{{daily.title}}</text>
         <text class="daily-text">{{daily.summary}}</text>
         <view class="daily-meta">
+          <text class="daily-badge roi-{{daily.roi === '极高' ? 'top' : (daily.roi === '高' ? 'high' : 'mid')}}">{{daily.roi}} 性价比</text>
           <text class="daily-badge {{daily.ev === 'A' ? 'ev-a' : (daily.ev === 'B' ? 'ev-b' : 'ev-c')}}">证据 {{daily.ev}}</text>
           <text class="daily-ch">{{daily.chapterTitle}}</text>
         </view>

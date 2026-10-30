@@ -116,9 +116,16 @@ page {
   margin-right: 16rpx;
 }
 
+/* 章节名长短差得远，加了性价比标记后更容易一行放不下。
+   让它自己收缩并截断，别把两个标记顶出卡片。 */
 .daily-ch {
   font-size: 22rpx;
   color: #44745b;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .daily-actions {
