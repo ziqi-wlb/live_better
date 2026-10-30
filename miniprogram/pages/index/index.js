@@ -2,6 +2,7 @@ const { chapters, guides } = require('../../data/guides');
 const store = require('../../utils/store');
 const { pickDaily, pickRandom, todayLabel } = require('../../utils/daily');
 const { detailUrl } = require('../../utils/detail-path');
+const { navigate, navigateWithLoading } = require('../../utils/nav');
 
 Page({
   data: {
@@ -49,28 +50,9 @@ Page({
     });
   },
 
-  // navigateTo 失败默认完全静默（看起来就是"点了没反应"），这里补一个可见反馈。
-  // 首次进详情页要下载并解析 1MB 多的详情分包，慢的时候中间有几秒空窗，
-  // 所以延迟 200ms 才出 loading：跳得快就不会闪，跳得慢用户能看到在加载。
+  // 进详情页要等分包，用带 loading 的那个。失败提示在 utils/nav.js 里统一处理
   nav(url) {
-    let shown = false;
-    const timer = setTimeout(() => {
-      shown = true;
-      wx.showLoading({ title: '加载中', mask: true });
-    }, 200);
-    const done = () => {
-      clearTimeout(timer);
-      if (shown) wx.hideLoading();
-    };
-    wx.navigateTo({
-      url,
-      success: done,
-      fail: (err) => {
-        done();
-        console.error('[nav fail]', url, err);
-        wx.showToast({ title: '打开失败，请重试', icon: 'none' });
-      }
-    });
+    navigateWithLoading(url);
   },
 
   // 主 CTA：进入指南库（搜索/筛选/排序都在那里）
@@ -97,9 +79,7 @@ Page({
   },
 
   onOpenAgreement(e) {
-    wx.navigateTo({
-      url: `/pages/agreement/agreement?type=${e.currentTarget.dataset.type}`
-    });
+    navigate(`/pages/agreement/agreement?type=${e.currentTarget.dataset.type}`);
   },
 
   // 首页分享：右上角「···」和页面内 button open-type=share 都会走这里。

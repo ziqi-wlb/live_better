@@ -161,16 +161,6 @@ page {
   line-height: 1.6;
 }
 
-.copy-btn {
-  margin-top: 18rpx;
-  align-self: flex-start;
-  background: #e7eddf;
-  color: #477347;
-  border-radius: 14rpx;
-  font-size: 24rpx;
-  padding: 14rpx 24rpx;
-}
-
 .source-link {
   font-size: 22rpx;
   color: #477347;
@@ -294,7 +284,8 @@ button.act::after {
 .doc-link {
   color: #214d3f;
   font-size: 22rpx;
-  padding: 6rpx 4rpx;
+  /* 纵向内边距撑到约 88rpx 的点击区，老人家点得中 */
+  padding: 30rpx 10rpx;
 }
 
 .doc-link-sep {

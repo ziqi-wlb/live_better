@@ -33,8 +33,8 @@ ATTRIBUTION = '《高性价比人生指南》(HowToLiveBetter)，作者 eternity
 LICENSE_URL = 'https://creativecommons.org/licenses/by/4.0/'
 REPO_URL = 'https://github.com/eternity4719/HowToLiveBetter'
 
-# 详情数据按章节拆到两个分包：单个分包上限 2MB，765 条详情（约 2.3MB）已超。
-# 切在第 11 章：1–11 约 1.05MB，12–34 约 1.15MB，两边都留足增长余量。
+# 详情数据按章节拆到两个分包：单个分包上限 2MB，767 条详情（约 2.3MB）已超。
+# 切在第 11 章：1–11 约 1.12MB，12–34 约 1.19MB，两边都留足增长余量。
 # 改动此值必须同步 miniprogram/utils/detail-path.js 的 SPLIT_CHAPTER。
 SPLIT_CHAPTER = 11
 

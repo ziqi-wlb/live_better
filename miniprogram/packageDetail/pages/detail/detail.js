@@ -2,6 +2,7 @@ const { chapters, guides } = require('../../../data/guides.js');
 const details = require('../../data/details.js');
 const store = require('../../../utils/store');
 const { detailPath } = require('../../../utils/detail-path');
+const { navigate } = require('../../../utils/nav');
 
 const chapterMap = {};
 chapters.forEach((c) => {
@@ -22,7 +23,6 @@ Page({
     // 沉浸式阅读：继续往下读时淡出导航栏，往回滑时淡入
     navHidden: false,
     fav: false,
-    inTodo: false,
     actionLabel: '加入清单',
     note: '',
     actionOptions: ACTION_OPTIONS,
@@ -108,7 +108,6 @@ Page({
     const todo = store.getTodo(id);
     this.setData({
       fav: store.getFavs().indexOf(id) >= 0,
-      inTodo: !!todo,
       actionLabel: todo ? todo.status : '加入清单',
       note: todo ? todo.note || '' : this.data.note || ''
     });
@@ -163,13 +162,11 @@ Page({
 
   // 三个标记（收益 / 证据等级 / 性价比）的含义，都写在主包的使用说明页
   onOpenHelp() {
-    wx.navigateTo({ url: '/pages/help/help' });
+    navigate('/pages/help/help');
   },
 
   onOpenAgreement(e) {
-    wx.navigateTo({
-      url: `/pages/agreement/agreement?type=${e.currentTarget.dataset.type}`
-    });
+    navigate(`/pages/agreement/agreement?type=${e.currentTarget.dataset.type}`);
   },
 
   onShareAppMessage() {

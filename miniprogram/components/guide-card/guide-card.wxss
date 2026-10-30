@@ -51,8 +51,18 @@
   color: #b06e00;
 }
 
+/* 收藏星：点击区放大到 88rpx。原来只有约 37rpx（4rpx 内边距 + 24rpx 字），
+   老人家根本点不中。代价是卡片头部高约 47rpx。
+   没有用负 margin 抵消这个撑高——那样放大的区域会压住下面标题的右边缘，
+   想看正文却误触收藏。宁可让卡片高一点。 */
 .star {
-  padding: 4rpx 12rpx;
+  min-width: 88rpx;
+  min-height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 抵掉原来 12rpx 右内边距带来的偏移，星号的视觉位置不变 */
+  margin-right: -20rpx;
   font-size: 24rpx;
   color: #b9c1b6;
 }
@@ -104,12 +114,16 @@
   color: #a2aaa2;
 }
 
+/* 「+ 清单」原来约 49rpx 高，撑到 88rpx。
+   代价：每张卡片因此高约 76rpx（收藏星 46 + 这里 30）。
+   实测整卡从 344rpx 到 420rpx，一屏大约少看一条——
+   换来的是两个最常用的按钮都点得中，对这个 App 的读者更值。 */
 .add-btn {
   font-size: 24rpx;
   color: #214d3f;
   background: #e7eddf;
   border-radius: 999rpx;
-  padding: 10rpx 26rpx;
+  padding: 27rpx 26rpx;
 }
 
 /* ===== 等级配色 =====
@@ -126,11 +140,5 @@
 .ev-b { background: #7d9670; color: #ffffff; }
 .ev-c { background: #f1f4ec; color: #8a917d; }
 
-/* 数值：字体色 */
-.roi-text-top { color: #c05621; }
-.roi-text-high { color: #c98a1b; }
-.roi-text-mid { color: #8a917d; }
-
-.ev-text-a { color: #214d3f; }
-.ev-text-b { color: #7d9670; }
-.ev-text-c { color: #9aa08f; }
+/* 数值：字体色 —— 卡片只用上面的背景色变体（roi-* / ev-*），
+   这几个「只改字体色」的版本没有任何 wxml 引用，已删除。 */

@@ -282,7 +282,8 @@ page {
 .doc-link {
   color: #214d3f;
   font-size: 22rpx;
-  padding: 6rpx 4rpx;
+  /* 纵向内边距撑到约 88rpx 的点击区，老人家点得中 */
+  padding: 30rpx 10rpx;
 }
 
 .doc-link-sep {
@@ -630,10 +631,16 @@ page {
   color: #8a917d;
 }
 
+/* 「清空」原来只有约 37rpx 高。撑到 88rpx 的点击区。
+   这行左边是标题、下面是历史词，纵向用负 margin 会盖住下方历史词的右端，
+   所以这里是实打实长高——历史面板只在点开搜索框时出现，代价可以接受。 */
 .history-clear {
   font-size: 24rpx;
   color: #8a917d;
-  padding: 4rpx 0 4rpx 20rpx;
+  min-height: 88rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 20rpx;
 }
 
 .history-grid {

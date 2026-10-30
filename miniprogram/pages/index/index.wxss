@@ -163,15 +163,18 @@ button.daily-btn::after {
   border: none;
 }
 
-button[plain] {
-  border: 0;
-}
-
-.daily-btn-share {
+/* 分享做成次要按钮（描边）。用「元素 + 类」显式写，不依赖 button[plain]
+   属性选择器，原因有两个：
+   1) Skyline 对 CSS 选择器的支持是子集，不保证支持属性选择器；
+   2) 曾经这里写过 button[plain] { border: 0 }，它的特异性 (0,1,1) 高于
+      单个类 (0,1,0)，把下面这行的 border 直接吃掉了，描边根本没出现。
+   与 detail.wxss 的 .act-share 保持同一写法。 */
+button.daily-btn-share {
   margin-left: 16rpx;
   background: transparent;
   color: #214d3f;
   border: 2rpx solid #214d3f;
+  box-sizing: border-box;
 }
 
 .daily-foot {
@@ -269,7 +272,9 @@ button[plain] {
   white-space: nowrap;
   color: #214d3f;
   font-size: 22rpx;
-  padding: 6rpx 4rpx;
+  /* 纵向内边距撑到 88rpx 的点击区。原来 6rpx 内边距只有约 35rpx 高，
+     这几个协议链接本来就小，老人家点不中 */
+  padding: 30rpx 10rpx;
 }
 
 .doc-link-sep {
@@ -286,11 +291,13 @@ button[plain] {
   flex: none;
   width: 100rpx;
   min-width: 0;
+  box-sizing: border-box;
   white-space: nowrap;
   background: transparent;
   border: none;
   margin: 0;
-  padding: 6rpx 4rpx;
+  /* 与旁边的 .doc-link 保持同样的点击区高度 */
+  padding: 30rpx 4rpx;
   line-height: 1.6;
   font-size: 22rpx;
   font-weight: normal;
@@ -315,11 +322,5 @@ button[plain] {
 .ev-b { background: #7d9670; color: #ffffff; }
 .ev-c { background: #f1f4ec; color: #8a917d; }
 
-/* 数值：字体色 */
-.roi-text-top { color: #c05621; }
-.roi-text-high { color: #c98a1b; }
-.roi-text-mid { color: #8a917d; }
-
-.ev-text-a { color: #214d3f; }
-.ev-text-b { color: #7d9670; }
-.ev-text-c { color: #9aa08f; }
+/* 数值：字体色 —— 首页只用上面的背景色变体（roi-* / ev-*），
+   这几个「只改字体色」的版本没有任何 wxml 引用，已删除。 */

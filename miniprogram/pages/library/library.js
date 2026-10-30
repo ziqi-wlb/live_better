@@ -1,6 +1,7 @@
 const { chapters, guides, outcomes, audiences } = require('../../data/guides');
 const store = require('../../utils/store');
 const { detailUrl } = require('../../utils/detail-path');
+const { navigate, navigateWithLoading } = require('../../utils/nav');
 
 const PAGE_SIZE = 50;
 
@@ -650,29 +651,15 @@ Page({
 
   // 首次进某个详情分包要下载并解析 1MB 多，慢的时候中间有几秒空窗。
   // 延迟 200ms 才出 loading：跳得快不闪，跳得慢用户能看到在加载。
+  // 进详情页要等分包，失败要出声——之前 fail 只做了 hideLoading，
+  // 用户点卡片没反应且毫无提示。统一走 utils/nav.js
   openDetailPage(url) {
-    let shown = false;
-    const timer = setTimeout(() => {
-      shown = true;
-      wx.showLoading({ title: '加载中', mask: true });
-    }, 200);
-    const done = () => {
-      clearTimeout(timer);
-      if (shown) wx.hideLoading();
-    };
-    wx.navigateTo({ url, success: done, fail: done });
+    navigateWithLoading(url);
   },
 
-  // 使用说明页在主包，无需等分包下载，直接跳。失败要出声 —
-  // navigateTo 的 fail 默认是静默的，看起来就是「点了没反应」。
+  // 使用说明页在主包，无需等分包下载
   onOpenHelp() {
-    wx.navigateTo({
-      url: '/pages/help/help',
-      fail: (err) => {
-        console.error('[nav fail] help', err);
-        wx.showToast({ title: '打开失败，请重试', icon: 'none' });
-      }
-    });
+    navigate('/pages/help/help');
   },
 
   onOpenDetail(e) {
@@ -713,9 +700,7 @@ Page({
   },
 
   onOpenAgreement(e) {
-    wx.navigateTo({
-      url: `/pages/agreement/agreement?type=${e.currentTarget.dataset.type}`
-    });
+    navigate(`/pages/agreement/agreement?type=${e.currentTarget.dataset.type}`);
   },
 
   // 分享落地到主页（好友先看到宣言，再进入指南库）
