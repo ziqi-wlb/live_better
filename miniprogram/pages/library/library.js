@@ -663,6 +663,18 @@ Page({
     wx.navigateTo({ url, success: done, fail: done });
   },
 
+  // 使用说明页在主包，无需等分包下载，直接跳。失败要出声 —
+  // navigateTo 的 fail 默认是静默的，看起来就是「点了没反应」。
+  onOpenHelp() {
+    wx.navigateTo({
+      url: '/pages/help/help',
+      fail: (err) => {
+        console.error('[nav fail] help', err);
+        wx.showToast({ title: '打开失败，请重试', icon: 'none' });
+      }
+    });
+  },
+
   onOpenDetail(e) {
     this.openDetailPage(detailUrl(e.detail.id, e.detail.ch));
   },

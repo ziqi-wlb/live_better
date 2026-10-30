@@ -96,12 +96,6 @@ Page({
     this.nav(detailUrl(id, ch));
   },
 
-  // 使用说明：讲这个 App 做什么、三个标记怎么读。入口放在首页底部和
-  // 详情页标记区下方——后者才是用户真正对着标记发懵的地方。
-  onOpenHelp() {
-    this.nav('/pages/help/help');
-  },
-
   onOpenAgreement(e) {
     wx.navigateTo({
       url: `/pages/agreement/agreement?type=${e.currentTarget.dataset.type}`

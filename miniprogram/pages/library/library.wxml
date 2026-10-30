@@ -15,7 +15,12 @@
       <text>清单</text>
       <text wx:if="{{todoLeft > 0}}" class="badge">{{todoLeft}}</text>
     </view>
-  </view>
+    <!-- 使用说明：不是第四个内容视图，点了直接跳说明页，所以不走 onSwitchTab，
+         也不参与 tab-active —— 它没有「选中」这回事。 -->
+    <view class="tab" bindtap="onOpenHelp">
+      <text>说明</text>
+    </view>
+    </view>
 
   <!-- 指南：查找筛选 -->
   <view wx:if="{{activeTab === 'guide'}}" class="pane">

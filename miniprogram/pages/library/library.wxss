@@ -43,7 +43,9 @@ page {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 22rpx 30rpx;
+  /* 横向内距从 30rpx 收到 22rpx：tab 是内容定宽的，加了第 5 个「说明」之后，
+     收藏 / 清单 同时出现三位数角标时会顶出屏幕 14rpx。收到 22rpx 有 66rpx 余量。 */
+  padding: 22rpx;
   font-size: 30rpx;
   color: #727b72;
   border-bottom: 6rpx solid transparent;
