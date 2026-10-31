@@ -61,8 +61,7 @@ onMounted(async()=>{await run(async()=>{meta.value=await api('/catalog/meta');tr
 当前版本：{{meta?.sourceCommit}}
 导入时间：{{meta?.importedAt}}</text><button class="small" @click="uniApi.setClipboardData({data:'https://github.com/eternity4719/HowToLiveBetter'})">复制知识库链接</button><button class="small" @click="uniApi.setClipboardData({data:'https://creativecommons.org/licenses/by/4.0/'})">复制许可链接</button></view></view>
  <view v-if="tab==='我的'&&!detail" class="card"><view class="subtitle">项目作者与联系</view><text class="prose">应用作者：ziqi-wlb
-邮箱：550461053@qq.com
-手机号：18810216685</text><button class="small" @click="uniApi.setClipboardData({data:'550461053@qq.com'})">复制邮箱</button><button class="small" @click="uniApi.setClipboardData({data:'18810216685'})">复制手机号</button></view>
+邮箱：550461053@qq.com（反馈邮件优先）</text><button class="small" @click="uniApi.setClipboardData({data:'550461053@qq.com'})">复制邮箱</button></view>
  <view class="attribution">来源：高性价比人生指南 · eternity4719 · CC BY 4.0<br/>性价比是判断，证据不是承诺。查看详情以核对原文限制和出处。</view>
  <view class="nav"><button v-for="t in ['发现','指南库','我的清单','我的']" :key="t" :class="{selected:tab===t}" @click="navigate(t)">{{t}}</button></view>
 </view>

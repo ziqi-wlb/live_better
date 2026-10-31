@@ -1,6 +1,6 @@
 # 微信端 v0.2 配置与验收
 
-已从 `/Users/ziqi/WeChatProjects/live_better/project.config.json` 确认 AppID `wxf6089afd28b90008`，本机基础库版本为 3.17.4。原项目保留；主源码在当前 Git 仓库。原项目使用 Skyline，本产品目前使用 uni-app 默认渲染器，不直接复制渲染配置。
+已从 `本仓库根目录/project.config.json` 确认 AppID `wxf6089afd28b90008`，本机基础库版本为 3.17.4。原项目保留；主源码在当前 Git 仓库。原项目使用 Skyline，本产品目前使用 uni-app 默认渲染器，不直接复制渲染配置。
 
 ## 配置
 
@@ -17,7 +17,7 @@ ENABLE_DEV_AUTH=0
 
 小程序必须使用完整 HTTPS API 地址；H5 本地调试时 VITE_API_BASE_URL 留空，继续使用 Vite 代理。正式 H5 需同源部署，以保持 cookie 与 CSRF 来源一致。AppSecret 不能使用 VITE_ 前缀，不能提交 Git。
 
-主开发目录为 `/Users/ziqi/WeChatProjects/live_better/`。运行 `npm run import`、`npm run build:mp`，在微信开发者工具导入主目录，或其 `dist/build/mp-weixin` 子目录，选择对应 AppID。构建后脚本写入 AppID 与 urlCheck。通过微信后台设置 HTTPS 合法请求域名，服务端配置同一 AppID/AppSecret。在工具中使用 3.17.4 或更新的受支持基础库检查。
+主开发目录为 `本仓库根目录/`。运行 `npm run import`、`npm run build:mp`，在微信开发者工具导入主目录，或其 `dist/build/mp-weixin` 子目录，选择对应 AppID。构建后脚本写入 AppID 与 urlCheck。通过微信后台设置 HTTPS 合法请求域名，服务端配置同一 AppID/AppSecret。在工具中使用 3.17.4 或更新的受支持基础库检查。
 
 ## 已实现
 
