@@ -9,6 +9,16 @@
 
 下面「本地启动」起的内容主要讲 uni-app 版。原生版请用微信开发者工具直接打开 `miniprogram/` 目录。
 
+## 介绍文章
+
+写过一篇短文，讲为什么要把每条建议都标上「值不值」和「可不可信」，以及这套标注在手机上怎么用：
+
+https://zhuanlan.zhihu.com/p/2099820028094836974
+
+![高性价比人生笔记](docs/zhihu-cover.png)
+
+> 封面图由 `npm run render:cover-zhihu` 生成，输出 1920×1080。画布写成 16:9 是因为知乎封面按横图显示，5:4 会被裁掉上下。图上的条数和章节数由脚本从 `miniprogram/data/guides.js` 读，不用手改。
+
 ## 项目作者
 
 作者：ziqi-wlb（https://github.com/ziqi-wlb）
