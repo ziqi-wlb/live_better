@@ -90,7 +90,7 @@ const STATUS_CLASS = {
   暂不适用: 'st-na'
 };
 
-function decorate(g, favSet, hlTerms) {
+function decorate(g, favSet, hlTerms, markTerms) {
   const item = {
     id: g.id,
     ch: g.ch,
@@ -110,9 +110,22 @@ function decorate(g, favSet, hlTerms) {
     fav: favSet.has(g.id)
   };
   // 搜索时附带高亮分段与命中片段（hlTerms 含同义词，搜「炒股」也能标出「股票」）
+  // 标黄用 markTerms：剔掉单字同义词。「智齿」会展开出「牙」，拿它标黄会把
+  // 标题切成十来个碎片（每个「牙」一段），详见 docs/changelog.md 2026-11-03。
+  // 定位片段仍用完整的 hlTerms，否则只在单字上命中的条目会退回显示开头。
   if (hlTerms && hlTerms.length) {
-    item.titleSegs = search.highlight(g.title, hlTerms);
-    item.summarySegs = search.highlight(search.snippet(g.summary, hlTerms), hlTerms);
+    const marks = markTerms && markTerms.length ? markTerms : hlTerms;
+    const snippet = search.snippet(g.summary, hlTerms);
+    let titleSegs = search.highlight(g.title, marks);
+    let summarySegs = search.highlight(snippet, marks);
+    // 剔掉单字后如果一处都没标出来，退回完整词表：否则用户看到一条不带任何
+    // 标记的结果，反而不知道它为什么命中（「智齿」只命中「牙」时就是这样）。
+    if (!titleSegs.some((s) => s.h) && !summarySegs.some((s) => s.h)) {
+      titleSegs = search.highlight(g.title, hlTerms);
+      summarySegs = search.highlight(snippet, hlTerms);
+    }
+    item.titleSegs = titleSegs;
+    item.summarySegs = summarySegs;
   }
   return item;
 }
@@ -321,6 +334,8 @@ Page({
     if (terms.length) {
       const pool = guides.filter(baseFilter);
       const hl = search.expandTerms(terms);
+      // 标黄词表：跳过单字同义词，但保留用户自己输入的单字（搜「牙」照旧标）
+      const hlMark = hl.filter((t) => t.length > 1 || terms.indexOf(t) >= 0);
       // 第一阶段：每个词都命中（原词 / 同义词 / 模糊）
       let scored = [];
       pool.forEach((g) => {
@@ -339,7 +354,7 @@ Page({
         if (b.m.score !== a.m.score) return b.m.score - a.m.score;
         return cmpGuide(a.g, b.g, q);
       });
-      list = scored.map((x) => decorate(x.g, this._favSet, hl));
+      list = scored.map((x) => decorate(x.g, this._favSet, hl, hlMark));
     } else {
       list = sortGuides(guides.filter(baseFilter), q).map((g) => decorate(g, this._favSet));
     }

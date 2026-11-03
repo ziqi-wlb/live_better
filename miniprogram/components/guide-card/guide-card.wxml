@@ -10,16 +10,14 @@
       <text>{{item.fav ? '★' : '☆'}}</text>
     </view>
   </view>
+  <!-- 高亮分段必须套在一个 text 里：view 在 Skyline 下默认 flex-column，
+       分段直接作为子节点会各自成行，把一句话拆成竖排。 -->
   <view class="card-title">
-    <block wx:if="{{item.titleSegs}}">
-      <text wx:for="{{item.titleSegs}}" wx:for-item="seg" class="{{seg.h ? 'hit' : ''}}">{{seg.t}}</text>
-    </block>
+    <text wx:if="{{item.titleSegs}}"><text wx:for="{{item.titleSegs}}" wx:for-item="seg" class="{{seg.h ? 'hit' : ''}}">{{seg.t}}</text></text>
     <text wx:else>{{item.title}}</text>
   </view>
   <view class="card-summary">
-    <block wx:if="{{item.summarySegs}}">
-      <text wx:for="{{item.summarySegs}}" wx:for-item="seg" class="{{seg.h ? 'hit' : ''}}">{{seg.t}}</text>
-    </block>
+    <text wx:if="{{item.summarySegs}}"><text wx:for="{{item.summarySegs}}" wx:for-item="seg" class="{{seg.h ? 'hit' : ''}}">{{seg.t}}</text></text>
     <text wx:else>{{item.summary}}</text>
   </view>
   <view class="cost">
