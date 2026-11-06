@@ -9,12 +9,20 @@ const NATIVE_TEMPLATE_UNIT_ID = '';
 const MIN_INTERVAL_MS = 60 * 1000;
 let lastShownAt = 0;
 
+// 启动页直接落在详情页（扫预览码停在详情页、点分享卡直进）时，
+// 本次会话第一次进详情不弹——「刚启动就弹」违反微信对插屏展示时机的要求。
+const launchPath = wx.getLaunchOptionsSync ? wx.getLaunchOptionsSync().path : '';
+const enteredViaDetail = typeof launchPath === 'string' && launchPath.indexOf('detail') >= 0;
+let detailEntries = 0;
+
 function nativeUnitId() {
   return NATIVE_TEMPLATE_UNIT_ID;
 }
 
 function maybeShowInterstitial() {
   if (!INTERSTITIAL_UNIT_ID || !wx.createInterstitialAd) return;
+  detailEntries += 1;
+  if (enteredViaDetail && detailEntries === 1) return;
   if (Date.now() - lastShownAt < MIN_INTERVAL_MS) return;
 
   let ad;
