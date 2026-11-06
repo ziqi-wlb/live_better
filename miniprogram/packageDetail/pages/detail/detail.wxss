@@ -265,6 +265,11 @@ button.act::after {
   font-size: 26rpx;
 }
 
+/* 原生模板广告：组件默认 width:100%，这里只管外边距，不碰它的样式 */
+.ad-wrap {
+  margin: 24rpx 0 8rpx;
+}
+
 .footnote {
   text-align: center;
   font-size: 22rpx;

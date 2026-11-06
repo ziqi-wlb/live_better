@@ -3,6 +3,7 @@ const details = require('../../data/details.js');
 const store = require('../../../utils/store');
 const { detailPath } = require('../../../utils/detail-path');
 const { navigate } = require('../../../utils/nav');
+const { nativeUnitId, maybeShowInterstitial } = require('../../../utils/ads');
 
 const chapterMap = {};
 chapters.forEach((c) => {
@@ -29,7 +30,8 @@ Page({
     audienceText: '',
     evidenceDescText: '',
     hasNotes: false,
-    fixedSourceUrl: ''
+    fixedSourceUrl: '',
+    adUnitId: nativeUnitId()
   },
 
   // 沉浸阅读：按滚动方向淡出 / 淡入导航栏
@@ -59,6 +61,9 @@ Page({
     const info = details.items[options.id];
     const meta = guides.find((g) => g.id === options.id);
     if (!info || !meta) return fail();
+
+    // 进入详情是主动点击的结果，在这里弹插屏（微信要求广告在用户主动操作后展示）
+    maybeShowInterstitial();
 
     const chapterTitle = chapterMap[meta.ch] || '';
     const audience = info.audienceGroups || [];
@@ -111,6 +116,12 @@ Page({
       actionLabel: todo ? todo.status : '加入清单',
       note: todo ? todo.note || '' : this.data.note || ''
     });
+  },
+
+  // 广告回调：只记录，任何失败都不影响阅读
+  onAdLoad() {},
+  onAdError(e) {
+    console.log('[ad] 原生模板广告加载失败', e && e.detail);
   },
 
   onToggleFav() {
